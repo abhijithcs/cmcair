@@ -1,0 +1,16 @@
+.heartButton{
+	background: none; 
+	border: none;
+	color: #95a5a6;
+}
+
+.heartButton:hover{
+	background: none; 
+	border: none;
+	color: #e74c3c;
+}
+
+.neatBorder{
+	border: solid 1px #ecf0f1;
+	box-shadow: none;
+}

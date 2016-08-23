@@ -1,0 +1,31 @@
+<ion-view view-title="Timeline">
+  <ion-content class="padding">
+  <ion-refresher
+    on-refresh="doRefresh()">
+  </ion-refresher>
+
+    <ion-list ng-repeat="feed in feedsList track by $index">
+      <ion-item class="card neatBorder">
+
+        <div class="item item-avatar">
+          <img src="http://accelerate.net.in/cmcair/images/people/{{feed.userID}}.jpg">
+          <h2>{{feed.title}}</h2>
+          <p>{{feed.userName}} at {{feed.time}}</p>
+        </div>
+
+        <div class="item item-body">
+          <img class="full-image" ng-if="feed.flag" src="http://putshirt.in/cmcair/images/posts/{{feed.postID}}.jpg">
+          <p>{{feed.content}}</p>        
+        </div>
+
+      </ion-item>
+    </ion-list>
+
+  <ion-infinite-scroll
+        immediate-check="false"
+        ng-if="left"
+    on-infinite="loadMore()" 
+    distance="1%">
+  </ion-infinite-scroll>
+  </ion-content>
+</ion-view>
