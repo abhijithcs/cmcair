@@ -1,5 +1,8 @@
 angular.module('starter.controllers', ['ngCordova'])
 
+
+
+
 .controller('TimelineCtrl', ['$scope', '$http', function($scope, $http) {         
 
       $http.get("http://accelerate.net.in/cmcair/apis/posts.php?value=0").then(function(response) {
