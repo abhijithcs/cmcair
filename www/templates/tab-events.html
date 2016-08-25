@@ -1,10 +1,10 @@
-<ion-view view-title="Events">
+<ion-view view-title="Events" style="background: #ecf0f1">
   <ion-content>
   <ion-refresher
     on-refresh="doRefresh()">
   </ion-refresher>
-<div class="list card" ng-repeat="feed in feedsList track by $index">
-  <div class="item" style="background: #16a085;">
+<div class="list card neatBorder" ng-repeat="feed in feedsList track by $index">
+  <div class="item" style="background: #2c3e50;">
     <h2 style="color: #f1c40f; font-size: 21px">{{feed.title}}</h2>
     <p style="color: #ecf0f1;">Venue: {{feed.venue}} | Time: {{feed.time}}</p>
   </div>
@@ -14,7 +14,7 @@
     <p>{{feed.brief}}</p>
   </div>
   <div class="item item-divider">
-      <p style="font-size: 12px; color: #2c3e50">Hosted by <strong>{{feed.host}}</strong><p>
+      <p style="font-size: 12px; color: #95a5a6">A event hosted by <strong>{{feed.host}}</strong><p>
   </div>
 
 </div>

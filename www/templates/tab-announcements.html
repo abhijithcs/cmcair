@@ -1,16 +1,17 @@
-<ion-view view-title="Announcements">
+<ion-view view-title="Announcements" style="background: #ecf0f1">
   <ion-content class="padding">
 
-  <button ng-if="tableMetaData.flag" class="button button-block button-energized" style="color: #2c3e50">
+  <button ng-if="tableMetaData.flag" class="button button-block button-energized" style="background: #2c3e50;color: #f39c12">
     {{tableMetaData.title}}
   </button>
 
   <ion-list ng-if="tableMetaData.flag" class="list" ng-repeat="item in tableList track by $index" style="margin-top: 300px;">
-    <li class="item item-icon-left item-icon-right">
+    <li class="item item-icon-left item-icon-right" style="background: #34495e; color: #ecf0f1">
       <i class="icon" style="font-size:20px;">#{{item.rank}}</i>
       {{item.title}}
-      <i class="icon" style="font-size:20px;">{{item.points}} <red style="font-size: 60%; padding-left: 10px;">Points</red></i>
+      <i class="icon" style="font-size:20px;">{{item.points}}</i>
     </li>
+
   </ion-list>
 
 
@@ -26,6 +27,7 @@
           <p style="color: #2c3e50; font-size: 18px;">{{feed.content}}</p>
           <p style="color: #bdc3c7; font-size: 10px;">Posted by {{feed.user}} ({{feed.role}}) on {{feed.time}}</p>
         </div>
+        
 
       </ion-item>
     </ion-list>

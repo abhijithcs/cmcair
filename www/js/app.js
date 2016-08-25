@@ -7,20 +7,22 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $ionicPopup) {
   $ionicPlatform.ready(function() {
-    var push = new Ionic.Push({
-      "debug": true
-    });
 
-    push.register(function(token) {
-      console.log("Device token:",token.token);
-    });
-  });
-})
+    //Exit app if not connected to Internet
+    if(window.Connection) {
+                if(navigator.connection.type == Connection.NONE) {
+                    $ionicPopup.alert({
+                        title: "Not Connected to Internet",
+                        content: "Please connect to Internet and then launch the App."
+                    })
+                    .then(function(result) {
+                        ionic.Platform.exitApp();
+                    });
+                }
+    }
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -61,6 +63,16 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       }
     }
   })
+
+    .state('tab.post-detail', {
+      url: '/posts/:postID',
+      views: {
+        'tab-timeline': {
+          templateUrl: 'templates/post-detail.html',
+          controller: 'postDetailCtrl'
+        }
+      }
+    })
 
   .state('tab.events', {
     url: '/events',

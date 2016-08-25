@@ -4,11 +4,14 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view view-title="{{title}}">
+<ion-view view-title="">
   <ion-content class="padding">
-    <img ng-src="" style="width: 64px; height: 64px">
+    <img ng-if="post.flag" src="http://accelerate.net.in/cmcair/images/posts/{{post.postID}}.jpg" style="width: 100%">
+    <h2 style="font-size: 21px;">{{post.title}}</h2>
+    <p style="color:#bdc3c7; font-size: 9px;">Posted by {{post.user}} ({{post.role}}) at {{post.time}}</p>
     <p>
-      {{content}}
+     {{post.content}}
     </p>
+
   </ion-content>
 </ion-view>
