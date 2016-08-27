@@ -8,8 +8,7 @@
 angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform, $ionicPopup) {
-  $ionicPlatform.ready(function() {
-
+  $ionicPlatform.ready(function() {  	
     //Exit app if not connected to Internet
     if(window.Connection) {
                 if(navigator.connection.type == Connection.NONE) {
@@ -92,7 +91,13 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
         controller: 'AnnouncementsCtrl'
       }
     }
-  })  
+  }) 
+
+ .state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl'
+  })
 
   .state('tab.infinity', {
     url: '/infinity',
@@ -140,7 +145,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/timeline');
+  $urlRouterProvider.otherwise('/login');
 
 });
 

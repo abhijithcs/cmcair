@@ -10,6 +10,8 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.feedsList = [];
   $scope.limiter = 1;
 
+
+
     $scope.doRefresh = function() {
       
     $http.get("http://accelerate.net.in/cmcair/apis/posts.php?value=0")
@@ -28,12 +30,12 @@ angular.module('starter.controllers', ['ngCordova'])
 
   $scope.loadMore = function() {
     $http.get('http://accelerate.net.in/cmcair/apis/posts.php?value='+$scope.limiter).then(function(items) {
-    	if(items.data.length == 0){
-    		$scope.left = 0;
-    	}
-	    $scope.feedsList = $scope.feedsList.concat(items.data)
+      if(items.data.length == 0){
+        $scope.left = 0;
+      }
+      $scope.feedsList = $scope.feedsList.concat(items.data)
 
-	  //  $scope.feedsList.push(items);
+    //  $scope.feedsList.push(items);
       $scope.limiter++;
 
       //$scope.left = 0;
@@ -203,11 +205,88 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.name = "Hi from Developer! :)";
 })
 
-.controller('SettingsCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
+.controller('LoginCtrl',['$scope', '$state','$http', '$ionicPopup',  function($scope, $state, $http, $ionicPopup){
+  
+  //Already logged in case.
+  if(localStorage.getItem("token") != null && localStorage.getItem("token") != "")
+    $state.go('tab.timeline')
+
+  
+
+  $scope.login = function(mobile){
+
+    //By default, do not show any error message.
+    $scope.errorFlag = 0;
+    
+    
+           
+      if (/^\d{10}$/.test(mobile)){
+        //Valid Mobile Number. Send OTP and verify it.
+
+        $scope.otp_original = {};
+        $http.get('http://accelerate.net.in/cmcair/apis/useractivate.php?mobile='+mobile).then(function(response) {
+        $scope.otp_original = response.data.code;
+        $scope.validity = response.data.valid;
+
+          if($scope.validity){ //Valid, Registered User.          
+
+                  //OTP Validation happens here.
+                    $scope.userdata = {};
+                    $ionicPopup.show({
+                      template: '<input type="password" ng-model="userdata.otp">',
+                    title: "One Time Password",
+                    subTitle: "Please enter the OTP received on your registered mobile number "+mobile,
+                    scope: $scope, 
+                    buttons: [
+                      { text: 'Cancel' },
+                      {
+                        text: '<b>Submit</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                          if (!$scope.userdata.otp) 
+                          {
+                            //don't allow the user to close unless he enters wifi password
+                            e.preventDefault();
+                          } 
+                          else 
+                          {
+                            if($scope.userdata.otp == $scope.otp_original){ //OTP Match                
+                              $scope.token = mobile;                
+                              localStorage.setItem("token", $scope.token);
+                              $http.get('http://accelerate.net.in/cmcair/apis/usersignin.php?mobile='+mobile);
+                              $state.go('tab.timeline');
+                            }
+                            else
+                            {
+                              $scope.errorFlag = 1;
+                              $scope.errorMessage = "Sorry! You have entered a wrong OTP.";
+                            }
+
+                          }
+                          }
+                        }
+                    ]
+                    });
+          }
+          else{
+              $scope.errorFlag = 1;
+              $scope.errorMessage = "Not registered.";
+          }
+        }); 
+      } 
+      else 
+      {
+        
+        $scope.errorFlag = 0;
+        $ionicPopup.alert({
+        title: "Invalid Mobile Number",
+        content: "Please enter a valid 10 digit mobile number, which is registered with CMC Air."
+        });
+      }
   };
-});
+
+
+}]);
 
 
 
