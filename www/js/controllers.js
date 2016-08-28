@@ -1,8 +1,8 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('TimelineCtrl', ['$scope', '$http', function($scope, $http) {         
+.controller('TimelineCtrl', ['$scope', '$http' ,'$ionicPopup', '$cordovaNetwork', '$timeout', function($scope, $http, $ionicPopup, $cordovaNetwork, $timeout) {         
 
-      $http.get("http://accelerate.net.in/cmcair/apis/posts.php?value=0").then(function(response) {
+      $http.get("http://accelerate.net.in/cmcair/apis/posts.php?value=0&user="+localStorage.getItem("token")).then(function(response) {
         $scope.feedsList= response.data;
         $scope.left = 1;
       });
@@ -10,11 +10,26 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.feedsList = [];
   $scope.limiter = 1;
 
+     $scope.showPopup = function() {
+      var popup = $ionicPopup.alert({
+        title: 'You are offline. Please connect to Internet.'
+      });
+      $timeout(function(){
+        popup.close();      
+      }, 2000)
+    };
+    
+setInterval(function(){
+  if(!$cordovaNetwork.isOnline()){
+    $scope.showPopup();
+  }
+}, 5000);
+
 
 
     $scope.doRefresh = function() {
       
-    $http.get("http://accelerate.net.in/cmcair/apis/posts.php?value=0")
+    $http.get("http://accelerate.net.in/cmcair/apis/posts.php?value=0&user="+localStorage.getItem("token"))
      .then(function(response) {
        $scope.feedsList= response.data; 
        $scope.left = 1;
@@ -29,7 +44,7 @@ angular.module('starter.controllers', ['ngCordova'])
     };
 
   $scope.loadMore = function() {
-    $http.get('http://accelerate.net.in/cmcair/apis/posts.php?value='+$scope.limiter).then(function(items) {
+    $http.get('http://accelerate.net.in/cmcair/apis/posts.php?value='+$scope.limiter+'&user='+localStorage.getItem("token")).then(function(items) {
       if(items.data.length == 0){
         $scope.left = 0;
       }
@@ -53,15 +68,45 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 .controller('postDetailCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams){
-      $http.get("http://accelerate.net.in/cmcair/apis/viewpost.php?id="+$stateParams.postID).then(function(response) {
+      $http.get("http://accelerate.net.in/cmcair/apis/viewpost.php?id="+$stateParams.postID+"&user="+localStorage.getItem("token")).then(function(response) {
         $scope.post= response.data;
+        $scope.liked = response.data.likeFlag;
       });
+
+    $scope.likedata = {};
+    $scope.liker = function(postID) {      
+        $scope.likedata.userID = localStorage.getItem("token");
+        $scope.likedata.postID = postID;
+
+        $http({
+          method  : 'POST',
+          url     : 'http://accelerate.net.in/cmcair/apis/likepost.php',
+          data    : $scope.likedata, //forms user object
+          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+         })
+          .success(function(data) {
+            $scope.liked = !$scope.liked;
+            $scope.refresher();
+          });
+    };
+
+    $scope.refresher = function() {      
+    $http.get("http://accelerate.net.in/cmcair/apis/viewpost.php?id="+$stateParams.postID+"&user="+localStorage.getItem("token"))    
+     .then(function(response) {
+       $scope.feedsList= response.data; 
+     })
+     .finally(function() {
+       $scope.$broadcast('scroll.refreshComplete');
+     });
+    };
+
+
 }])
 
 
 .controller('AnnouncementsCtrl', ['$scope', '$http', function($scope, $http) {         
 
-      $http.get("http://accelerate.net.in/cmcair/apis/announcements.php?value=0").then(function(response) {
+      $http.get("http://accelerate.net.in/cmcair/apis/announcements.php?value=0&user="+localStorage.getItem("token")).then(function(response) {
         $scope.feedsList= response.data;
         $scope.left = 1;
 
@@ -82,14 +127,14 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.limiter = 1;
 
     $scope.getTable = function(){
-      $http.get('http://accelerate.net.in/cmcair/apis/announcements.php?value=0').then(function(items) {
+      $http.get("http://accelerate.net.in/cmcair/apis/announcements.php?value=&user="+localStorage.getItem("token")).then(function(items) {
       $scope.tableList = items.data;
     })
     };
 
     $scope.doRefresh = function() {
       
-    $http.get("http://accelerate.net.in/cmcair/apis/announcements.php?value=0")
+    $http.get("http://accelerate.net.in/cmcair/apis/announcements.php?value=0&user="+localStorage.getItem("token"))
      .then(function(response) {
        $scope.feedsList= response.data; 
        $scope.left = 1;
@@ -104,7 +149,7 @@ angular.module('starter.controllers', ['ngCordova'])
     };
 
   $scope.loadMore = function() {
-    $http.get('http://accelerate.net.in/cmcair/apis/announcements.php?value='+$scope.limiter).then(function(items) {
+    $http.get("http://accelerate.net.in/cmcair/apis/announcements.php?value="+$scope.limiter+"&user="+localStorage.getItem("token")).then(function(items) {
       if(items.data.length == 0){
         $scope.left = 0;
       }
@@ -199,11 +244,131 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 }])
 
+.controller('SettingsCtrl', ['$scope', '$http', function($scope, $http) {         
+  if(localStorage.getItem("postFlag") == 1){$scope.flag=true;} else {$scope.flag=false;}
+  
+
+      $scope.user_mob = localStorage.getItem("token");
+
+      $http.get("http://accelerate.net.in/cmcair/apis/userinfo.php?user="+$scope.user_mob).then(function(response) {
+        $scope.userdata= response.data;
+      });
+
+  // NOTIFICATION CUSTOMISATION
+//  TUTORIAL - https://www.npmjs.com/package/cordova-plugin-fcm
+  if(localStorage.getItem("notification") == 1){$scope.notify=true;} else {$scope.notify=false;}
+  $scope.pushNotificationChange = function() {
+    if($scope.notify){ //ON --> OFF
+      console.log('Switching OFF');
+      // FCMPlugin.unsubscribeFromTopic('campuswide');
+      // FCMPlugin.subscribeToTopic('55');      
+    }
+    else //OFF --> ON
+    {
+      console.log('Switching ON');
+      // FCMPlugin.unsubscribeFromTopic('55');
+      // FCMPlugin.subscribeToTopic('campuswide');
+    }  
+  };
+
+  $scope.pushNotification = {checked: $scope.notify};
+
+  
+
+}])
+
+.controller('PostTimelineCtrl', ['$scope', '$http', '$state', function($scope, $http, $state){
+
+  $scope.data = {};
+  $scope.data.userID = localStorage.getItem("token");
+  $scope.errorFlag = 0;  
+
+  $scope.postTimeline = function() {
+    if(!$scope.data.content || !$scope.data.title){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Title and Content can not be empty.";
+    }
+    else if($scope.data.title.length >200){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Maximum Title length is 200 characters.";
+    }
+    else if($scope.data.content.length >2000){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Maximum Content length is 2000 characters.";
+    }
+    else{ //Success Case - accept input.
+        $http({
+          method  : 'POST',
+          url     : 'http://accelerate.net.in/cmcair/apis/posttimeline.php',
+          data    : $scope.data, //forms user object
+          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+         })
+          .success(function(data) {
+            if (data.status) {
+              $state.go('tab.timeline');
+            } else {
+              //Check for invalid inputs.
+            }
+          });
+    }
+  }
+
+  
 
 
-.controller('InfinityCtrl', function($scope) {
-  $scope.name = "Hi from Developer! :)";
-})
+
+}])
+
+.controller('PostEventCtrl', ['$scope', '$http', function($scope, $http){
+
+      // $http.get("http://accelerate.net.in/cmcair/apis/secretaries.php").then(function(response) {
+      //   $scope.userlist= response.data;
+      // });
+}])
+.controller('PostAnnouncementCtrl', ['$scope', '$http', '$state', function($scope, $http, $state){
+  $scope.data = {};
+  $scope.data.userID = localStorage.getItem("token");
+  $scope.errorFlag = 0;  
+
+  $scope.postAnnouncement = function() {
+    if(!$scope.data.content){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Content can not be empty.";
+    }
+    else if(!$scope.data.for){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Please select audience.";
+    }
+    else if($scope.data.content.length >200){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Maximum Content length is 200 characters.";
+    }
+    else{ //Success Case - accept input.
+      console.log($scope.data.for)
+        $http({
+          method  : 'POST',
+          url     : 'http://accelerate.net.in/cmcair/apis/postannouncement.php',
+          data    : $scope.data, //forms user object
+          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+         })
+          .success(function(data) {
+            if (data.status) {
+              $state.go('tab.announcements');
+            } else {
+              //Check for invalid inputs.
+            }
+          });
+    }
+  }
+}])
+
+.controller('LogoutCtrl', ['$scope', '$state', function($scope, $state){
+  localStorage.setItem("token", "");
+  localStorage.setItem("postFlag", "");
+  localStorage.setItem("notification", "");
+  $state.go('tab.login');
+}])
+
 
 .controller('LoginCtrl',['$scope', '$state','$http', '$ionicPopup',  function($scope, $state, $http, $ionicPopup){
   
@@ -227,6 +392,8 @@ angular.module('starter.controllers', ['ngCordova'])
         $http.get('http://accelerate.net.in/cmcair/apis/useractivate.php?mobile='+mobile).then(function(response) {
         $scope.otp_original = response.data.code;
         $scope.validity = response.data.valid;
+        if(response.data.postFlag){$scope.userPostAccess = 1;}else{$scope.userPostAccess = 0;}
+        
 
           if($scope.validity){ //Valid, Registered User.          
 
@@ -253,6 +420,9 @@ angular.module('starter.controllers', ['ngCordova'])
                             if($scope.userdata.otp == $scope.otp_original){ //OTP Match                
                               $scope.token = mobile;                
                               localStorage.setItem("token", $scope.token);
+                              localStorage.setItem("postFlag", $scope.userPostAccess);
+                              localStorage.setItem("notification", 1);
+
                               $http.get('http://accelerate.net.in/cmcair/apis/usersignin.php?mobile='+mobile);
                               $state.go('tab.timeline');
                             }

@@ -1,9 +1,64 @@
 <ion-view view-title="Settings">
-  <ion-content>
-    <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
+  <ion-content class="" >
+  <div class="list">
+
+    <div ng-if="flag" class="item item-divider"> 
+          Admin Features
+          <p style="color: #bdc3c7"></p>
+    </div>
+    <a ng-if="flag" class="item item-icon-left" href="#/tab/post-timeline">
+      <i class="icon ion-ios-bookmarks-outline"></i>
+      Post on Timeline
+    </a>
+
+    <a ng-if="flag" class="item item-icon-left" href="#/tab/post-event">
+      <i class="icon ion-ios-calendar-outline"></i>
+      Create an Event
+    </a>
+
+    <a ng-if="flag" class="item item-icon-left" href="#/tab/post-announcement">
+      <i class="icon ion-ios-bell-outline"></i>
+      Make an Announcement
+    </a>
+
+
+    <div class="item item-divider"> 
+          User Information
+    </div>    
+    <li class="item item-icon-left" style="color: #16a085;">
+      <i class="icon ion-person"></i>
+      {{userdata.name}}
+    </li>
+    <li class="item item-icon-left">
+      <i class="icon ion-ios-telephone-outline"></i>
+      {{user_mob}}
+    </li>  
+    <li class="item item-icon-left">
+      <i class="icon ion-ios-loop"></i>
+      Logged in at {{userdata.lastlogin}}
+    </li>      
+    <div class="item item-divider"> 
+          Actions
+    </div> 
+
+    <ion-toggle 
+      ng-model="pushNotification.checked"
+      ng-change="pushNotificationChange()"
+      ng-disabled="1">
+      Notifications
     </ion-toggle>
-    </ion-list>
+
+    <a class="item item-icon-left" href="#/tab/logout">
+      <i class="icon ion-log-out"></i>
+      Logout
+    </a>    
+
+    <center>
+    <a href="#" style="text-decoration: none;" onclick="window.open('http://www.accelerate.net.in', '_system', 'location=yes'); return false;"><img src="img/accelerate_logo.png" width="60px" style="padding-top: 30px; opacity: 0.1;">
+    <p style="color: #bdc3c7; font-size: 10px;">Developed by Accelerate</p></a><p style="margin-top:-10px; color:#505050; font-size: 10px;">Made with <i style="color: #F7384F; padding-top: 5px;" class="icon ion-heart"></i> by <a style="text-decoration: none;" onclick="window.open('https://www.facebook.com/abhijithcs1993', '_system', 'location=yes'); return false;" href="#">Abhijith C S</a> and <a style="text-decoration: none;" onclick="window.open('https://www.facebook.com/anas.jafry', '_system', 'location=yes'); return false;" href="">Anas Jafry</a></p>
+    </center>    
+
+  </div>
+
   </ion-content>
 </ion-view>

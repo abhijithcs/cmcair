@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "397165248208",
+    "firebase_url": "https://cmcair-141313.firebaseio.com",
+    "project_id": "cmcair-141313",
+    "storage_bucket": "cmcair-141313.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397165248208:android:e91659900290988d",
+        "android_client_info": {
+          "package_name": "com.cmcair.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "397165248208-k0rv17ci63pgf9nal1rn7dltfjl8d3er.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLvw3O1zMXsT3BQd_lcQPLnOqTrHwo3tA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

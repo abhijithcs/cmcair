@@ -6,12 +6,20 @@
 -->
 <ion-view view-title="">
   <ion-content class="padding">
+
+  <ion-refresher
+    on-refresh="refresher()">
+  </ion-refresher>
+
     <img ng-if="post.flag" src="http://accelerate.net.in/cmcair/images/posts/{{post.postID}}.jpg" style="width: 100%">
     <h2 style="font-size: 21px;">{{post.title}}</h2>
     <p style="color:#bdc3c7; font-size: 9px;">Posted by {{post.user}} ({{post.role}}) at {{post.time}}</p>
     <p>
      {{post.content}}
     </p>
+    <button ng-if="!liked" ng-click="liker(post.postID)" class="button">Like this Post</button>
+    <button ng-if="liked" ng-click="liker(post.postID)" class="button icon-left ion-heart" style="background: #E90C44; color: white; padding:-10px;">You Likes this!</button>
+  
 
   </ion-content>
 </ion-view>

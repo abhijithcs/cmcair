@@ -45,7 +45,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html'
@@ -63,6 +63,45 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
     }
   })
 
+  .state('tab.settings', {
+    url: '/settings',
+    views: {
+      'tab-settings': {
+        templateUrl: 'templates/tab-settings.html',
+        controller: 'SettingsCtrl'
+      }
+    }
+  })
+
+   .state('tab.post-timeline', {
+    url: '/post-timeline',
+    views: {
+      'tab-settings': {
+        templateUrl: 'templates/post-timeline.html',
+        controller: 'PostTimelineCtrl'
+      }
+    }
+  })
+   .state('tab.post-event', {
+    url: '/post-event',
+    views: {
+      'tab-settings': {
+        templateUrl: 'templates/post-event.html',
+        controller: 'PostEventCtrl'
+      }
+    }
+  })
+  .state('tab.post-announcement', {
+    url: '/post-announcement',
+    views: {
+      'tab-settings': {
+        templateUrl: 'templates/post-announcement.html',
+        controller: 'PostAnnouncementCtrl'
+      }
+    }
+  })   
+
+//See post is detail.
     .state('tab.post-detail', {
       url: '/posts/:postID',
       views: {
@@ -99,12 +138,19 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       controller: 'LoginCtrl'
   })
 
+ .state('logout', {
+      url: '/logout',
+      templateUrl: 'templates/logout.html',
+      controller: 'LogoutCtrl'
+  })
+
+
+
   .state('tab.infinity', {
     url: '/infinity',
     views: {
       'tab-infinity': {
-        templateUrl: 'templates/tab-infinity.html',
-        controller: 'InfinityCtrl'
+        templateUrl: 'templates/tab-infinity.html'
       }
     }
   })   

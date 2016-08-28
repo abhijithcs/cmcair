@@ -1,0 +1,19 @@
+<ion-view view-title="Post on Timeline">
+  <ion-content class="" >
+
+	<div class="list">
+	   <label class="item item-input item-floating-label">
+	   <span class="input-label"t>Title</span>
+	   <input type="text" placeholder="Title" ng-model="data.title">
+	   </label>
+
+	   <label class="item item-input item-floating-label">
+	   <span class="input-label">Content</span>
+	   <textarea type="text" placeholder="Content" ng-model="data.content"></textarea> 
+	   </label>
+	   <p style="color: red;" ng-if="errorFlag">{{errorMsg}}</p>
+	   <button class="button button-block button-calm" ng-click="postTimeline()">Post</button>
+	</div>
+
+  </ion-content>
+</ion-view>

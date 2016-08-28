@@ -6,7 +6,8 @@
   </ion-refresher>
 
     <ion-list ng-repeat="feed in feedsList track by $index">
-      <a class="card neatBorder" style="text-decoration: none;" href="#/tab/posts/{{feed.postID}}">
+      <i ng-if="connection" class="icon ion-heart"> Connection Error!</i>        
+      <a class="card neatBorder"  style="text-decoration: none;" href="#/tab/posts/{{feed.postID}}">
 
         <div class="item item-avatar">
           <img src="http://accelerate.net.in/cmcair/images/people/{{feed.userID}}.jpg">
@@ -16,12 +17,15 @@
 
         <div class="item item-body">
           <img class="full-image" ng-if="feed.flag" src="http://accelerate.net.in/cmcair/images/posts/{{feed.postID}}.jpg">
-          <p>{{feed.content}}</p>        
+          <p>{{feed.content}}</p>         
+          <i ng-if="!feed.likeFlag" class="icon ion-heart"> {{feed.likes}}</i>        
+          <i ng-if="feed.likeFlag" class="icon ion-heart" style ="color:#E90C44;"> {{feed.likes}}</i>
         </div>
 
       </a>
+    
     </ion-list>
-
+    
   <ion-infinite-scroll
         immediate-check="false"
         ng-if="left"
