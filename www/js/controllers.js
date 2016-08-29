@@ -1,11 +1,45 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('TimelineCtrl', ['$scope', '$http' ,'$ionicPopup', '$cordovaNetwork', '$timeout', function($scope, $http, $ionicPopup, $cordovaNetwork, $timeout) {         
+.controller('TimelineCtrl', ['$scope', '$http' ,'$ionicPopup', '$cordovaNetwork', '$timeout', '$state', function($scope, $http, $ionicPopup, $cordovaNetwork, $timeout, $state) {         
+
+  //NOT logged in case.
+  if(localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT")
+    {$state.go('tab.login'); ionic.Platform.exitApp();}
 
       $http.get("http://accelerate.net.in/cmcair/apis/posts.php?value=0&user="+localStorage.getItem("token")).then(function(response) {
         $scope.feedsList= response.data;
         $scope.left = 1;
       });
+
+
+    $scope.likedata = {};
+    $scope.liker = function(postID) {      
+        $scope.likedata.userID = localStorage.getItem("token");
+        $scope.likedata.postID = postID;
+
+        $http({
+          method  : 'POST',
+          url     : 'http://accelerate.net.in/cmcair/apis/likepost.php',
+          data    : $scope.likedata, //forms user object
+          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+         })
+          .success(function(data) {
+            if(data.status == "liked"){
+              document.getElementById(postID).style.color = "#E90C44";
+              var temp = document.getElementById(postID).innerHTML;
+              document.getElementById(postID).innerHTML = " "+(Number(temp) + 1) ;
+            }
+            else{
+              document.getElementById(postID).style.color = "#95a5a6";
+              var temp = document.getElementById(postID).innerHTML;
+              document.getElementById(postID).innerHTML = " "+(Number(temp) - 1) ;
+            }
+            $scope.liked = !$scope.liked;
+          
+          });
+    };
+
+
 
   $scope.feedsList = [];
   $scope.limiter = 1;
@@ -23,7 +57,7 @@ setInterval(function(){
   if(!$cordovaNetwork.isOnline()){
     $scope.showPopup();
   }
-}, 5000);
+}, 10000);
 
 
 
@@ -104,7 +138,7 @@ setInterval(function(){
 }])
 
 
-.controller('AnnouncementsCtrl', ['$scope', '$http', function($scope, $http) {         
+.controller('AnnouncementsCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {         
 
       $http.get("http://accelerate.net.in/cmcair/apis/announcements.php?value=0&user="+localStorage.getItem("token")).then(function(response) {
         $scope.feedsList= response.data;
@@ -117,6 +151,13 @@ setInterval(function(){
             //Table Meta data.
             $http.get('http://accelerate.net.in/cmcair/apis/tableinfo.php?id=101').then(function(meta) {
             $scope.tableMetaData = meta.data;})
+
+            //Update Head
+            $http.get('http://accelerate.net.in/cmcair/apis/notificationheadupdate.php?user='+localStorage.getItem("token")).then(function(inn) {
+              console.log('*******'+inn.data.status);
+            })
+            $rootScope.notificationCount = "";
+            
        })
 
   });
@@ -254,6 +295,14 @@ setInterval(function(){
         $scope.userdata= response.data;
       });
 
+      //Log Out
+      $scope.logoutMe = function() {
+        localStorage.setItem("token", "LOGOUT");
+        localStorage.setItem("postFlag", "");
+        localStorage.setItem("notification", "");
+        ionic.Platform.exitApp();
+      };
+
   // NOTIFICATION CUSTOMISATION
 //  TUTORIAL - https://www.npmjs.com/package/cordova-plugin-fcm
   if(localStorage.getItem("notification") == 1){$scope.notify=true;} else {$scope.notify=false;}
@@ -362,18 +411,19 @@ setInterval(function(){
   }
 }])
 
-.controller('LogoutCtrl', ['$scope', '$state', function($scope, $state){
-  localStorage.setItem("token", "");
-  localStorage.setItem("postFlag", "");
-  localStorage.setItem("notification", "");
-  $state.go('tab.login');
-}])
+.controller('tabNotificationCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope){
+   $http.get("http://accelerate.net.in/cmcair/apis/notificationcount.php?user="+localStorage.getItem("token"))
+     .then(function(response) {
+       $rootScope.notificationCount= response.data.count; 
+       if($rootScope.notificationCount == 0){$rootScope.notificationCount = "";}
+     });
 
+}])
 
 .controller('LoginCtrl',['$scope', '$state','$http', '$ionicPopup',  function($scope, $state, $http, $ionicPopup){
   
   //Already logged in case.
-  if(localStorage.getItem("token") != null && localStorage.getItem("token") != "")
+  if(localStorage.getItem("token") != null && localStorage.getItem("token") != "LOGOUT")
     $state.go('tab.timeline')
 
   

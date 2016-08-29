@@ -7,24 +7,26 @@
 
     <ion-list ng-repeat="feed in feedsList track by $index">
       <i ng-if="connection" class="icon ion-heart"> Connection Error!</i>        
-      <a class="card neatBorder"  style="text-decoration: none;" href="#/tab/posts/{{feed.postID}}">
+      <div class="card neatBorder"  style="text-decoration: none;"> <!-- href="#/tab/posts/{{feed.postID}}" -->
 
-        <div class="item item-avatar">
-          <img src="http://accelerate.net.in/cmcair/images/people/{{feed.userID}}.jpg">
-          <h2>{{feed.title}}</h2>
-          <p>{{feed.userName}} at {{feed.time}}</p>
+        <div class="item item-avatar item-text-wrap">
+          <img src="http://accelerate.net.in/cmcair/images/people/{{feed.userID}}.jpg">   
+          <p>{{feed.userName}}</p>
+          <p style="font-size: 12px;"><i class="icon ion-ios-clock-outline"></i> {{feed.time}}</p>                    
         </div>
 
         <div class="item item-body">
           <img class="full-image" ng-if="feed.flag" src="http://accelerate.net.in/cmcair/images/posts/{{feed.postID}}.jpg">
+          <h2 style="color: #2c3e50; font-weight: bold;">{{feed.title}}</h2>
           <p>{{feed.content}}</p>         
-          <i ng-if="!feed.likeFlag" class="icon ion-heart"> {{feed.likes}}</i>        
-          <i ng-if="feed.likeFlag" class="icon ion-heart" style ="color:#E90C44;"> {{feed.likes}}</i>
+          <i ng-if="!feed.likeFlag" class="icon ion-heart" ng-click="liker(feed.postID)" id="{{feed.postID}}" style ="color:#95a5a6;"> {{feed.likes}}</i>        
+          <i ng-if="feed.likeFlag" class="icon ion-heart" ng-click="liker(feed.postID)" id={{feed.postID}} style ="color:#E90C44;"> {{feed.likes}}</i>
         </div>
 
-      </a>
+      </div>
     
     </ion-list>
+    <i ng-if="!left"><center><img src=img/end.png></center></i>
     
   <ion-infinite-scroll
         immediate-check="false"

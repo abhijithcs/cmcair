@@ -1,4 +1,12 @@
 {
   "name": "cmcair",
-  "app_id": "e2958d41"
+  "app_id": "e2958d41",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
 }

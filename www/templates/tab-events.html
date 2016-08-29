@@ -4,7 +4,7 @@
     on-refresh="doRefresh()">
   </ion-refresher>
 <div class="list card neatBorder" ng-repeat="feed in feedsList track by $index">
-  <div class="item" style="background: #2c3e50;">
+  <div class="item item-text-wrap" style="background: #2c3e50;">
     <h2 style="color: #f1c40f; font-size: 21px">{{feed.title}}</h2>
     <p style="color: #ecf0f1;"><i class="icon ion-ios-location"></i> {{feed.venue}}<br><i class="icon ion-ios-clock-outline"></i> {{feed.time}}</p>
   </div>
@@ -13,11 +13,12 @@
     <img class="full-image" ng-if="feed.flag" src="http://accelerate.net.in/cmcair/images/events/{{feed.eventID}}.jpg">
     <p>{{feed.brief}}</p>
   </div>
-  <div class="item item-divider">
+  <div class="item item-divider item-text-wrap">
       <p style="font-size: 12px; color: #95a5a6">An event hosted by <strong>{{feed.host}}</strong><p>
   </div>
 
 </div>
+<i ng-if="!left"><center><img src=img/end.png></center></i>
   <ion-infinite-scroll
         immediate-check="false"
         ng-if="left"
