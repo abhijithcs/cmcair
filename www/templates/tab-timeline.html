@@ -19,8 +19,8 @@
           <img class="full-image" ng-if="feed.flag" src="http://accelerate.net.in/cmcair/images/posts/{{feed.postID}}.jpg">
           <h2 style="color: #2c3e50; font-weight: bold;">{{feed.title}}</h2>
           <p>{{feed.content}}</p>         
-          <i ng-if="!feed.likeFlag" class="icon ion-heart" ng-click="liker(feed.postID)" id="{{feed.postID}}" style ="color:#95a5a6;"> {{feed.likes}}</i>        
-          <i ng-if="feed.likeFlag" class="icon ion-heart" ng-click="liker(feed.postID)" id={{feed.postID}} style ="color:#E90C44;"> {{feed.likes}}</i>
+          <i ng-if="!feed.likeFlag" class="icon ion-android-favorite-outline" ng-click="liker(feed.postID)" id="{{feed.postID}}" style ="color:#95a5a6;"> {{feed.likes}}</i>        
+          <i ng-if="feed.likeFlag" class="icon ion-android-favorite" ng-click="liker(feed.postID)" id={{feed.postID}} style ="color:#E90C44;"> {{feed.likes}}</i>
         </div>
 
       </div>

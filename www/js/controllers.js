@@ -154,7 +154,6 @@ setInterval(function(){
 
             //Update Head
             $http.get('http://accelerate.net.in/cmcair/apis/notificationheadupdate.php?user='+localStorage.getItem("token")).then(function(inn) {
-              console.log('*******'+inn.data.status);
             })
             $rootScope.notificationCount = "";
             
@@ -239,7 +238,12 @@ setInterval(function(){
       });
 }])
 
+.controller('InfinityServiceCtrl', ['$scope', '$http', function($scope, $http){
 
+      $http.get("http://accelerate.net.in/cmcair/apis/services.php").then(function(response) {
+        $scope.userlist= response.data;
+      });
+}])
 
 
 

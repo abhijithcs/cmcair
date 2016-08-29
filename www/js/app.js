@@ -102,17 +102,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
     }
   })   
 
-//See post is detail.
-    .state('tab.post-detail', {
-      url: '/posts/:postID',
-      views: {
-        'tab-timeline': {
-          templateUrl: 'templates/post-detail.html',
-          controller: 'postDetailCtrl'
-        }
-      }
-    })
-
   .state('tab.events', {
     url: '/events',
     views: {
@@ -162,6 +151,15 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       'tab-infinity': {
         templateUrl: 'templates/infinity-head.html',
         controller: 'InfinityHeadCtrl'
+      }
+    }
+  })
+  .state('tab.infinity-services', {
+    url: '/infinity-services',
+    views: {
+      'tab-infinity': {
+        templateUrl: 'templates/infinity-services.html',
+        controller: 'InfinityServiceCtrl'
       }
     }
   })
