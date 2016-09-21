@@ -20,12 +20,14 @@
   </ion-refresher>
 
     <ion-list ng-repeat="feed in feedsList track by $index">
-      <ion-item class="card neatBorder">
+      <ion-item class="card neatBorder" id="ann_{{feed.postID}}">
 
 
         <div class="item item-body">
-          <p style="color: #2c3e50; font-size: 18px;">{{feed.content}}</p>
-          <p style="color: #bdc3c7; font-size: 12px;"><i class="icon ion-flag"></i> Posted by {{feed.user}} ({{feed.role}}) on {{feed.time}}</p>
+          <p style="color: #16a085; font-size: 21px;">{{feed.content}}</p>
+          <p style="font-size: 12px;"><i class="icon ion-person"></i> {{feed.user}} ({{feed.role}})<br>
+          <i class="icon ion-ios-clock-outline"></i> {{feed.time}} 
+          <i ng-if="feed.selfFlag" on-hold="deleteAnnouncement(feed.postID, $index)" class="icon ion-trash-a pull-right" on-tap="deleteAnnouncement(feed.postID, $index)" id="{{feed.postID}}" style ="color:#e74c3c; float: right; font-size: 21px;"></i></p>
         </div>
         
 

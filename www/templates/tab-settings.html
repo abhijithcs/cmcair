@@ -6,7 +6,11 @@
           Admin Features
           <p style="color: #bdc3c7"></p>
     </div>
-    <a ng-if="flag" class="item item-icon-left" href="#/tab/post-timeline">
+    <div ng-if="!flag" class="item item-divider"> 
+          Make a Post
+          <p style="color: #bdc3c7"></p>
+    </div>    
+    <a class="item item-icon-left" href="#/tab/post-timeline">
       <i class="icon ion-ios-bookmarks-outline"></i>
       Post on Timeline
     </a>
@@ -30,12 +34,12 @@
       {{userdata.name}}
     </li>
     <li class="item item-icon-left" style="color: #c0392b;">
-      <i class="icon"><img src="img/loop.gif" width="35px;"></i>
+      <i class="icon"><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner></i>
       {{user_mob}}
     </li>  
     <li class="item item-icon-left item-text-wrap">
       <i class="icon ion-ios-loop"></i>
-      Logged in at {{userdata.lastlogin}}
+      Logged in since {{userdata.lastlogin}}
     </li>      
     <div class="item item-divider"> 
           Actions

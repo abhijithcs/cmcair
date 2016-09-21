@@ -1,0 +1,323 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\abhijith.cs.ITLINFOSYS\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'minimatch' ]
+2 info using npm@3.10.6
+3 info using node@v4.4.5
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData minimatch
+8 silly fetchNamedPackageData minimatch
+9 silly mapToRegistry name minimatch
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry data Result {
+12 silly mapToRegistry   raw: 'minimatch',
+12 silly mapToRegistry   scope: null,
+12 silly mapToRegistry   escapedName: 'minimatch',
+12 silly mapToRegistry   name: 'minimatch',
+12 silly mapToRegistry   rawSpec: '',
+12 silly mapToRegistry   spec: 'latest',
+12 silly mapToRegistry   type: 'tag' }
+13 silly mapToRegistry uri https://registry.npmjs.org/minimatch
+14 verbose request uri https://registry.npmjs.org/minimatch
+15 verbose request no auth needed
+16 info attempt registry request try #1 at 3:47:05 PM
+17 verbose request id 8e4c2c2f93d8baf4
+18 verbose etag "6WIJ5XAJGF0Q78G20BBQ55VK3"
+19 http request GET https://registry.npmjs.org/minimatch
+20 info retry will retry, error on last attempt: Error: getaddrinfo EAI_AGAIN registry.npmjs.org:443
+21 info attempt registry request try #2 at 3:47:15 PM
+22 verbose etag "6WIJ5XAJGF0Q78G20BBQ55VK3"
+23 http request GET https://registry.npmjs.org/minimatch
+24 info retry will retry, error on last attempt: Error: getaddrinfo EAI_AGAIN registry.npmjs.org:443
+25 info attempt registry request try #3 at 3:48:15 PM
+26 verbose etag "6WIJ5XAJGF0Q78G20BBQ55VK3"
+27 http request GET https://registry.npmjs.org/minimatch
+28 silly get cb [ 304, undefined ]
+29 verbose etag https://registry.npmjs.org/minimatch from cache
+30 verbose get saving minimatch to C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache\registry.npmjs.org\minimatch\.cache.json
+31 verbose correctMkdir C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+32 silly install normalizeTree
+33 silly loadCurrentTree Finishing
+34 silly loadIdealTree Starting
+35 silly install loadIdealTree
+36 silly cloneCurrentTree Starting
+37 silly install cloneCurrentTreeToIdealTree
+38 silly cloneCurrentTree Finishing
+39 silly loadShrinkwrap Starting
+40 silly install loadShrinkwrap
+41 silly loadShrinkwrap Finishing
+42 silly loadAllDepsIntoIdealTree Starting
+43 silly install loadAllDepsIntoIdealTree
+44 silly resolveWithNewModule minimatch@3.0.3 checking installable status
+45 silly cache add args [ 'minimatch', null ]
+46 verbose cache add spec minimatch
+47 silly cache add parsed spec Result {
+47 silly cache add   raw: 'minimatch',
+47 silly cache add   scope: null,
+47 silly cache add   escapedName: 'minimatch',
+47 silly cache add   name: 'minimatch',
+47 silly cache add   rawSpec: '',
+47 silly cache add   spec: 'latest',
+47 silly cache add   type: 'tag' }
+48 silly addNamed minimatch@latest
+49 verbose addNamed "latest" is being treated as a dist-tag for minimatch
+50 info addNameTag [ 'minimatch', 'latest' ]
+51 silly mapToRegistry name minimatch
+52 silly mapToRegistry using default registry
+53 silly mapToRegistry registry https://registry.npmjs.org/
+54 silly mapToRegistry data Result {
+54 silly mapToRegistry   raw: 'minimatch',
+54 silly mapToRegistry   scope: null,
+54 silly mapToRegistry   escapedName: 'minimatch',
+54 silly mapToRegistry   name: 'minimatch',
+54 silly mapToRegistry   rawSpec: '',
+54 silly mapToRegistry   spec: 'latest',
+54 silly mapToRegistry   type: 'tag' }
+55 silly mapToRegistry uri https://registry.npmjs.org/minimatch
+56 verbose addNameTag registry:https://registry.npmjs.org/minimatch not in flight; fetching
+57 verbose get https://registry.npmjs.org/minimatch not expired, no request
+58 silly addNameTag next cb for minimatch with tag latest
+59 silly addNamed minimatch@3.0.3
+60 verbose addNamed "3.0.3" is a plain semver version for minimatch
+61 silly cache afterAdd minimatch@3.0.3
+62 verbose afterAdd C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache\minimatch\3.0.3\package\package.json not in flight; writing
+63 verbose correctMkdir C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+64 verbose afterAdd C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache\minimatch\3.0.3\package\package.json written
+65 silly fetchNamedPackageData minimatch
+66 silly mapToRegistry name minimatch
+67 silly mapToRegistry using default registry
+68 silly mapToRegistry registry https://registry.npmjs.org/
+69 silly mapToRegistry data Result {
+69 silly mapToRegistry   raw: 'minimatch',
+69 silly mapToRegistry   scope: null,
+69 silly mapToRegistry   escapedName: 'minimatch',
+69 silly mapToRegistry   name: 'minimatch',
+69 silly mapToRegistry   rawSpec: '',
+69 silly mapToRegistry   spec: 'latest',
+69 silly mapToRegistry   type: 'tag' }
+70 silly mapToRegistry uri https://registry.npmjs.org/minimatch
+71 silly resolveWithNewModule minimatch@2.0.10 checking installable status
+72 silly cache add args [ 'minimatch@^2.0.1', null ]
+73 verbose cache add spec minimatch@^2.0.1
+74 silly cache add parsed spec Result {
+74 silly cache add   raw: 'minimatch@^2.0.1',
+74 silly cache add   scope: null,
+74 silly cache add   escapedName: 'minimatch',
+74 silly cache add   name: 'minimatch',
+74 silly cache add   rawSpec: '^2.0.1',
+74 silly cache add   spec: '>=2.0.1 <3.0.0',
+74 silly cache add   type: 'range' }
+75 silly addNamed minimatch@>=2.0.1 <3.0.0
+76 verbose addNamed ">=2.0.1 <3.0.0" is a valid semver range for minimatch
+77 silly addNameRange { name: 'minimatch', range: '>=2.0.1 <3.0.0', hasData: false }
+78 silly mapToRegistry name minimatch
+79 silly mapToRegistry using default registry
+80 silly mapToRegistry registry https://registry.npmjs.org/
+81 silly mapToRegistry data Result {
+81 silly mapToRegistry   raw: 'minimatch',
+81 silly mapToRegistry   scope: null,
+81 silly mapToRegistry   escapedName: 'minimatch',
+81 silly mapToRegistry   name: 'minimatch',
+81 silly mapToRegistry   rawSpec: '',
+81 silly mapToRegistry   spec: 'latest',
+81 silly mapToRegistry   type: 'tag' }
+82 silly mapToRegistry uri https://registry.npmjs.org/minimatch
+83 verbose addNameRange registry:https://registry.npmjs.org/minimatch not in flight; fetching
+84 verbose get https://registry.npmjs.org/minimatch not expired, no request
+85 silly addNameRange number 2 { name: 'minimatch', range: '>=2.0.1 <3.0.0', hasData: true }
+86 silly addNameRange versions [ 'minimatch',
+86 silly addNameRange   [ '0.0.1',
+86 silly addNameRange     '0.0.2',
+86 silly addNameRange     '0.0.4',
+86 silly addNameRange     '0.0.5',
+86 silly addNameRange     '0.1.1',
+86 silly addNameRange     '0.1.2',
+86 silly addNameRange     '0.1.3',
+86 silly addNameRange     '0.1.4',
+86 silly addNameRange     '0.1.5',
+86 silly addNameRange     '0.2.0',
+86 silly addNameRange     '0.2.2',
+86 silly addNameRange     '0.2.3',
+86 silly addNameRange     '0.2.4',
+86 silly addNameRange     '0.2.5',
+86 silly addNameRange     '0.2.6',
+86 silly addNameRange     '0.2.7',
+86 silly addNameRange     '0.2.8',
+86 silly addNameRange     '0.2.9',
+86 silly addNameRange     '0.2.10',
+86 silly addNameRange     '0.2.11',
+86 silly addNameRange     '0.2.12',
+86 silly addNameRange     '0.2.13',
+86 silly addNameRange     '0.2.14',
+86 silly addNameRange     '0.3.0',
+86 silly addNameRange     '0.4.0',
+86 silly addNameRange     '1.0.0',
+86 silly addNameRange     '2.0.0',
+86 silly addNameRange     '2.0.1',
+86 silly addNameRange     '2.0.2',
+86 silly addNameRange     '2.0.3',
+86 silly addNameRange     '2.0.4',
+86 silly addNameRange     '2.0.5',
+86 silly addNameRange     '2.0.6',
+86 silly addNameRange     '2.0.7',
+86 silly addNameRange     '2.0.8',
+86 silly addNameRange     '2.0.9',
+86 silly addNameRange     '2.0.10',
+86 silly addNameRange     '3.0.0',
+86 silly addNameRange     '3.0.2',
+86 silly addNameRange     '3.0.3' ] ]
+87 silly addNamed minimatch@2.0.10
+88 verbose addNamed "2.0.10" is a plain semver version for minimatch
+89 warn deprecated minimatch@2.0.10: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue
+90 silly cache afterAdd minimatch@2.0.10
+91 verbose afterAdd C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache\minimatch\2.0.10\package\package.json not in flight; writing
+92 verbose correctMkdir C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+93 verbose afterAdd C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache\minimatch\2.0.10\package\package.json written
+94 silly fetchNamedPackageData minimatch
+95 silly mapToRegistry name minimatch
+96 silly mapToRegistry using default registry
+97 silly mapToRegistry registry https://registry.npmjs.org/
+98 silly mapToRegistry data Result {
+98 silly mapToRegistry   raw: 'minimatch',
+98 silly mapToRegistry   scope: null,
+98 silly mapToRegistry   escapedName: 'minimatch',
+98 silly mapToRegistry   name: 'minimatch',
+98 silly mapToRegistry   rawSpec: '',
+98 silly mapToRegistry   spec: 'latest',
+98 silly mapToRegistry   type: 'tag' }
+99 silly mapToRegistry uri https://registry.npmjs.org/minimatch
+100 silly resolveWithNewModule minimatch@2.0.10 checking installable status
+101 silly cache add args [ 'minimatch@^2.0.1', null ]
+102 verbose cache add spec minimatch@^2.0.1
+103 silly cache add parsed spec Result {
+103 silly cache add   raw: 'minimatch@^2.0.1',
+103 silly cache add   scope: null,
+103 silly cache add   escapedName: 'minimatch',
+103 silly cache add   name: 'minimatch',
+103 silly cache add   rawSpec: '^2.0.1',
+103 silly cache add   spec: '>=2.0.1 <3.0.0',
+103 silly cache add   type: 'range' }
+104 silly addNamed minimatch@>=2.0.1 <3.0.0
+105 verbose addNamed ">=2.0.1 <3.0.0" is a valid semver range for minimatch
+106 silly addNameRange { name: 'minimatch', range: '>=2.0.1 <3.0.0', hasData: false }
+107 silly mapToRegistry name minimatch
+108 silly mapToRegistry using default registry
+109 silly mapToRegistry registry https://registry.npmjs.org/
+110 silly mapToRegistry data Result {
+110 silly mapToRegistry   raw: 'minimatch',
+110 silly mapToRegistry   scope: null,
+110 silly mapToRegistry   escapedName: 'minimatch',
+110 silly mapToRegistry   name: 'minimatch',
+110 silly mapToRegistry   rawSpec: '',
+110 silly mapToRegistry   spec: 'latest',
+110 silly mapToRegistry   type: 'tag' }
+111 silly mapToRegistry uri https://registry.npmjs.org/minimatch
+112 verbose addNameRange registry:https://registry.npmjs.org/minimatch not in flight; fetching
+113 verbose get https://registry.npmjs.org/minimatch not expired, no request
+114 silly addNameRange number 2 { name: 'minimatch', range: '>=2.0.1 <3.0.0', hasData: true }
+115 silly addNameRange versions [ 'minimatch',
+115 silly addNameRange   [ '0.0.1',
+115 silly addNameRange     '0.0.2',
+115 silly addNameRange     '0.0.4',
+115 silly addNameRange     '0.0.5',
+115 silly addNameRange     '0.1.1',
+115 silly addNameRange     '0.1.2',
+115 silly addNameRange     '0.1.3',
+115 silly addNameRange     '0.1.4',
+115 silly addNameRange     '0.1.5',
+115 silly addNameRange     '0.2.0',
+115 silly addNameRange     '0.2.2',
+115 silly addNameRange     '0.2.3',
+115 silly addNameRange     '0.2.4',
+115 silly addNameRange     '0.2.5',
+115 silly addNameRange     '0.2.6',
+115 silly addNameRange     '0.2.7',
+115 silly addNameRange     '0.2.8',
+115 silly addNameRange     '0.2.9',
+115 silly addNameRange     '0.2.10',
+115 silly addNameRange     '0.2.11',
+115 silly addNameRange     '0.2.12',
+115 silly addNameRange     '0.2.13',
+115 silly addNameRange     '0.2.14',
+115 silly addNameRange     '0.3.0',
+115 silly addNameRange     '0.4.0',
+115 silly addNameRange     '1.0.0',
+115 silly addNameRange     '2.0.0',
+115 silly addNameRange     '2.0.1',
+115 silly addNameRange     '2.0.2',
+115 silly addNameRange     '2.0.3',
+115 silly addNameRange     '2.0.4',
+115 silly addNameRange     '2.0.5',
+115 silly addNameRange     '2.0.6',
+115 silly addNameRange     '2.0.7',
+115 silly addNameRange     '2.0.8',
+115 silly addNameRange     '2.0.9',
+115 silly addNameRange     '2.0.10',
+115 silly addNameRange     '3.0.0',
+115 silly addNameRange     '3.0.2',
+115 silly addNameRange     '3.0.3' ] ]
+116 silly addNamed minimatch@2.0.10
+117 verbose addNamed "2.0.10" is a plain semver version for minimatch
+118 silly cache afterAdd minimatch@2.0.10
+119 verbose afterAdd C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache\minimatch\2.0.10\package\package.json not in flight; writing
+120 verbose correctMkdir C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+121 verbose afterAdd C:\Users\abhijith.cs.ITLINFOSYS\AppData\Roaming\npm-cache\minimatch\2.0.10\package\package.json written
+122 silly fetchNamedPackageData gulp-util
+123 silly mapToRegistry name gulp-util
+124 silly mapToRegistry using default registry
+125 silly mapToRegistry registry https://registry.npmjs.org/
+126 silly mapToRegistry data Result {
+126 silly mapToRegistry   raw: 'gulp-util',
+126 silly mapToRegistry   scope: null,
+126 silly mapToRegistry   escapedName: 'gulp-util',
+126 silly mapToRegistry   name: 'gulp-util',
+126 silly mapToRegistry   rawSpec: '',
+126 silly mapToRegistry   spec: 'latest',
+126 silly mapToRegistry   type: 'tag' }
+127 silly mapToRegistry uri https://registry.npmjs.org/gulp-util
+128 verbose request uri https://registry.npmjs.org/gulp-util
+129 verbose request no auth needed
+130 info attempt registry request try #1 at 3:48:16 PM
+131 http request GET https://registry.npmjs.org/gulp-util
+132 info retry will retry, error on last attempt: Error: getaddrinfo EAI_AGAIN registry.npmjs.org:443
+133 info attempt registry request try #2 at 3:48:27 PM
+134 http request GET https://registry.npmjs.org/gulp-util
+135 info retry will retry, error on last attempt: Error: getaddrinfo EAI_AGAIN registry.npmjs.org:443
+136 info attempt registry request try #3 at 3:49:27 PM
+137 http request GET https://registry.npmjs.org/gulp-util
+138 silly fetchPackageMetaData Error: getaddrinfo EAI_AGAIN registry.npmjs.org:443
+138 silly fetchPackageMetaData     at Object.exports._errnoException (util.js:870:11)
+138 silly fetchPackageMetaData     at errnoException (dns.js:32:15)
+138 silly fetchPackageMetaData     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:78:26)
+138 silly fetchPackageMetaData  error for gulp-util@^3.0.0 { [Error: getaddrinfo EAI_AGAIN registry.npmjs.org:443]
+138 silly fetchPackageMetaData   code: 'EAI_AGAIN',
+138 silly fetchPackageMetaData   errno: 'EAI_AGAIN',
+138 silly fetchPackageMetaData   syscall: 'getaddrinfo',
+138 silly fetchPackageMetaData   hostname: 'registry.npmjs.org',
+138 silly fetchPackageMetaData   host: 'registry.npmjs.org',
+138 silly fetchPackageMetaData   port: 443 }
+139 silly rollbackFailedOptional Starting
+140 silly rollbackFailedOptional Finishing
+141 silly runTopLevelLifecycles Starting
+142 silly runTopLevelLifecycles Finishing
+143 silly install printInstalled
+144 verbose stack Error: getaddrinfo EAI_AGAIN registry.npmjs.org:443
+144 verbose stack     at Object.exports._errnoException (util.js:870:11)
+144 verbose stack     at errnoException (dns.js:32:15)
+144 verbose stack     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:78:26)
+145 verbose cwd D:\Projects\Android\cmcair
+146 error Windows_NT 6.3.9600
+147 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\abhijith.cs.ITLINFOSYS\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "install" "minimatch"
+148 error node v4.4.5
+149 error npm  v3.10.6
+150 error code EAI_AGAIN
+151 error errno EAI_AGAIN
+152 error syscall getaddrinfo
+153 error getaddrinfo EAI_AGAIN registry.npmjs.org:443
+154 error If you need help, you may report this error at:
+154 error     <https://github.com/npm/npm/issues>
+155 verbose exit [ 1, true ]

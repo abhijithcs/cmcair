@@ -10,6 +10,45 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.feedsList= response.data;
         $scope.left = 1;
       });
+    
+    $scope.viewLikes = function(postID) { 
+      $http.get("http://accelerate.net.in/cmcair/apis/viewlikes.php?id="+postID).then(function(likes) {
+        $scope.likeList= likes.data;        
+      });
+
+            var popup = $ionicPopup.show({
+           template: '<ion-list>                                '+
+                     '  <ion-item class="item-text-wrap" ng-repeat="item in likeList"> '+
+                     '    {{item.name}} '+
+                     '  </ion-item>                             '+
+                     '</ion-list>                               ',
+           
+           title: 'People <i class="icon ion-android-favorite"></i> this Post',
+           scope: $scope,
+           buttons: [
+             { text: 'OK' },
+           ]
+         });
+    };
+
+
+
+    $scope.deletePost = function(postID, index) { 
+           var confirmPopup = $ionicPopup.confirm({
+             title: 'Delete Post',
+             template: 'Are you sure you want to delete this post?'
+           });
+
+           confirmPopup.then(function(res) {
+             if(res) {
+                 $http.get("http://accelerate.net.in/cmcair/apis/deletepost.php?id="+postID+"&user="+localStorage.getItem("token"));
+                 $scope.feedsList.splice(index, 1);
+                 //document.getElementById('post_'+postID).style.visibility = "hidden";
+                 
+             }
+           });
+
+    };
 
 
     $scope.likedata = {};
@@ -28,11 +67,13 @@ angular.module('starter.controllers', ['ngCordova'])
               document.getElementById(postID).style.color = "#E90C44";
               var temp = document.getElementById(postID).innerHTML;
               document.getElementById(postID).innerHTML = " "+(Number(temp) + 1) ;
+              document.getElementById(postID).className = "icon ion-android-favorite";
             }
             else{
               document.getElementById(postID).style.color = "#95a5a6";
               var temp = document.getElementById(postID).innerHTML;
               document.getElementById(postID).innerHTML = " "+(Number(temp) - 1) ;
+              document.getElementById(postID).className = "icon ion-android-favorite-outline";
             }
             $scope.liked = !$scope.liked;
           
@@ -138,7 +179,7 @@ setInterval(function(){
 }])
 
 
-.controller('AnnouncementsCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {         
+.controller('AnnouncementsCtrl', ['$scope', '$http', '$rootScope', '$ionicPopup', function($scope, $http, $rootScope, $ionicPopup) {         
 
       $http.get("http://accelerate.net.in/cmcair/apis/announcements.php?value=0&user="+localStorage.getItem("token")).then(function(response) {
         $scope.feedsList= response.data;
@@ -157,7 +198,23 @@ setInterval(function(){
             })
             $rootScope.notificationCount = "";
             
-       })
+       });
+
+          $scope.deleteAnnouncement = function(postID, index) { 
+           var confirmPopup = $ionicPopup.confirm({
+             title: 'Delete Post',
+             template: 'Are you sure you want to delete this post?'
+           });
+
+           confirmPopup.then(function(res) {
+             if(res) {
+                 $http.get("http://accelerate.net.in/cmcair/apis/deleteannouncement.php?id="+postID+"&user="+localStorage.getItem("token"));
+                  $scope.feedsList.splice(index, 1);
+                 //document.getElementById('ann_'+postID).style.visibility = "hidden";                 
+             }
+           });
+
+    };
 
   });
 
