@@ -1,9 +1,34 @@
 <ion-view view-title="Create an Event">
-  <ion-content class="padding">
-<ul class="">
-    <li class="" style="color:#c0392b;">
-    <center>This feature is disabled on App. Please login to www.cmcair.in/admin to create an event.</center>
-    </li>
-</ul>
+  <ion-content class="">
+	<div class="list">
+	   <label class="item item-input item-floating-label">
+	   <span class="input-label">Title</span>
+	   <input type="text" placeholder="Title" ng-model="data.title">
+	   </label>
+
+	   <label class="item item-input item-floating-label">
+	   <span class="input-label">Brief</span>
+	   <textarea type="text" placeholder="Brief" ng-model="data.brief"></textarea> 
+	   </label>
+
+	   <label class="item item-input item-floating-label">
+	   <span class="input-label">Time and Date</span>
+	   <input type="text" placeholder="Time and Date" ng-model="data.time">
+	   </label>
+
+	   <label class="item item-input item-floating-label">
+	   <span class="input-label">Venue</span>
+	   <input type="text" placeholder="Venue" ng-model="data.venue">
+	   </label>
+
+	   <label class="item item-input item-floating-label">
+	   <span class="input-label">Host</span>
+	   <input type="text" placeholder="Host" ng-model="data.host">
+	   </label>	   	   
+
+	   <p style="color: #bdc3c7; padding: 10px; font-size: 11px;">Logon to www.cmcair.in/admin to add Photos.</p>
+	   <p style="color: #e74c3c; padding: 10px;" ng-if="errorFlag">{{errorMsg}}</p>
+	   <button class="button button-block button-calm" ng-click="postEvent()">Create</button>
+	</div>
   </ion-content>
 </ion-view>

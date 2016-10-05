@@ -3,7 +3,7 @@
 
 	<div class="list">
 	   <label class="item item-input item-floating-label">
-	   <span class="input-label"t>Title</span>
+	   <span class="input-label">Title</span>
 	   <input type="text" placeholder="Title" ng-model="data.title">
 	   </label>
 
@@ -11,7 +11,8 @@
 	   <span class="input-label">Content</span>
 	   <textarea type="text" placeholder="Content" ng-model="data.content"></textarea> 
 	   </label>
-	   <p style="color: red;" ng-if="errorFlag">{{errorMsg}}</p>
+	   <p style="color: #bdc3c7; padding: 10px; font-size: 11px;">Logon to www.cmcair.in/admin to add Photos.</p>
+	   <p style="color: #e74c3c; padding: 10px" ng-if="errorFlag">{{errorMsg}}</p>
 	   <button class="button button-block button-calm" ng-click="postTimeline()">Post</button>
 	</div>
 

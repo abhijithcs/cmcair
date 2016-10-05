@@ -394,9 +394,13 @@ setInterval(function(){
   $scope.errorFlag = 0;  
 
   $scope.postTimeline = function() {
-    if(!$scope.data.content || !$scope.data.title){
+    if(!$scope.data.title){
       $scope.errorFlag = 1;
-      $scope.errorMsg = "Title and Content can not be empty.";
+      $scope.errorMsg = "Title can not be empty.";
+    }
+    else if(!$scope.data.content){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Content can not be empty.";
     }
     else if($scope.data.title.length >200){
       $scope.errorFlag = 1;
@@ -407,6 +411,7 @@ setInterval(function(){
       $scope.errorMsg = "Maximum Content length is 2000 characters.";
     }
     else{ //Success Case - accept input.
+
         $http({
           method  : 'POST',
           url     : 'http://accelerate.net.in/cmcair/apis/posttimeline.php',
@@ -423,18 +428,64 @@ setInterval(function(){
     }
   }
 
-  
+}])
 
 
+.controller('PostEventCtrl', ['$scope', '$http', '$state', function($scope, $http, $state){
+
+  $scope.data = {};
+  $scope.data.userID = localStorage.getItem("token");
+  $scope.errorFlag = 0;  
+
+  $scope.postEvent = function() {
+    if(!$scope.data.title){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Title can not be empty.";
+    }
+    else if(!$scope.data.brief){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Brief can not be empty.";
+    }
+    else if(!$scope.data.time){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Time and Date can not be empty.";
+    }    
+    else if(!$scope.data.venue){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Venue can not be empty.";
+    }    
+    else if(!$scope.data.host){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Host can not be empty.";
+    }    
+    else if($scope.data.title.length >200){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Maximum Title length is 200 characters.";
+    }
+    else if($scope.data.brief.length >2000){
+      $scope.errorFlag = 1;
+      $scope.errorMsg = "Maximum Content length is 2000 characters.";
+    }
+    else{ //Success Case - accept input.
+        $http({
+          method  : 'POST',
+          url     : 'http://accelerate.net.in/cmcair/apis/postevent.php',
+          data    : $scope.data, //forms user object
+          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+         })
+          .success(function(data) {
+            if (data.status) {
+              $state.go('tab.events');
+            } else {
+              //Check for invalid inputs.
+            }
+          });
+    }
+  }
 
 }])
 
-.controller('PostEventCtrl', ['$scope', '$http', function($scope, $http){
 
-      // $http.get("http://accelerate.net.in/cmcair/apis/secretaries.php").then(function(response) {
-      //   $scope.userlist= response.data;
-      // });
-}])
 .controller('PostAnnouncementCtrl', ['$scope', '$http', '$state', function($scope, $http, $state){
   $scope.data = {};
   $scope.data.userID = localStorage.getItem("token");
