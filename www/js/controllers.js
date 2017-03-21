@@ -304,7 +304,9 @@ setInterval(function(){
 
 
 
-.controller('EventsCtrl', ['$scope', '$http', function($scope, $http) {
+.controller('EventsCtrl', ['$scope', '$http', '$ionicPopup', function($scope, $http, $ionicPopup) {
+
+  if(localStorage.getItem("postAdminFlag") == 1){$scope.adminFlag=true;} else {$scope.adminFlag=false;}
 
       $http.get("http://cmcair.in/apis/events.php?value=0").then(function(response) {
         $scope.feedsList= response.data;
@@ -330,6 +332,22 @@ setInterval(function(){
      });
     };
 
+    $scope.deleteEvent = function(eventID, index) {
+     var confirmPopup = $ionicPopup.confirm({
+       title: 'Delete Event',
+       template: 'Are you sure you want to delete this event?'
+     });
+
+     confirmPopup.then(function(res) {
+       if(res) {
+           $http.get("http://cmcair.in/apis/deleteevent.php?id="+eventID);
+            $scope.feedsList.splice(index, 1);
+       }
+     });
+   };
+
+
+
   $scope.loadMore = function() {
     $http.get('http://cmcair.in/apis/events.php?value='+$scope.limiter).then(function(items) {
       if(items.data.length == 0){
@@ -348,6 +366,7 @@ setInterval(function(){
 
 .controller('SettingsCtrl', ['$scope', '$http', function($scope, $http) {
   if(localStorage.getItem("postFlag") == 1){$scope.flag=true;} else {$scope.flag=false;}
+  if(localStorage.getItem("postAdminFlag") == 1){$scope.adminFlag=true;} else {$scope.adminFlag=false;}
 
 
       $scope.user_mob = localStorage.getItem("token");
@@ -360,6 +379,7 @@ setInterval(function(){
       $scope.logoutMe = function() {
         localStorage.setItem("token", "LOGOUT");
         localStorage.setItem("postFlag", "");
+        localStorage.setItem("postAdminFlag", "");
         localStorage.setItem("notification", "");
         ionic.Platform.exitApp();
       };
@@ -387,23 +407,37 @@ setInterval(function(){
 
 }])
 
-.controller('PostTimelineCtrl', ['$scope', '$http', '$state', '$cordovaImagePicker', function($scope, $http, $state, $cordovaImagePicker){
+.controller('PostTimelineCtrl', ['$scope', '$http', '$state', '$cordovaImagePicker', '$cordovaFileTransfer', '$ionicLoading', function($scope, $http, $state, $cordovaImagePicker, $cordovaFileTransfer, $ionicLoading){
 
-  var options = {
-   maximumImagesCount: 10,
-   width: 800,
-   height: 800,
-   quality: 80
-  };
 
-  $cordovaImagePicker.getPictures(options)
-    .then(function (results) {
-      for (var i = 0; i < results.length; i++) {
-        console.log('Image URI: ' + results[i]);
-      }
+if(localStorage.getItem("postAdminFlag") == 1){$scope.adminFlag=true;} else {$scope.adminFlag=false;}
+
+
+  //Upload Images - Select the image first.
+  $scope.isFotoAttached = false;
+  $scope.imageURI = "";
+  $scope.pickImageFromGallery = function() {
+    var options = {
+        maximumImagesCount: 1,
+        width: 800,
+        height: 800,
+        quality: 90
+    };
+
+    $cordovaImagePicker.getPictures(options).then(function (results) {
+        // Loop through acquired images
+        for (var i = 0; i < results.length; i++) {
+            $scope.imageURI = results[i];
+            $scope.isFotoAttached = true;
+        }
+
     }, function(error) {
-      // error getting photos
+        $scope.isFotoAttached = false;
+        alert('Error: ' + JSON.stringify(error));
     });
+};
+
+
 
   $scope.data = {};
   $scope.data.userID = localStorage.getItem("token");
@@ -436,7 +470,30 @@ setInterval(function(){
          })
           .success(function(data) {
             if (data.status) {
-              $state.go('tab.timeline');
+
+                if($scope.isFotoAttached){
+                  var server = "http://cmcair.in/apis/uploadimage.php";
+                  var options = {};
+                  options.fileName = data.code+".jpg";
+                  options.chunkedMode = false;
+
+                  $cordovaFileTransfer.upload(server, $scope.imageURI, options)
+                    .then(function(result) {
+                      $ionicLoading.hide();
+                      $state.go('tab.timeline');
+                    }, function(err) {
+                      alert('Warning! Image was not uploaded. Upload only JPG Images.')
+                    }, function (progress) {
+                      $ionicLoading.show({
+                        template: '<ion-spinner></ion-spinner>'
+                      });
+                  });
+                }
+                else{
+                  $ionicLoading.hide();
+                  $state.go('tab.timeline');
+                }
+
             } else {
               //Check for invalid inputs.
             }
@@ -449,9 +506,14 @@ setInterval(function(){
 
 .controller('PostEventCtrl', ['$scope', '$http', '$state', function($scope, $http, $state){
 
+
+
   $scope.data = {};
   $scope.data.userID = localStorage.getItem("token");
   $scope.errorFlag = 0;
+
+  $scope.data.host = "College Union";
+
 
   $scope.postEvent = function() {
     if(!$scope.data.title){
@@ -548,13 +610,19 @@ setInterval(function(){
 
 }])
 
-.controller('LoginCtrl',['$scope', '$state','$http', '$ionicPopup',  function($scope, $state, $http, $ionicPopup){
+.controller('LoginCtrl',['$scope', '$state','$http', '$ionicPopup', '$ionicLoading',  function($scope, $state, $http, $ionicPopup, $ionicLoading){
+
+  $ionicLoading.show({
+    template: '<ion-spinner></ion-spinner>'
+  });
 
   //Already logged in case.
-  if(localStorage.getItem("token") != null && localStorage.getItem("token") != "LOGOUT")
+  if(localStorage.getItem("token") != null && localStorage.getItem("token") != "LOGOUT"){
+    $ionicLoading.hide();
     $state.go('tab.timeline')
-
-
+  }
+  else{
+    $ionicLoading.hide();
 
   $scope.login = function(mobile){
 
@@ -571,6 +639,7 @@ setInterval(function(){
         $scope.otp_original = response.data.code;
         $scope.validity = response.data.valid;
         if(response.data.postFlag){$scope.userPostAccess = 1;}else{$scope.userPostAccess = 0;}
+        if(response.data.isAdmin){$scope.adminPostAccess = 1;}else{$scope.adminPostAccess = 0;}
 
 
           if($scope.validity){ //Valid, Registered User.
@@ -578,7 +647,7 @@ setInterval(function(){
                   //OTP Validation happens here.
                     $scope.userdata = {};
                     $ionicPopup.show({
-                      template: '<input type="number" ng-model="userdata.otp">',
+                      template: '<input type="tel" ng-model="userdata.otp">',
                     title: "One Time Password",
                     subTitle: "Please enter the OTP received on your registered mobile number "+mobile,
                     scope: $scope,
@@ -599,6 +668,7 @@ setInterval(function(){
                               $scope.token = mobile;
                               localStorage.setItem("token", $scope.token);
                               localStorage.setItem("postFlag", $scope.userPostAccess);
+                              localStorage.setItem("postAdminFlag", $scope.adminPostAccess);
                               localStorage.setItem("notification", 1);
 
                               $http.get('http://cmcair.in/apis/usersignin.php?mobile='+mobile);
@@ -632,6 +702,8 @@ setInterval(function(){
         });
       }
   };
+
+} //End of else.
 
 
 }]);
