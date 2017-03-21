@@ -10,11 +10,13 @@
   </div>
 
   <div class="item item-body">
-    <img class="full-image" ng-if="feed.flag" src="http://accelerate.net.in/cmcair/images/events/{{feed.eventID}}.jpg">
+    <img class="full-image" ng-if="feed.flag" src="http://cmcair.in/images/events/{{feed.eventID}}.jpg">
     <p>{{feed.brief}}</p>
   </div>
   <div class="item item-divider item-text-wrap">
-      <p style="font-size: 12px; color: #95a5a6">An event hosted by <strong>{{feed.host}}</strong><p>
+      <p style="font-size: 12px; color: #95a5a6">An event hosted by <strong>{{feed.host}}</strong>
+      <i ng-if="adminFlag" on-hold="deleteEvent(feed.eventID, $index)" class="icon ion-trash-a pull-right" on-tap="deleteEvent(feed.eventID, $index)" id="{{feed.eventID}}" style ="color:#e74c3c; float: right; font-size: 21px;"></i>
+      </p>
   </div>
 
 </div>
@@ -22,7 +24,7 @@
   <ion-infinite-scroll
         immediate-check="false"
         ng-if="left"
-    on-infinite="loadMore()" 
+    on-infinite="loadMore()"
     distance="1%">
   </ion-infinite-scroll>
   </ion-content>

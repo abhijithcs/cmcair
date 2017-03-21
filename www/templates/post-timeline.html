@@ -9,11 +9,19 @@
 
 	   <label class="item item-input item-floating-label">
 	   <span class="input-label">Content</span>
-	   <textarea type="text" placeholder="Content" ng-model="data.content"></textarea> 
+	   <textarea type="text" placeholder="Content" ng-model="data.content"></textarea>
 	   </label>
-	   <p style="color: #bdc3c7; padding: 10px; font-size: 11px;">Logon to www.cmcair.in/admin to add Photos.</p>
+
 	   <p style="color: #e74c3c; padding: 10px" ng-if="errorFlag">{{errorMsg}}</p>
+     <div ng-if="adminFlag">
+       <button ng-if="isFotoAttached" class="button button-block button-balanced" ng-click="pickImageFromGallery()">Photo Attached</button>
+       <button ng-if="!isFotoAttached" class="button button-block button-stable" ng-click="pickImageFromGallery()">Attach Photo</button>
+     </div>
 	   <button class="button button-block button-calm" ng-click="postTimeline()">Post</button>
+
+
+
+
 	</div>
 
   </ion-content>

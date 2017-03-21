@@ -2,32 +2,40 @@
   <ion-content class="" >
   <div class="list">
 
-    <div ng-if="flag" class="item item-divider"> 
-          Admin Features
+    <div ng-if="flag">
+      <div ng-if="adminFlag" class="item item-divider">
+            Admin Features
+      </div>
+      <div ng-if="!adminFlag" class="item item-divider">
+            Make a Post
+            <p style="color: #bdc3c7"></p>
+      </div>
+
+      <a class="item item-icon-left" href="#/tab/post-timeline">
+        <i class="icon ion-ios-bookmarks-outline"></i>
+        Post on Timeline
+      </a>
+
+      <a ng-if="adminFlag" class="item item-icon-left" href="#/tab/post-event">
+        <i class="icon ion-ios-calendar-outline"></i>
+        Create an Event
+      </a>
+
+      <a ng-if="adminFlag" class="item item-icon-left" href="#/tab/post-announcement">
+        <i class="icon ion-ios-bell-outline"></i>
+        Make an Announcement
+      </a>
+
     </div>
-    <div ng-if="!flag" class="item item-divider"> 
-          Make a Post
-          <p style="color: #bdc3c7"></p>
-    </div>    
-    <a class="item item-icon-left" href="#/tab/post-timeline">
-      <i class="icon ion-ios-bookmarks-outline"></i>
-      Post on Timeline
-    </a>
-
-    <a ng-if="flag" class="item item-icon-left" href="#/tab/post-event">
-      <i class="icon ion-ios-calendar-outline"></i>
-      Create an Event
-    </a>
-
-    <a ng-if="flag" class="item item-icon-left" href="#/tab/post-announcement">
-      <i class="icon ion-ios-bell-outline"></i>
-      Make an Announcement
-    </a>
+    <div ng-if="!flag" class="padding" style="background: #e74c3c">
+      <p style="color: #FFF; font-size: 12px; font-weight: 300;">You are blocked from making posts on CMC Air. Drop a mail to anasjafry@accelerate.net.in if you feel it is by mistake.</p>
+    </div>
 
 
-    <div class="item item-divider"> 
+
+    <div class="item item-divider">
           User Information
-    </div>    
+    </div>
     <li class="item item-icon-left">
       <i class="icon ion-person"></i>
       {{userdata.name}}
@@ -35,16 +43,16 @@
     <li class="item item-icon-left" style="color: #c0392b;">
       <i class="icon"><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner></i>
       {{user_mob}}
-    </li>  
+    </li>
     <li class="item item-icon-left item-text-wrap">
       <i class="icon ion-ios-loop"></i>
       Logged in since {{userdata.lastlogin}}
-    </li>      
-    <div class="item item-divider"> 
+    </li>
+    <div class="item item-divider">
           Actions
-    </div> 
+    </div>
 
-    <ion-toggle 
+    <ion-toggle
       ng-model="pushNotification.checked"
       ng-change="pushNotificationChange()"
       ng-disabled="1">
@@ -54,12 +62,12 @@
     <li class="item item-icon-left" ng-click="logoutMe()">
       <i class="icon ion-log-out"></i>
       Logout
-    </li>    
+    </li>
 
     <center>
     <a href="#" style="text-decoration: none;" onclick="window.open('http://www.accelerate.net.in', '_system', 'location=yes'); return false;"><img src="img/accelerate_logo.png" width="60px" style="padding-top: 30px; opacity: 0.1;">
-    <p style="color: #bdc3c7; font-size: 10px;">Developed by Accelerate</p></a><p style="margin-top:-10px; color:#505050; font-size: 10px;">Made with <i style="color: #F7384F; padding-top: 5px;" class="icon ion-heart"></i> by <a style="text-decoration: none;" onclick="window.open('https://www.facebook.com/abhijithcs1993', '_system', 'location=yes'); return false;" href="#">Abhijith C S</a> and <a style="text-decoration: none;" onclick="window.open('https://www.facebook.com/anas.jafry', '_system', 'location=yes'); return false;" href="">Anas Jafry</a></p>
-    </center>    
+    </a><p style="margin-top:10px; color:#505050; font-size: 10px;">Made with <i style="color: #F7384F; padding-top: 5px;" class="icon ion-heart"></i> by <a style="text-decoration: none;" onclick="window.open('https://www.accelerate.net.in', '_system', 'location=yes'); return false;" href="#">Accelerate</a></p>
+    </center>
 
   </div>
 

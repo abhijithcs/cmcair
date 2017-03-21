@@ -10,14 +10,14 @@
       <div class="card neatBorder hidden"  style="text-decoration: none;" id="post_{{feed.postID}}"> <!-- href="#/tab/posts/{{feed.postID}}" -->
 
         <div class="item item-avatar item-text-wrap">             
-          <img ng-if="feed.userflag" src="http://accelerate.net.in/cmcair/images/people/{{feed.userID}}.jpg">   
+          <img ng-if="feed.userflag" src="http://cmcair.in/images/people/{{feed.userID}}.jpg">   
           <img ng-if="!feed.userflag" src="img/default.jpg">            
           <p>{{feed.userName}}</p>
           <p style="font-size: 12px;"><i class="icon ion-ios-clock-outline"></i> {{feed.time}}</p>                    
         </div>
 
         <div class="item item-body">
-          <img class="full-image" ng-if="feed.flag" src="http://accelerate.net.in/cmcair/images/posts/{{feed.postID}}.jpg">
+          <img class="full-image" ng-if="feed.flag" src="http://cmcair.in/images/posts/{{feed.postID}}.jpg">
           <h2 style="color: #2c3e50; font-weight: bold;">{{feed.title}}</h2>
           <p>{{feed.content}}</p>         
           <i ng-if="!feed.likeFlag" on-hold="viewLikes(feed.postID)" class="icon ion-android-favorite-outline" on-tap="liker(feed.postID)" id="{{feed.postID}}" style ="color:#95a5a6;"> {{feed.likes}}</i>        

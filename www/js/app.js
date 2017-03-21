@@ -8,7 +8,7 @@
 angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform, $ionicPopup) {
-  $ionicPlatform.ready(function() {  	
+  $ionicPlatform.ready(function() {
     //Exit app if not connected to Internet
     if(window.Connection) {
                 if(navigator.connection.type == Connection.NONE) {
@@ -21,6 +21,16 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
                     });
                 }
     }
+
+    //Push Notifications
+    var notificationOpenedCallback = function(jsonData) {
+      console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+    };
+
+    window.plugins.OneSignal
+    .startInit("94bfce07-9196-4248-9f32-6c6ef1b8740f")
+    .handleNotificationOpened(notificationOpenedCallback)
+    .endInit();
 
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -100,7 +110,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
         controller: 'PostAnnouncementCtrl'
       }
     }
-  })   
+  })
 
   .state('tab.events', {
     url: '/events',
@@ -110,7 +120,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
         controller: 'EventsCtrl'
       }
     }
-  })  
+  })
 
   .state('tab.announcements', {
     url: '/announcements',
@@ -120,7 +130,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
         controller: 'AnnouncementsCtrl'
       }
     }
-  }) 
+  })
 
  .state('login', {
       url: '/login',
@@ -135,7 +145,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
         templateUrl: 'templates/tab-infinity.html'
       }
     }
-  })   
+  })
   .state('tab.infinity-secretary', {
     url: '/infinity-secretary',
     views: {
@@ -185,4 +195,3 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
   $urlRouterProvider.otherwise('/login');
 
 });
-
