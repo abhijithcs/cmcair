@@ -46,7 +46,13 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+
+
+
+$ionicConfigProvider.tabs.position('bottom');
+
+
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn infinity here: https://github.com/angular-ui/ui-router
@@ -61,6 +67,174 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
     controller: 'tabNotificationCtrl',
     templateUrl: 'templates/tabs.html'
   })
+
+
+
+    .state('main', {
+        url: '/main',
+        abstract: true,
+        templateUrl: 'templates/main.html'
+    })
+
+    .state('main.app', {
+        url: '/app',
+        abstract: true,
+        views: {
+            'main-view@main': {
+                templateUrl: 'templates/main-blog-app.html',
+                controller: 'AppCtrl'
+            }
+        }
+    })
+
+
+
+    .state('main.app.tiles', {
+        url: '/tiles',
+        views: {
+            'main-view@main': {
+                templateUrl: 'templates/blog-tiles.html',
+                controller: 'tilesCtrl'
+            }
+        }
+    })
+
+
+
+    .state('main.mycmc-events', {
+        url: '/mycmc-events',
+        abstract: true,
+        views: {
+            'main-view@main': {
+                templateUrl: 'templates/mycmc-app-events.html',
+                controller: 'AppCtrl'
+            }
+        }
+    })
+
+
+    .state('main.mycmc-events.events', {
+        url: '/events',
+        views: {
+            'mycmc-events@main.mycmc-events': {
+                templateUrl: 'templates/tab-events.html',
+                controller: 'EventsCtrl'
+            }
+        }
+    })
+
+
+
+
+    .state('main.mycmc-announcements', {
+        url: '/mycmc-announcements',
+        abstract: true,
+        views: {
+            'main-view@main': {
+                templateUrl: 'templates/mycmc-app-announcements.html',
+                controller: 'AppCtrl'
+            }
+        }
+    })
+
+
+    .state('main.mycmc-announcements.announcements', {
+        url: '/announcements',
+        views: {
+            'mycmc-announcements@main.mycmc-announcements': {
+                templateUrl: 'templates/tab-announcements.html',
+                controller: 'AnnouncementsCtrl'
+            }
+        }
+    })
+
+
+
+    .state('main.mycmc-union', {
+        url: '/mycmc-union',
+        abstract: true,
+        views: {
+            'main-view@main': {
+                templateUrl: 'templates/mycmc-app-union.html',
+                controller: 'AppCtrl'
+            }
+        }
+    })
+
+
+    .state('main.mycmc-union.union', {
+        url: '/union',
+        views: {
+            'mycmc-union@main.mycmc-union': {
+                templateUrl: 'templates/tab-union.html',
+                controller: 'unionCtrl'
+            }
+        }
+    })
+
+
+
+
+
+
+  .state('tab.infinity', {
+    url: '/infinity',
+    views: {
+      'tab-infinity': {
+        templateUrl: 'templates/tab-infinity.html'
+      }
+    }
+  })
+
+  .state('tab.infinity-secretary', {
+    url: '/infinity-secretary',
+    views: {
+      'tab-infinity': {
+        templateUrl: 'templates/infinity-secretary.html',
+        controller: 'InfinitySectretaryCtrl'
+      }
+    }
+  })
+  .state('tab.infinity-head', {
+    url: '/infinity-head',
+    views: {
+      'tab-infinity': {
+        templateUrl: 'templates/infinity-head.html',
+        controller: 'InfinityHeadCtrl'
+      }
+    }
+  })
+  .state('tab.infinity-services', {
+    url: '/infinity-services',
+    views: {
+      'tab-infinity': {
+        templateUrl: 'templates/infinity-services.html',
+        controller: 'InfinityServiceCtrl'
+      }
+    }
+  })
+  .state('tab.infinity-shop', {
+    url: '/infinity-shop',
+    views: {
+      'tab-infinity': {
+        templateUrl: 'templates/infinity-shop.html',
+        controller: 'InfinityShopCtrl'
+      }
+    }
+  })
+  .state('tab.infinity-emergency', {
+    url: '/infinity-emergency',
+    views: {
+      'tab-infinity': {
+        templateUrl: 'templates/infinity-emergency.html',
+        controller: 'InfinityEmergencyCtrl'
+      }
+    }
+  })
+
+
+
+
 
   // Each tab has its own nav history stack:
 
@@ -137,60 +311,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       templateUrl: 'templates/login.html',
       controller: 'LoginCtrl'
   })
-
-  .state('tab.infinity', {
-    url: '/infinity',
-    views: {
-      'tab-infinity': {
-        templateUrl: 'templates/tab-infinity.html'
-      }
-    }
-  })
-  .state('tab.infinity-secretary', {
-    url: '/infinity-secretary',
-    views: {
-      'tab-infinity': {
-        templateUrl: 'templates/infinity-secretary.html',
-        controller: 'InfinitySectretaryCtrl'
-      }
-    }
-  })
-  .state('tab.infinity-head', {
-    url: '/infinity-head',
-    views: {
-      'tab-infinity': {
-        templateUrl: 'templates/infinity-head.html',
-        controller: 'InfinityHeadCtrl'
-      }
-    }
-  })
-  .state('tab.infinity-services', {
-    url: '/infinity-services',
-    views: {
-      'tab-infinity': {
-        templateUrl: 'templates/infinity-services.html',
-        controller: 'InfinityServiceCtrl'
-      }
-    }
-  })
-  .state('tab.infinity-shop', {
-    url: '/infinity-shop',
-    views: {
-      'tab-infinity': {
-        templateUrl: 'templates/infinity-shop.html',
-        controller: 'InfinityShopCtrl'
-      }
-    }
-  })
-  .state('tab.infinity-emergency', {
-    url: '/infinity-emergency',
-    views: {
-      'tab-infinity': {
-        templateUrl: 'templates/infinity-emergency.html',
-        controller: 'InfinityEmergencyCtrl'
-      }
-    }
-  });
+;
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
 

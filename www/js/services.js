@@ -1,5 +1,19 @@
 angular.module('starter.services', [])
 
+.directive('onErrorSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        if (attrs.src != attrs.onErrorSrc) {
+          attrs.$set('src', attrs.onErrorSrc);
+        }
+      });
+    }
+  }
+})
+
+
+
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 

@@ -4,3 +4,8 @@
 node_modules/
 platforms/
 plugins/
+
+.DS_Store
+package-lock.json
+www/.DS_Store
+www/img/.DS_Store

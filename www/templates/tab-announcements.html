@@ -1,4 +1,23 @@
-<ion-view view-title="Announcements" style="background: #ecf0f1">
+<ion-view view-title="Announcements" style="background: #ecf0f1" hide-nav-bar="true">
+
+      <ion-header-bar class="bar-positive">
+         <div class="buttons" style="position: absolute; top: 5px; left: 5px; bottom: 5px; width: 100%">
+
+            <button class="button button-clear" style="text-align: left; margin-left: 10px; font-weight: 500; color: #FFF; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size: 18px;">
+             Announcements
+            </button>  
+
+            <button class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="goToTiles()">
+              <i class="icon ion-arrow-return-left"></i> 
+            </button>  
+
+
+         </div>
+
+      </ion-header-bar>
+
+
+
   <ion-content class="padding">
 
   <button ng-if="tableMetaData.flag" class="button button-block button-energized" style="background: #2c3e50;color: #f39c12">
@@ -19,8 +38,35 @@
     on-refresh="doRefresh()">
   </ion-refresher>
 
+
+
+
+
+
+
+<!-- Loader Dummy Tiles -->
+<div ng-if="!isRenderLoaded && !renderFailed">
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+</div>
+
+<div ng-if="renderFailed" style="padding: 40px 20px 20px 20px;">
+  <center>
+    <img src="img/error_icon.png">
+    <p style="color: #e88f8f; margin: 10px; font-size: 15px;">Unable to fetch data. Try again.</p>
+  </center>
+</div>
+
+
     <ion-list ng-repeat="feed in feedsList track by $index">
-      <ion-item class="card neatBorder" id="ann_{{feed.postID}}">
+      <ion-item class="card neatBorder" id="ann_{{feed.postID}}" style="margin: 10px 0 0 0">
 
 
         <div class="item item-body">
