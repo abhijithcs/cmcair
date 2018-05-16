@@ -1,33 +1,52 @@
-<ion-view view-title="Create an Event">
-  <ion-content class="">
+<ion-view view-title="Create an Event" hide-nav-bar="true">
+
+      <ion-header-bar class="bar-positive">
+         <div class="buttons" style="position: absolute; top: 5px; left: 5px; bottom: 5px; width: 100%">
+
+            <button class="button button-clear" style="text-align: left; margin-left: 10px; font-weight: 500; color: #FFF; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size: 18px;">
+             Create an Event
+            </button>  
+
+            <button class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="goToAccount()">
+              <i class="icon ion-ios-arrow-back"></i> 
+            </button>  
+
+
+         </div>
+
+      </ion-header-bar>
+
+
+  <ion-content class="" style="padding: 10px">
 	<div class="list">
-	   <label class="item item-input item-floating-label">
-	   <span class="input-label">Title</span>
-	   <input type="text" placeholder="Title" ng-model="data.title">
+
+	   <label class="item item-input item-floating-label" style="border: none; padding: 0; margin:0;">
+	   <span class="input-label" style="padding-left: 5px; color: #4bc2f4">Event Title</span>
+	   <input type="text" style="border: none; border-bottom: 1px solid #f9f9f9; padding: 6px; font-size: 21px; font-weight: bold; color: #50bab1" placeholder="Event Title" ng-model="data.title">
 	   </label>
 
-	   <label class="item item-input item-floating-label">
-	   <span class="input-label">Brief</span>
-	   <textarea type="text" placeholder="Brief" ng-model="data.brief"></textarea>
+	   <label class="item item-input item-floating-label" style="padding: 5px 10px; border-right: 0; border-left: 0;">
+	   <span class="input-label" style="color: #4bc2f4">Brief</span>
+	   <textarea type="text" rows="6" placeholder="What is this Event about? Who is gathering? Brief out here." ng-model="data.brief"></textarea>
 	   </label>
 
-	   <label class="item item-input item-floating-label">
-	   <span class="input-label">Time and Date</span>
+	   <label class="item item-input item-floating-label" style="padding: 5px 10px; border-right: 0; border-left: 0;">
+	   <span class="input-label" style="color: #4bc2f4">Time and Date</span>
 	   <input type="text" placeholder="09:00 PM, 4th December, 2017" ng-model="data.time">
 	   </label>
 
-	   <label class="item item-input item-floating-label">
-	   <span class="input-label">Venue</span>
-	   <input type="text" placeholder="Venue" ng-model="data.venue">
+	   <label class="item item-input item-floating-label" style="padding: 5px 10px; border-right: 0; border-left: 0;">
+	   <span class="input-label" style="color: #4bc2f4">Venue</span>
+	   <input type="text" placeholder="Where is it happening?" ng-model="data.venue">
 	   </label>
 
-	   <label class="item item-input item-floating-label">
-	   <span class="input-label">Host</span>
-	   <input type="text" placeholder="Host" ng-model="data.host">
+	   <label class="item item-input item-floating-label" style="padding: 5px 10px; border-right: 0; border-left: 0;">
+	   <span class="input-label" style="color: #4bc2f4">Host</span>
+	   <input type="text" placeholder="Who is Hosting it?" ng-model="data.host">
 	   </label>
 
-	   <p style="color: #bdc3c7; padding: 10px; font-size: 11px;">Logon to www.cmcair.in/admin to add Photos.</p>
-	   <p style="color: #e74c3c; padding: 10px;" ng-if="errorFlag">{{errorMsg}}</p>
+	   <p style="color: #bdc3c7; padding: 10px 5px; font-size: 11px;">Logon to www.cmcair.in/admin to add Photos.</p>
+	   <p style="color: #e74c3c; padding: 10px 5px;" ng-if="errorFlag">{{errorMsg}}</p>
 	   <button class="button button-block button-calm" ng-click="postEvent()">Create</button>
 	</div>
   </ion-content>

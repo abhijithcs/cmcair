@@ -1,26 +1,40 @@
-<ion-view view-title="Post on Timeline">
-  <ion-content class="" >
+<ion-view view-title="Post on Timeline" hide-nav-bar="true">
+
+      <ion-header-bar class="bar-positive">
+         <div class="buttons" style="position: absolute; top: 5px; left: 5px; bottom: 5px; width: 100%">
+
+            <button class="button button-clear" style="text-align: left; margin-left: 10px; font-weight: 500; color: #FFF; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size: 18px;">
+             Post on Timeline
+            </button>  
+
+            <button class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="goToAccount()">
+              <i class="icon ion-ios-arrow-back"></i> 
+            </button>  
+
+
+         </div>
+
+      </ion-header-bar>
+
+  <ion-content class="" style="padding: 10px">
 
 	<div class="list">
-	   <label class="item item-input item-floating-label">
-	   <span class="input-label">Title</span>
-	   <input type="text" placeholder="Title" ng-model="data.title">
+	   <label class="item item-input item-floating-label" style="border: none; padding: 0; margin:0;">
+	   <span class="input-label" style="padding-left: 5px; color: #cad2d6">Title</span>
+	   <input type="text" style="border: none; border-bottom: 1px solid #f9f9f9; padding: 6px; font-size: 21px; font-weight: bold; color: #4bc2f4" placeholder="Title" ng-model="data.title">
 	   </label>
 
-	   <label class="item item-input item-floating-label">
-	   <span class="input-label">Content</span>
-	   <textarea type="text" placeholder="Content" ng-model="data.content"></textarea>
+	   <label class="item item-input item-floating-label" style="border: none; padding: 0; margin:0;">
+	   <span class="input-label" style="padding-left: 5px; color: #cad2d6">Post Content</span>
+	   	<textarea style="border: none; border: 1px solid #f9f9f9; padding: 10px; margin-top: 5px" type="text" placeholder="Write something here." rows="6" ng-model="data.content"></textarea>
 	   </label>
 
-	   <p style="color: #e74c3c; padding: 10px" ng-if="errorFlag">{{errorMsg}}</p>
+	   <p style="color: #e74c3c; padding: 10px 5px" ng-if="errorFlag">{{errorMsg}}</p>
      <div ng-if="adminFlag">
        <button ng-if="isFotoAttached" class="button button-block button-balanced" ng-click="pickImageFromGallery()">Photo Attached</button>
        <button ng-if="!isFotoAttached" class="button button-block button-stable" ng-click="pickImageFromGallery()">Attach Photo</button>
      </div>
 	   <button class="button button-block button-calm" ng-click="postTimeline()">Post</button>
-
-
-
 
 	</div>
 

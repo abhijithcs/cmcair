@@ -1,0 +1,75 @@
+<ion-view class="login-view auth-view" cache-view="false" hide-nav-bar="true">
+  <ion-content has-bouncing="false" style="background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);">
+    <div class="row form-row" style="padding-top: 40px">
+      <div class="col">
+        <form name="login_form" class="form-container" style="margin: 15px" novalidate>
+          <center><img src="./img/logo_big.png" width="50%"></center>
+
+          <div class="row">
+            <div class="tileBox" ng-click="openPage('EVENTS')">
+              <tag> 
+                <span style="display: block; font-size: 42px"><i class="icon ion-calendar"></i></span>
+                <span style="line-height: 26px; display: block">Events</span>
+              </tag>
+            </div>
+
+            <div class="tileBox" ng-click="openPage('ANNOUNCEMENTS')">
+              <tag>
+                <span style="display: block; font-size: 42px"><i class="icon ion-mic-c"></i></span>
+                <span style="line-height: 26px; display: block">Announcements</span>
+              </tag>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="tileBox" ng-click="openPage('BLOGS')">
+              <tag>
+                <span style="display: block; font-size: 42px"><i class="icon ion-edit"></i></span>
+                <span style="line-height: 26px; display: block">Blogs</span>
+              </tag>
+            </div>
+
+            <div class="tileBox" ng-click="openPage('UNION')">
+              <tag>
+                <span style="display: block; font-size: 42px"><i class="icon ion-person-stalker"></i></span>
+                <span style="line-height: 26px; display: block">College Union</span>
+              </tag>
+            </div> 
+
+          </div>
+
+
+          <div class="row">
+            <div class="tileBox" ng-click="openPage('DIRECTORY')">
+              <tag>
+                <span style="display: block; font-size: 42px"><i class="icon ion-medkit"></i></span>
+                <span style="line-height: 26px; display: block">Directory</span>
+              </tag>
+            </div>
+
+            <div class="tileBox" ng-click="openPage('ACADS')">
+              <tag>
+                <span style="display: block; font-size: 42px"><i class="icon ion-university"></i></span>
+                <span style="line-height: 26px; display: block">Target PG
+                  <tag style="margin-top: -10px; display: block; position: fixed; font-size: 10px; color: #2e5e71;">by Dr Bhatia</tag>
+                </span>
+              </tag>
+            </div>           
+          </div>
+
+
+          <div class="row">
+            <button class="button button-small button-clear" style="font-size: 13px; margin-top: 10px; width: 100%; color: #d1f5fb; height: 50px;" ng-click="goToFeed()">Back</button>  
+          </div>
+
+
+        </form>
+
+      </div>
+    </div>
+
+
+  </ion-content>
+          
+</ion-view>

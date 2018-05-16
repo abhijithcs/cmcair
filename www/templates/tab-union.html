@@ -1,5 +1,22 @@
-<ion-view view-title="Feeds" style="background: #ecf0f1;">
+<ion-view view-title="Union Members" style="background: #ecf0f1;" hide-nav-bar="true">
+
+      <ion-header-bar class="bar-positive">
+         <div class="buttons" style="position: absolute; top: 5px; left: 5px; bottom: 5px; width: 100%">
+
+            <button class="button button-clear" style="text-align: left; margin-left: 10px; font-weight: 500; color: #FFF; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size: 18px;">
+             The College Union
+            </button>  
+
+            <button class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="goToTiles()">
+              <i class="icon ion-arrow-return-left"></i> 
+            </button>  
+
+
+         </div>
+
+      </ion-header-bar>
   <ion-content class="padding">
+
 
   <ion-refresher
     on-refresh="doRefresh()">
@@ -29,42 +46,29 @@
 </div>
 
 
+	<h1 ng-if="userlist.length > 1" style="font-weight: 300; font-size: 32px; color: rgb(237, 78, 139); border-bottom: 1px solid rgb(238, 97, 102); margin-top: 10px">Union Members</h1>
+
+	<div class="list" ng-repeat="user in userlist" style="margin-bottom: 5px">
+	    <a class="item item-thumbnail-left eventHead1" href="tel:{{user.userID}}">
+	      <img src="http://cmcair.in/images/people/{{user.userID}}.jpg" on-error-src="../img/default-person.png">
+	      <h2 style="color: #FFF"><strong>{{user.userName}}</strong></h2>
+	      <p style="color: #8a1d3f">{{user.userBatch}}</p>
+	      <p style="color: #8a1d3f">{{user.userID}}</p>
+	    </a>
+	</div>
 
 
+	<h1 ng-if="headlist.length > 1" style="font-weight: 300; font-size: 32px; color: #95c93e; border-bottom: 1px solid rgb(93, 184, 122); margin-top: 10px">Batch Heads</h1>
+
+	<div class="list" ng-repeat="user in headlist" style="margin-bottom: 5px">
+	    <a class="item item-thumbnail-left eventHead2" href="tel:{{user.userID}}">
+	      <img src="http://cmcair.in/images/people/{{user.userID}}.jpg" on-error-src="../img/default-person.png">
+	      <h2 style="color: #FFF"><strong>{{user.userName}}</strong></h2>
+	      <p style="color: #366557">{{user.userBatch}}</p>
+	      <p style="color: #366557">{{user.userID}}</p>
+	    </a>
+	</div>
 
 
-    <ion-list ng-repeat="feed in feedsList track by $index">
-      <i ng-if="connection" class="icon ion-heart"> Connection Error!</i>        
-      <div class="card neatBorder hidden"  style="text-decoration: none; margin: 10px 0 0 0;" id="post_{{feed.postID}}"> <!-- href="#/tab/posts/{{feed.postID}}" -->
-
-        <div class="item item-avatar item-text-wrap" ng-class="getRandomEventClass(feed.postID)">             
-          <tag class="currentUserImage"/>{{getImageCode(feed.userName)}}</tag>           
-          <p class="titleEvent">{{feed.userName}}</p>
-          <p style="font-size: 12px;" class="titleSubEvent"><i class="icon ion-ios-clock-outline"></i> {{feed.time}}</p>                    
-        </div>
-
-        <div class="item item-body">
-          <img class="full-image" ng-if="feed.flag" src="http://cmcair.in/images/posts/{{feed.postID}}.jpg">
-          <h2 style="color: #2c3e50; font-weight: bold;">{{feed.title}}</h2>
-          <p>{{feed.content}}</p>         
-          <i ng-if="!feed.likeFlag" on-hold="viewLikes(feed.postID)" class="icon ion-android-favorite-outline" on-tap="liker(feed.postID)" id="{{feed.postID}}" style ="color:#95a5a6;"> {{feed.likes}}</i>        
-          <i ng-if="feed.likeFlag" on-hold="viewLikes(feed.postID)" class="icon ion-android-favorite" on-tap="liker(feed.postID)" id={{feed.postID}} style ="color:#E90C44;"> {{feed.likes}}</i>
-
-          <i ng-if="feed.selfFlag" on-hold="deletePost(feed.postID, $index)" class="icon ion-trash-b pull-right" on-tap="deletePost(feed.postID, $index)" id="{{feed.postID}}" style ="color:#95a5a6; float: right; font-size: 21px;"></i> 
-        </div>
-
-      </div>
-    
-    </ion-list>
-    <i ng-if="!left && isRenderLoaded" style="margin: 20px"><center><img src="img/end.png"></center></i>
-  
-
-
-  <ion-infinite-scroll
-        immediate-check="false"
-        ng-if="left"
-    on-infinite="loadMore()" 
-    distance="1%">
-  </ion-infinite-scroll>
   </ion-content>
 </ion-view>
