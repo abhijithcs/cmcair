@@ -233,6 +233,24 @@ background: linear-gradient(to right, #3A6073, #16222A); /* W3C, IE 10+/ Edge, F
   left: 0;
   height: 44px; }
 
+  .acadTestNotBubbled{
+    border: 1px solid; width: 24px; 
+    display: inline-block; 
+    text-align: center; border-radius: 50%; 
+    padding: 1px; margin-right: 8px;
+  }
+
+
+  .acadTestBubbled{
+    border: 1px solid; width: 24px; 
+    background: #444;
+    color: #FFF;
+    display: inline-block; 
+    text-align: center; border-radius: 50%; 
+    padding: 1px; margin-right: 8px;
+  }
+
+
 .bannerPendingChanges {
   background: #f39c12 !important; }
 

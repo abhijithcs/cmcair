@@ -914,7 +914,7 @@ $scope.renderFailed = 0;
 
 
 
-        $scope.testData = {
+$scope.testData = {
     "testCode": "BTS001",
     "title": "Bhatia Test Series 1",
     "brief": "Complete the test in 10 mins time",
@@ -924,7 +924,7 @@ $scope.renderFailed = 0;
     "dateLastSubmission": "08:00 pm, 10.02.2018",
     "questions": [{
             "id": 1,
-            "question": "Who is the prime minister of India?",
+            "question": "Who is the prime minister of India? And when was she or he elected? Which election?",
             "options": ["Narendra Modi", "Manmohan Singh", "Sonia Gandhi", "None of These"]
         },
         {
@@ -941,6 +941,48 @@ $scope.renderFailed = 0;
 };
 
 
+        $scope.answerList = [0, 0, 0]; // <-- Initialize with 0's equivalent to number of questions
+
+        $scope.getBubbleClass = function(id, choice){
+            var n = 0;
+            for(n = 0; n < $scope.answerList.length; n++){
+
+                if(id == n+1 && $scope.answerList[n] == choice){
+                    return 'acadTestBubbled';
+                    break;
+                }
+
+                if(n == $scope.answerList.length - 1){ //last iteration and not found!
+                    return 'acadTestNotBubbled';
+                }
+            }
+
+
+        }
+
+        $scope.markChoice = function(questionId, choice){
+            console.log(questionId, choice)
+
+            //remove selection if already exists
+            if($scope.answerList[questionId-1] != 0){
+                document.getElementById("ques_"+questionId+"_opt_"+$scope.answerList[questionId-1]).classList.remove("acadTestBubbled");
+                
+                if($scope.answerList[questionId-1] == choice){ //Selecting same choice --> UNSELECT
+                    $scope.answerList[questionId-1] = 0;
+                    return '';
+                }
+            }
+
+            var n = 0;
+            for(n = 0; n < $scope.answerList.length; n++){
+                if(questionId == n+1){
+                    $scope.answerList[n] = choice;
+                    break;
+                }
+            } 
+            
+            document.getElementById("ques_"+questionId+"_opt_"+choice).classList.add("acadTestBubbled");   
+        }
 
 
     }])
