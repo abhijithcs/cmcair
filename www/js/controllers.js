@@ -248,7 +248,7 @@ angular.module('starter.controllers', ['ngCordova'])
                     }
                 case "BLOGS":
                     {
-                        $state.go('main.app.feedbacks');
+                        $state.go('main.mycmc-blogs.blogs');
                         break;
                     }
                 case "UNION":
@@ -258,12 +258,12 @@ angular.module('starter.controllers', ['ngCordova'])
                     }
                 case "DIRECTORY":
                     {
-                        $state.go('main.app.staff');
+                        $state.go('main.mycmc-directory.directory');
                         break;
                     }
                 case "ACADS":
                     {
-                        $state.go('main.app.accounts');
+                        $state.go('main.mycmc-acads.acads');
                         break;
                     }
             }
@@ -460,6 +460,194 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 
+
+
+
+    .controller('directoryCtrl', ['$scope', '$http', '$ionicLoading', '$state', function($scope, $http, $ionicLoading, $state) {
+
+
+        $scope.goToTiles = function() {
+            $state.go('main.app.tiles')
+        }
+
+$scope.isRenderLoaded = 1;
+$scope.renderFailed = 0;
+
+
+        $scope.isViewingExpanded = false;
+
+        $scope.directoryData = [{
+        "mainName": "Emergency Contacts",
+        "isPublic": false,
+        "hasSubCategories": false,
+        "content": [{
+                "isPerson": true,
+                "title": "Anti Ragging Head",
+                "name": "Dr. Ajith Mohan",
+                "address": "Address Goes Here",
+                "photo": "",
+                "contact": "9842013102"
+            },
+            {
+                "isPerson": true,
+                "title": "Anti Ragging Lead",
+                "name": "Dr. Mohan Perera",
+                "address": "",
+                "photo": "",
+                "contact": "9842013102"
+            },
+            {
+                "isPerson": false,
+                "title": "Fire Force Station",
+                "name": "",
+                "address": "Near Kizhakkethala, Calicut",
+                "photo": "http://cmcair.in/images/people/9946724139.jpg",
+                "contact": "9842013102"
+            }
+        ]
+    },
+    {
+        "mainName": "Unit Heads",
+        "isPublic": true,
+        "hasSubCategories": true,
+        "content": [{
+                "subName": "General Medicine",
+                "content": [{
+                        "isPerson": true,
+                        "title": "Head of Dept",
+                        "name": "Dr. Anupam Siva",
+                        "address": "",
+                        "photo": "",
+                        "contact": "9024184922"
+                    },
+                    {
+                        "isPerson": true,
+                        "title": "Assist. Professor",
+                        "name": "Dr. Jameela Hanan",
+                        "address": "",
+                        "photo": "",
+                        "contact": "9842013102"
+                    }
+                ]
+            },
+            {
+                "subName": "Orthopedriatics",
+                "content": [{
+                        "isPerson": true,
+                        "title": "Lab Head",
+                        "name": "Dr. Krishan",
+                        "address": "Krishnan Purayil Veedulla Krishnan, Krishnan Purayil Veedulla Krishnan, Krishnan Purayil Veedulla Krishnan",
+                        "photo": "",
+                        "contact": "9024184922"
+                    },
+                    {
+                        "isPerson": true,
+                        "title": "Assist. Surgeon",
+                        "name": "Dr. Haridasan",
+                        "address": "",
+                        "photo": "",
+                        "contact": "8129024900"
+                    }
+                ]
+            }
+        ]
+    }
+
+]
+
+
+        $scope.expandCategory = function(hasSubCategories, content){
+
+            $scope.isViewingExpanded = true;
+            $scope.expandHasSubCategories = hasSubCategories;
+            $scope.expandContent = content;
+        }
+
+        $scope.cancelExpandView = function(){
+            $scope.isViewingExpanded = false;
+        }
+
+
+
+        // //FIRST LOAD
+        // $scope.renderFailed = false;
+        // $scope.isRenderLoaded = false;
+
+        // $ionicLoading.show({
+        //     template: '<ion-spinner></ion-spinner>'
+        // });
+
+        // $http.get("http://cmcair.in/apis/secretaries.php", {
+        //         timeout: 10000
+        //     })
+        //     .success(function(response) {
+        //         $scope.userlist = response;
+
+        //         $ionicLoading.hide();
+        //         $scope.renderFailed = false;
+        //         $scope.isRenderLoaded = true;
+        //     })
+        //     .error(function(data) {
+        //         $ionicLoading.hide();
+        //         $ionicLoading.show({
+        //             template: "Not responding. Check your connection.",
+        //             duration: 3000
+        //         });
+
+        //         $scope.renderFailed = true;
+        //         $scope.$broadcast('scroll.refreshComplete');
+
+        //     });
+
+
+        // $http.get("http://cmcair.in/apis/heads.php", {
+        //         timeout: 10000
+        //     })
+        //     .success(function(response) {
+        //         $scope.headlist = response;
+        //     })
+        //     .error(function(data) {
+
+        //     });
+
+        // //REFRESHER
+        // $scope.doRefresh = function() {
+
+        //     $http.get("http://cmcair.in/apis/secretaries.php", {
+        //             timeout: 10000
+        //         })
+        //         .success(function(response) {
+        //             $scope.userlist = response;
+        //             $scope.$broadcast('scroll.refreshComplete');
+        //         })
+        //         .error(function(data) {
+        //             $ionicLoading.show({
+        //                 template: "Not responding. Check your connection.",
+        //                 duration: 3000
+        //             });
+
+        //             $scope.$broadcast('scroll.refreshComplete');
+
+        //         });
+        
+                
+        //         $http.get("http://cmcair.in/apis/heads.php", {
+        //                 timeout: 10000
+        //             })
+        //             .success(function(response) {
+        //                 $scope.headlist = response;
+        //                 $scope.$broadcast('scroll.refreshComplete');
+        //             })
+        //             .error(function(data) {
+        //                 $scope.$broadcast('scroll.refreshComplete');
+        //             });
+
+        // };
+
+
+
+
+    }])
 
     .controller('unionCtrl', ['$scope', '$http', '$ionicLoading', '$state', function($scope, $http, $ionicLoading, $state) {
 
@@ -714,6 +902,193 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
     }])
+
+
+
+
+
+    .controller('AcadsCtrl', ['$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($scope, $http, $ionicPopup, $state, $ionicLoading) {
+
+        $scope.renderFailed = false;
+        $scope.isRenderLoaded = 1;
+
+
+
+        $scope.testData = {
+    "testCode": "BTS001",
+    "title": "Bhatia Test Series 1",
+    "brief": "Complete the test in 10 mins time",
+    "duration": 10,
+    "numberOfQuestions": 3,
+    "datePosted": "08:00 pm, 31.01.2018",
+    "dateLastSubmission": "08:00 pm, 10.02.2018",
+    "questions": [{
+            "id": 1,
+            "question": "Who is the prime minister of India?",
+            "options": ["Narendra Modi", "Manmohan Singh", "Sonia Gandhi", "None of These"]
+        },
+        {
+            "id": 2,
+            "question": "What color is Black Box?",
+            "options": ["Dark Black", "Matt Black", "Gray", "None of These"]
+        },
+        {
+            "id": 3,
+            "question": "Who put first steps to Moon?",
+            "options": ["Neil Amstrong", "Yurie Gagarin", "Ajay Hambabe", "Kalpana Chavla"]
+        }
+    ]
+};
+
+
+
+
+    }])
+
+
+    .controller('BlogsCtrl', ['$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($scope, $http, $ionicPopup, $state, $ionicLoading) {
+
+
+        $scope.goToTiles = function() {
+            $state.go('main.app.tiles')
+        }
+
+
+
+        if (localStorage.getItem("postAdminFlag") == 1) {
+            $scope.adminFlag = true;
+        } else {
+            $scope.adminFlag = false;
+        }
+
+
+        $scope.isViewing = false;
+        $scope.viewBlog = function(content){
+            content = {
+                'title': 'Spirit of Travel in Europe',
+                'author': 'Abhijith C S',
+                'date': '08:00 pm, 31st December, 2017',
+                'content': '<p style="font-size: 18px; color: #000; font-weight: 400; line-height: 1.5em;">I travelled to England and Netherlands. Took a bike on rent.<br><br> I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. </p>',
+                'photo': 'http://localhost:8100/img/blog_test.jpeg',
+                'category': 'TRAVEL',
+                'views': 1203 
+
+            };
+            $scope.isViewing = true;
+            $scope.viewContent = content;
+            $scope.sample = 'http://localhost:8100/img/blog_test.jpeg';
+            console.log(content)
+        }
+
+        $scope.cancelViewBlog = function(){
+            $scope.isViewing = false;
+        }
+
+
+        $scope.getBlogBackground = function(){
+            if($scope.isViewing){
+                return {"background" : "#FFF"}
+            }
+            else{
+                return {"background" : "#ecf0f1"}
+            }
+        }
+
+
+
+
+
+        //FIRST LOAD
+
+        $scope.renderFailed = false;
+        $scope.isRenderLoaded = false;
+
+        $ionicLoading.show({
+            template: '<ion-spinner></ion-spinner>'
+        });
+
+        $http.get("http://cmcair.in/apis/blogs.php?value=0", {
+                timeout: 1
+            })
+            .success(function(response) {
+                $scope.feedsList = response;
+                $scope.left = 1;
+                $ionicLoading.hide();
+                $scope.renderFailed = false;
+                $scope.isRenderLoaded = true;
+            })
+            .error(function(data) {
+                $ionicLoading.hide();
+                $ionicLoading.show({
+                    template: "Not responding. Check your connection.",
+                    duration: 1
+                });
+
+                $scope.renderFailed = true;
+                $scope.$broadcast('scroll.refreshComplete');
+
+            });
+
+
+
+        $scope.feedsList = [];
+        $scope.limiter = 1;
+
+
+
+
+        //REFRESHER
+
+        $scope.doRefresh = function() {
+
+            $http.get("http://cmcair.in/apis/blogs.php?value=0", {
+                    timeout: 10000
+                })
+                .success(function(response) {
+                    $scope.feedsList = response;
+                    $scope.left = 1;
+                    $scope.limiter = 1;
+                    $scope.$broadcast('scroll.refreshComplete');
+                })
+                .error(function(data) {
+                    $ionicLoading.show({
+                        template: "Not responding. Check your connection.",
+                        duration: 3000
+                    });
+
+                    $scope.$broadcast('scroll.refreshComplete');
+
+                });
+
+        };
+
+
+        $scope.loadMore = function() {
+            $http.get('http://cmcair.in/apis/blogs.php?value=' + $scope.limiter, {
+                    timeout: 10000
+                })
+                .success(function(items) {
+                    if (items.length == 0) {
+                        $scope.left = 0;
+                    }
+                    $scope.feedsList = $scope.feedsList.concat(items)
+                    $scope.limiter++;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                })
+                .error(function(data) {
+                    $ionicLoading.show({
+                        template: "Not responding. Check your connection.",
+                        duration: 3000
+                    });
+
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+
+                });
+        };
+
+
+    }])
+
 
     .controller('SettingsCtrl', ['$scope', '$http', function($scope, $http) {
         if (localStorage.getItem("postFlag") == 1) {
@@ -1003,6 +1378,27 @@ angular.module('starter.controllers', ['ngCordova'])
             $state.go('tab.settings');
         }
 
+        $scope.batchList = [
+            {'batch': 55, 'strength': 150},
+            {'batch': 56, 'strength': 150},
+            {'batch': 57, 'strength': 150},
+            {'batch': 58, 'strength': 150},
+            {'batch': 59, 'strength': 150},
+            {'batch': 60, 'strength': 150},
+            {'batch': 61, 'strength': 150},
+            {'batch': 62, 'strength': 150},
+            {'batch': 63, 'strength': 150},
+            {'batch': 64, 'strength': 150},
+            {'batch': 65, 'strength': 150}
+        ]
+
+
+        //Fetch meta data - all batches
+        $http.get("http://cmcair.in/apis/fetchbatchdata.php")
+            .then(function(response) {
+                $scope.batchList = response.data.response;
+            });
+
 
 
         $scope.data = {};
@@ -1032,6 +1428,8 @@ angular.module('starter.controllers', ['ngCordova'])
                 $scope.errorFlag = 1;
                 $scope.errorMsg = "Maximum Content length is 200 characters.";
             } else { //Success Case - accept input.
+
+                alert($scope.data.for)
 
 
                 $ionicLoading.show({ template: '<ion-spinner></ion-spinner>' });

@@ -1,3 +1,164 @@
+.blog-container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+
+.blog-text-centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+
+.blog-text-centered h1{
+    margin: 0 !important;
+    font-weight: 600;
+    font-size: 26px;
+    color: #FFF;
+    text-shadow: 2px 2px #2d2d2d;
+}
+
+.blog-text-bottom-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.blog-text-bottom-left p{
+  margin: 0 !important;
+  color: #ababab !important;
+  text-align: left;
+    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.blog-text-bottom-left h3{
+  margin: 0 !important;
+  color: #d3dbea !important;
+      text-transform: uppercase;
+    font-weight: bold;
+    text-align: left;
+      overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.blog-author{
+  width: 100%;
+  padding: 10px;
+}
+
+.blog-author h1{
+  font-size: 36px !important;
+}
+
+.gradient1 {
+     background: #ec008c !important; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ec008c, #fc6767) !important; /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ec008c, #fc6767) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  }
+
+.gradient2{
+  background: #00b09b;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #96c93d, #00b09b);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #96c93d, #00b09b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+ .gradient3 {
+background: #F2994A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #F2C94C, #F2994A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #F2C94C, #F2994A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+ .gradient4 {
+background: #44A08D;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #093637, #44A08D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #093637, #44A08D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+ .gradient5{
+background: #141E30;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #243B55, #141E30); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient6 {
+background: #5C258D;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #4389A2, #5C258D);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #4389A2, #5C258D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient7 {
+background: #16222A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #3A6073, #16222A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #3A6073, #16222A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+.blog-author p{
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: #1e354e;
+}
+
+.blog-content{
+  margin-top: 15px;
+  padding: 6px;
+  line-height: 1.8em;
+}
+
+.blog-author h5{
+      margin: 0;
+    font-size: 11px;
+    font-weight: 400;
+    color: gray;
+}
+
+
+
+.blog-text-top-right {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+.blog-text-top-right h1{
+  text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 4px;
+    margin: 0 !important;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 4px 8px;
+    color: #504f4f;
+}
+
+
 .heartButton{
 	background: none;
 	border: none;

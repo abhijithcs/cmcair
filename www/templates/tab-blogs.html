@@ -1,0 +1,110 @@
+<ion-view view-title="Blogs" ng-style="getBlogBackground()" hide-nav-bar="true">
+
+      <ion-header-bar class="bar-positive">
+         <div class="buttons" style="position: absolute; top: 5px; left: 5px; bottom: 5px; width: 100%">
+
+            <button class="button button-clear" style="text-align: left; margin-left: 10px; font-weight: 500; color: #FFF; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size: 18px;">
+             Blogs
+            </button>  
+
+            <button ng-show="!isViewing" class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="goToTiles()">
+              <i class="icon ion-arrow-return-left"></i> 
+            </button>  
+
+
+            <button ng-show="isViewing" class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="cancelViewBlog()">
+              <i class="icon ion-ios-arrow-back"></i> 
+            </button>  
+
+
+
+         </div>
+
+      </ion-header-bar>
+
+
+
+  <ion-content>
+
+  <ion-refresher
+    on-refresh="doRefresh()">
+  </ion-refresher>
+
+
+
+
+
+<!-- Loader Dummy Tiles -->
+<div ng-if="!isRenderLoaded && !renderFailed" class="padding">
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+</div>
+
+
+
+<!-- VIEWING BLOG -->
+<div ng-if="isViewing">
+
+  <div class="image-container blog-container">
+    <img style="width: 100%" src="{{viewContent.photo}}">
+    <div class="blog-text-top-right"><h1>{{viewContent.category}}</h1></div> 
+  </div>
+
+  <div class="blog-author">
+    <div class="gradient3">
+      <h1>{{viewContent.title}}</h1>
+    </div>
+    <hr>
+    <p>{{viewContent.author}}<tag style="float: right; font-size: 85%; color: gray; text-transform: none"><i class="icon ion-eye"></i> {{viewContent.views}} Views</tag></p>
+    <h5><i class="icon ion-ios-clock-outline"></i> {{viewContent.date}}</h5>
+
+    <div class="blog-content" ng-bind-html="viewContent.content"><tag style="color: red">Oops! Failed to render the Content.</tag></div>
+  </div>
+
+
+</div>
+
+
+<!-- LISTING ALL BLOGS -->
+<div ng-if="!isViewing">
+
+
+<div ng-if="renderFailed" style="padding: 40px 20px 20px 20px;">
+  <center>
+    <img src="img/error_icon.png">
+    <p style="color: #e88f8f; margin: 10px; font-size: 15px;">Unable to fetch data. Try again.</p>
+  </center>
+</div>
+
+
+  <div class="list card neatBorder blog-container" style="border: none; border-radius: 0 !important; box-shadow: none !important;">
+    <div class="item item-body" style="padding: 0" ng-click="viewBlog(content)">
+      <img class="full-image" src="../img/blog_test.jpeg">
+      <div class="blog-text-top-right"><h1>TRAVEL</h1></div> 
+      <div class="blog-text-centered"><h1>Spirit of Travel</h1></div> 
+      <div class="blog-text-bottom-left">
+        <h3>Abhijith C S</h3>
+        <p><i class="icon ion-ios-clock-outline"></i> 08:34 pm, December 29, 2017</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<i ng-if="!left && isRenderLoaded" style="margin: 20px"><center><img src="img/end.png"></center></i>
+  <ion-infinite-scroll
+        immediate-check="false"
+        ng-if="left"
+    on-infinite="loadMore()"
+    distance="1%">
+  </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

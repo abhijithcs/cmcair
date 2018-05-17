@@ -125,6 +125,56 @@ $ionicConfigProvider.tabs.position('bottom');
 
 
 
+    .state('main.mycmc-blogs', {
+        url: '/mycmc-blogs',
+        abstract: true,
+        views: {
+            'main-view@main': {
+                templateUrl: 'templates/mycmc-app-blogs.html',
+                controller: 'AppCtrl'
+            }
+        }
+    })
+
+
+    .state('main.mycmc-blogs.blogs', {
+        url: '/blogs',
+        views: {
+            'mycmc-blogs@main.mycmc-blogs': {
+                templateUrl: 'templates/tab-blogs.html',
+                controller: 'BlogsCtrl'
+            }
+        }
+    })
+
+
+
+
+    .state('main.mycmc-acads', {
+        url: '/mycmc-acads',
+        abstract: true,
+        views: {
+            'main-view@main': {
+                templateUrl: 'templates/mycmc-app-acads.html',
+                controller: 'AppCtrl'
+            }
+        }
+    })
+
+
+    .state('main.mycmc-acads.acads', {
+        url: '/acads',
+        views: {
+            'mycmc-acads@main.mycmc-acads': {
+                templateUrl: 'templates/tab-acads.html',
+                controller: 'AcadsCtrl'
+            }
+        }
+    })
+
+
+
+
 
     .state('main.mycmc-announcements', {
         url: '/mycmc-announcements',
@@ -171,6 +221,32 @@ $ionicConfigProvider.tabs.position('bottom');
             }
         }
     })
+
+
+
+
+    .state('main.mycmc-directory', {
+        url: '/mycmc-directory',
+        abstract: true,
+        views: {
+            'main-view@main': {
+                templateUrl: 'templates/mycmc-app-directory.html',
+                controller: 'AppCtrl'
+            }
+        }
+    })
+
+
+    .state('main.mycmc-directory.directory', {
+        url: '/directory',
+        views: {
+            'mycmc-directory@main.mycmc-directory': {
+                templateUrl: 'templates/tab-directory.html',
+                controller: 'directoryCtrl'
+            }
+        }
+    })
+
 
 
 
