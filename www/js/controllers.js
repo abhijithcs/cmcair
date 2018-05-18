@@ -907,7 +907,35 @@ $scope.renderFailed = 0;
 
 
 
-    .controller('AcadsCtrl', ['$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($scope, $http, $ionicPopup, $state, $ionicLoading) {
+    .controller('AcadsCtrl', ['$interval', '$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($interval, $scope, $http, $ionicPopup, $state, $ionicLoading) {
+
+
+
+
+
+$scope.listData = [{
+        "code": "BTS001",
+        "type": "EXAM",
+        "title": "Bhatia Test Series 1",
+        "duration": 300,
+        "expiry": "08:00 pm, 31.02.2018",
+        "date": "08:00 pm, 31.01.2018",
+        "numberOfQuestions": 3
+    },
+    {
+        "type": "REFERENCE",
+        "title": "Reading Materials",
+        "url": "http://abhijithcs.in/downloads/resume.pdf"
+    },
+    {
+        "type": "REFERENCE",
+        "title": "Reading Materials - Final",
+        "url": "http://abhijithcs.in/downloads/resume.pdf"
+    }
+]
+
+
+
 
 
 /* Celebrations Confeti */
@@ -1038,7 +1066,7 @@ $scope.testData = {
     "testCode": "BTS001",
     "title": "Bhatia Test Series 1",
     "brief": "Complete the test in 10 mins time",
-    "duration": 10,
+    "duration": 300,
     "numberOfQuestions": 3,
     "datePosted": "08:00 pm, 31.01.2018",
     "dateLastSubmission": "08:00 pm, 10.02.2018",
@@ -1064,7 +1092,36 @@ $scope.testData = {
 };
 
 
+    $scope.isTestCompleted = false;
+    $scope.timeLeftCounter = $scope.testData.duration;
+
+    $scope.secondsToHms = function(d) {
+        d = Number(d);
+
+        var h = Math.floor(d / 3600);
+        var m = Math.floor(d % 3600 / 60);
+        var s = Math.floor(d % 3600 % 60);
+
+        if(h == 0){
+            return ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+        }
+        else{
+            return ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+        }
+
+        
+    }
+
+    $interval(function () {
+        $scope.timeLeftCounterDisplay = $scope.secondsToHms($scope.timeLeftCounter);
+        $scope.timeLeftCounter--;
+    }, 1000);    
+
+
     $scope.submitAnswers = function(){
+
+        document.getElementById("confeti").style.display = 'none';
+
         $scope.answerData = [
             {'id': 1, 'answer': 1},
             {'id': 2, 'answer': 4},
@@ -1148,6 +1205,10 @@ $scope.testData = {
                 $scope.resultRound = 'resultRed';
             }
         }
+
+        $scope.isTestCompleted = true;
+
+
         document.getElementById("resultPopup").style.display = 'block';
     }
 
