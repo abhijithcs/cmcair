@@ -909,6 +909,126 @@ $scope.renderFailed = 0;
 
     .controller('AcadsCtrl', ['$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($scope, $http, $ionicPopup, $state, $ionicLoading) {
 
+
+/* Celebrations Confeti */
+
+ var COLORS, Confetti, NUM_CONFETTI, PI_2, canvas, confetti, context, drawCircle, drawCircle2, drawCircle3, i, range, xpos;
+ NUM_CONFETTI = 40;
+ COLORS = [
+   [235, 90, 70],
+   [97, 189, 79],
+   [242, 214, 0],
+   [0, 121, 191],
+   [195, 119, 224]
+ ];
+ PI_2 = 2 * Math.PI;
+ canvas = document.getElementById("confeti");
+ context = canvas.getContext("2d");
+ window.w = 0;
+ window.h = 0;
+ window.resizeWindow = function() {
+   window.w = canvas.width = window.innerWidth;
+   return window.h = canvas.height = window.innerHeight
+ };
+ window.addEventListener("resize", resizeWindow, !1);
+ window.onload = function() {
+   return setTimeout(resizeWindow, 0)
+ };
+ range = function(a, b) {
+   return (b - a) * Math.random() + a
+ };
+ drawCircle = function(a, b, c, d) {
+   context.beginPath();
+   context.moveTo(a, b);
+   context.bezierCurveTo(a - 17, b + 14, a + 13, b + 5, a - 5, b + 22);
+   context.lineWidth = 2;
+   context.strokeStyle = d;
+   return context.stroke()
+ };
+ drawCircle2 = function(a, b, c, d) {
+   context.beginPath();
+   context.moveTo(a, b);
+   context.lineTo(a + 6, b + 9);
+   context.lineTo(a + 12, b);
+   context.lineTo(a + 6, b - 9);
+   context.closePath();
+   context.fillStyle = d;
+   return context.fill()
+ };
+ drawCircle3 = function(a, b, c, d) {
+   context.beginPath();
+   context.moveTo(a, b);
+   context.lineTo(a + 5, b + 5);
+   context.lineTo(a + 10, b);
+   context.lineTo(a + 5, b - 5);
+   context.closePath();
+   context.fillStyle = d;
+   return context.fill()
+ };
+ xpos = 0.9;
+ document.onmousemove = function(a) {
+   return xpos = a.pageX / w
+ };
+ window.requestAnimationFrame = function() {
+   return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(a) {
+     return window.setTimeout(a, 5)
+   }
+ }();
+ Confetti = function() {
+   function a() {
+     this.style = COLORS[~~range(0, 5)];
+     this.rgb = "rgba(" + this.style[0] + "," + this.style[1] + "," + this.style[2];
+     this.r = ~~range(2, 6);
+     this.r2 = 2 * this.r;
+     this.replace()
+   }
+   a.prototype.replace = function() {
+     this.opacity = 0;
+     this.dop = 0.03 * range(1, 4);
+     this.x = range(-this.r2, w - this.r2);
+     this.y = range(-20, h - this.r2);
+     this.xmax = w - this.r;
+     this.ymax = h - this.r;
+     this.vx = range(0, 2) + 8 * xpos - 5;
+     return this.vy = 0.7 * this.r + range(-1, 1)
+   };
+   a.prototype.draw = function() {
+     var a;
+     this.x += this.vx;
+     this.y += this.vy;
+     this.opacity +=
+       this.dop;
+     1 < this.opacity && (this.opacity = 1, this.dop *= -1);
+     (0 > this.opacity || this.y > this.ymax) && this.replace();
+     if (!(0 < (a = this.x) && a < this.xmax)) this.x = (this.x + this.xmax) % this.xmax;
+     drawCircle(~~this.x, ~~this.y, this.r, this.rgb + "," + this.opacity + ")");
+     drawCircle3(0.5 * ~~this.x, ~~this.y, this.r, this.rgb + "," + this.opacity + ")");
+     return drawCircle2(1.5 * ~~this.x, 1.5 * ~~this.y, this.r, this.rgb + "," + this.opacity + ")")
+   };
+   return a
+ }();
+ confetti = function() {
+   var a, b, c;
+   c = [];
+   i = a = 1;
+   for (b = NUM_CONFETTI; 1 <= b ? a <= b : a >= b; i = 1 <= b ? ++a : --a) c.push(new Confetti);
+   return c
+ }();
+ window.step = function() {
+   var a, b, c, d;
+   requestAnimationFrame(step);
+   context.clearRect(0, 0, w, h);
+   d = [];
+   b = 0;
+   for (c = confetti.length; b < c; b++) a = confetti[b], d.push(a.draw());
+   return d
+ };
+ step();;
+
+
+
+
+
         $scope.renderFailed = false;
         $scope.isRenderLoaded = 1;
 
@@ -925,34 +1045,129 @@ $scope.testData = {
     "questions": [{
             "id": 1,
             "question": "Who is the prime minister of India? And when was she or he elected? Which election?",
+            "image": "http://localhost:8100/img/blog_test.jpeg",
             "options": ["Narendra Modi", "Manmohan Singh", "Sonia Gandhi", "None of These"]
         },
         {
             "id": 2,
             "question": "What color is Black Box?",
+            "image": "",
             "options": ["Dark Black", "Matt Black", "Gray", "None of These"]
         },
         {
             "id": 3,
             "question": "Who put first steps to Moon?",
+            "image": "",
             "options": ["Neil Amstrong", "Yurie Gagarin", "Ajay Hambabe", "Kalpana Chavla"]
         }
     ]
 };
 
 
-        $scope.answerList = [0, 0, 0]; // <-- Initialize with 0's equivalent to number of questions
+    $scope.submitAnswers = function(){
+        $scope.answerData = [
+            {'id': 1, 'answer': 1},
+            {'id': 2, 'answer': 4},
+            {'id': 3, 'answer': 1}
+        ]
+
+        $scope.totalQuestions = $scope.answerData.length;
+        $scope.respondedQuestions = 0;
+        $scope.correctlyAnswered = 0;
+
+        var n = 0;
+        for(n=0; n < $scope.answerData.length; n++){
+            if($scope.responseList[$scope.answerData[n].id - 1] == 0){
+                //Skip --> Not answered
+                document.getElementById("question_head_"+$scope.answerData[n].id).style.background = 'rgb(139, 146, 148)'; 
+                document.getElementById("ques_"+$scope.answerData[n].id+"_opt_"+$scope.answerData[n].answer).classList.add("acadTestBubbledGreen");
+            }
+            else{
+                $scope.respondedQuestions++;
+
+                if($scope.responseList[$scope.answerData[n].id - 1] == $scope.answerData[n].answer){
+                    //Correct Answer
+                    console.log($scope.answerData[n].id + ' is CORRECT');
+                    document.getElementById("question_head_"+$scope.answerData[n].id).style.background = '#23a955';  
+                    document.getElementById("ques_"+$scope.answerData[n].id+"_opt_"+$scope.responseList[$scope.answerData[n].id - 1]).classList.add("acadTestBubbledGreen");
+                
+                    $scope.correctlyAnswered++;
+                }
+                else{
+                    console.log($scope.answerData[n].id + ' is FALSE');  
+                    document.getElementById("question_head_"+$scope.answerData[n].id).style.background = '#d60b35';    
+                    document.getElementById("ques_"+$scope.answerData[n].id+"_opt_"+$scope.responseList[$scope.answerData[n].id - 1]).classList.add("acadTestBubbledRed");
+                    document.getElementById("ques_"+$scope.answerData[n].id+"_opt_"+$scope.answerData[n].answer).classList.add("acadTestBubbledGreen");
+                }
+            }
+        }
+
+        //Show Results
+        if($scope.totalQuestions == $scope.correctlyAnswered){
+            //ALL ANSWERED CORRECTLY
+            $scope.resultSmiley = '../img/smileys/smiley_awesome.png';
+            $scope.resultMessage = 'Excellent!';
+            $scope.resultColor = 'acadResultPositive';
+
+            document.getElementById("confeti").style.display = 'block';
+        }
+        else if($scope.respondedQuestions == $scope.correctlyAnswered){ //ALL ANSWERED ARE CORRECT
+            if($scope.respondedQuestions/$scope.totalQuestions < 0.6){ //VERY FEW ANSWERED
+                $scope.resultSmiley = '../img/smileys/smiley_smile.png';
+                $scope.resultMessage = 'Good Accuracy. Attempt more questions.';
+                $scope.resultColor = 'acadResultPositive';
+            }
+            else{
+                $scope.resultSmiley = '../img/smileys/smiley_love.png';
+                $scope.resultMessage = 'Great Going!';
+                $scope.resultColor = 'acadResultPositive';
+            }
+        }
+        else if($scope.respondedQuestions != $scope.correctlyAnswered){ //SOME ARE NOT CORRECT
+            var accuracy = $scope.correctlyAnswered/$scope.respondedQuestions;
+            if(accuracy >= 0.9 ){ //VERY FEW INCORRECT
+                $scope.resultSmiley = '../img/smileys/smiley_love.png';
+                $scope.resultMessage = 'Great Going!';
+                $scope.resultColor = 'acadResultPositive';
+            }
+            else if(accuracy >= 0.5){ //VERY FEW INCORRECT
+                $scope.resultSmiley = '../img/smileys/smiley_smile.png';
+                $scope.resultMessage = 'Good Job';
+                $scope.resultColor = 'acadResultPositive';
+            }
+            else if(accuracy > 0.2){ //VERY FEW INCORRECT
+                $scope.resultSmiley = '../img/smileys/smiley_sad.png';
+                $scope.resultMessage = 'Less Accuracy';
+                $scope.resultColor = 'acadResultNegative';
+                $scope.resultRound = 'resultRed';
+            }
+            else if(accuracy <= 0.2){ //ALMOST ALL INCORRECT
+                $scope.resultSmiley = '../img/smileys/smiley_cry.png';
+                $scope.resultMessage = 'That\'s Sad!';
+                $scope.resultColor = 'acadResultSad';
+                $scope.resultRound = 'resultRed';
+            }
+        }
+        document.getElementById("resultPopup").style.display = 'block';
+    }
+
+    $scope.goProceed = function(){
+        document.getElementById("resultPopup").style.display = 'none';
+    }
+
+
+        $scope.responseList = [0, 0, 0]; // <-- Initialize with 0's equivalent to number of questions
 
         $scope.getBubbleClass = function(id, choice){
             var n = 0;
-            for(n = 0; n < $scope.answerList.length; n++){
+            for(n = 0; n < $scope.responseList.length; n++){
 
-                if(id == n+1 && $scope.answerList[n] == choice){
+                if(id == n+1 && $scope.responseList[n] == choice){
                     return 'acadTestBubbled';
                     break;
                 }
 
-                if(n == $scope.answerList.length - 1){ //last iteration and not found!
+                if(n == $scope.responseList.length - 1){ //last iteration and not found!
                     return 'acadTestNotBubbled';
                 }
             }
@@ -964,19 +1179,19 @@ $scope.testData = {
             console.log(questionId, choice)
 
             //remove selection if already exists
-            if($scope.answerList[questionId-1] != 0){
-                document.getElementById("ques_"+questionId+"_opt_"+$scope.answerList[questionId-1]).classList.remove("acadTestBubbled");
+            if($scope.responseList[questionId-1] != 0){
+                document.getElementById("ques_"+questionId+"_opt_"+$scope.responseList[questionId-1]).classList.remove("acadTestBubbled");
                 
-                if($scope.answerList[questionId-1] == choice){ //Selecting same choice --> UNSELECT
-                    $scope.answerList[questionId-1] = 0;
+                if($scope.responseList[questionId-1] == choice){ //Selecting same choice --> UNSELECT
+                    $scope.responseList[questionId-1] = 0;
                     return '';
                 }
             }
 
             var n = 0;
-            for(n = 0; n < $scope.answerList.length; n++){
+            for(n = 0; n < $scope.responseList.length; n++){
                 if(questionId == n+1){
-                    $scope.answerList[n] = choice;
+                    $scope.responseList[n] = choice;
                     break;
                 }
             } 

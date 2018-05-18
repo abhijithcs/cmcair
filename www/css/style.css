@@ -234,16 +234,98 @@ background: linear-gradient(to right, #3A6073, #16222A); /* W3C, IE 10+/ Edge, F
   height: 44px; }
 
   .acadTestNotBubbled{
-    border: 1px solid; width: 24px; 
+    border: 1px solid #444; width: 24px; 
     display: inline-block; 
     text-align: center; border-radius: 50%; 
     padding: 1px; margin-right: 8px;
   }
 
+.scoreCardBackdrop{
+    background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+    padding: 50px 30px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.acadScoreCard{
+     width: 100%;
+    height: 80%;
+    z-index: 1000;
+    background: #fefff5;
+    border-radius: 5px;
+    box-shadow: 2px 2px #c0c8ca; 
+    text-align: center;
+    padding: 40px 25px;
+}
+
+.acadResultPositive{
+  margin-top: 10px; 
+  font-weight: 400; 
+  font-size: 32px; color: #4ea96a;
+}
+
+.resultRed{
+  background: #cb4033 !important;
+}
+
+.acadResultSad{
+  margin-top: 10px; 
+  font-weight: 400; 
+  font-size: 32px; color: #c73929;
+}
+
+
+.acadResultNegative{
+  margin-top: 10px; 
+  font-weight: 400; 
+  font-size: 32px; color: #faca33;
+}
+
+
+.acadScoreCardText{
+    font-size: 18px;
+    font-weight: bold;
+    color: #929291;
+    padding-top: 16px;
+}
+
+.acadScoreCardNumber{
+    font-size: 72px;
+    padding: 20px;
+    background: #4ea96b;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    line-height: 108px;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    box-shadow: #afafa9 2px 2px 2px; 
+}
 
   .acadTestBubbled{
-    border: 1px solid; width: 24px; 
+    border: 1px solid #444; width: 24px; 
     background: #444;
+    color: #FFF;
+    display: inline-block; 
+    text-align: center; border-radius: 50%; 
+    padding: 1px; margin-right: 8px;
+  }
+
+  .acadTestBubbledGreen{
+    border: 1px solid #23a955; width: 24px; 
+    background: #23a955;
+    color: #FFF;
+    display: inline-block; 
+    text-align: center; border-radius: 50%; 
+    padding: 1px; margin-right: 8px;
+  }
+
+  .acadTestBubbledRed{
+    border: 1px solid #d60b35; width: 24px; 
+    background: #d60b35;
     color: #FFF;
     display: inline-block; 
     text-align: center; border-radius: 50%; 

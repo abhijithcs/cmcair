@@ -17,6 +17,27 @@
       </ion-header-bar>
 
 
+<div class="scoreCardBackdrop" id="resultPopup" style="display: none">
+  <div class="acadScoreCard">
+    <center><div class="acadScoreCardNumber" ng-class="resultRound">{{correctlyAnswered}}</div></center>
+    <div class="acadScoreCardText">Scored out of {{totalQuestions}}</div>
+    <p style="margin-top: 10px; font-size: 12px; font-weight: 400;">
+      <tag style="color: #4ea96a; border: 1px solid rgba(82, 174, 113, 0.4); padding: 2px 8px; margin: 0 2px; border-radius: 3px;"><b>{{correctlyAnswered}}</b> Correct</tag>
+      <tag style="color: #c73929; border: 1px solid rgba(201, 60, 46, .35); padding: 2px 8px; margin: 0 2px; border-radius: 3px;"><b>{{respondedQuestions - correctlyAnswered}}</b> Wrong</tag>
+      <tag style="color: gray; border: 1px solid rgba(128, 128, 128, 0.4); padding: 2px 8px; margin: 0 2px; border-radius: 3px;"><b>{{totalQuestions - respondedQuestions}}</b> Not Attempted</tag>
+    </p>
+    <img src="{{resultSmiley}}" style="margin-top: 60px">
+    <h1 ng-class="resultColor">{{resultMessage}}</h1>
+    <canvas id="confeti" width="300" height="300" class="active" style="position: absolute; top: -30px; left: -10px; display: none"></canvas>
+  </div>
+  
+  <div class="row">
+    <button class="button button-small button-clear" style="font-size: 13px; margin-top: 10px; width: 100%; color: #d1f5fb; height: 50px;" ng-click="goProceed()">Proceed</button>  
+  </div>
+</div>
+
+
+
 
   <ion-content class="padding">
 
@@ -46,9 +67,13 @@
 
 
 <div class="list card neatBorder" ng-repeat="question in testData.questions track by $index">
-  <div class="item item-avatar item-text-wrap" style="background: #48ada5">
+  <div class="item item-avatar item-text-wrap" style="background: #0d9cc5" ng-attr-id="{{ 'question_head_' + question.id}}">
     <tag class="currentUserImage" style="color: #FFF">{{question.id}}</tag> 
     <h2 style="color: #FFF; font-size: 21px;">{{question.question}}</h2>
+    
+  </div>
+  <div class="item item-divider" ng-if="question.image && question.images != ''" style="padding: 0">
+    <img src="{{question.image}}" style="width: 100%">
   </div>
   <div ng-attr-id="{{ 'question_' + question.id}}">
       <div class="item item-divider item-text-wrap" style="min-height: 45px" ng-repeat="option in question.options track by $index" ng-click="markChoice(question.id, $index+1)">
@@ -56,9 +81,11 @@
           </p>
       </div>
   </div>
-
-
 </div>
+
+
+
+
 <i ng-if="!left && isRenderLoaded" style="margin: 20px"><center><img src="img/end.png"></center></i>
   <ion-infinite-scroll
         immediate-check="false"
@@ -67,4 +94,8 @@
     distance="1%">
   </ion-infinite-scroll>
   </ion-content>
+
+
+  <button class="button" ng-click="submitAnswers()" style="background: #1bb51b; color: #FFF; width: 100%; border-radius: 0; position: absolute; bottom: 49px; left: 0;">Submit Answers</button>
+
 </ion-view>
