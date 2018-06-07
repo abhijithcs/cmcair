@@ -1,8 +1,17 @@
 angular.module('starter.controllers', ['ngCordova'])
 
 
-    .controller('TimelineCtrl', ['$scope', '$http', '$ionicPopup', '$cordovaNetwork', '$timeout', '$state', '$ionicLoading', function($scope, $http, $ionicPopup, $cordovaNetwork, $timeout, $state, $ionicLoading) {
+    .controller('TimelineCtrl', ['$interval', '$rootScope', '$scope', '$http', '$ionicPopup', '$cordovaNetwork', '$timeout', '$state', '$ionicLoading', function($interval, $rootScope, $scope, $http, $ionicPopup, $cordovaNetwork, $timeout, $state, $ionicLoading) {
 
+
+        //Tweak --> To stop timer incase state changed while taking test
+        $rootScope.$on('$stateChangeStart', 
+        function(event, toState, toParams, fromState, fromParams){ 
+            if(fromState.name == 'main.mycmc-acads.acads'){
+                $interval.cancel($rootScope.examTimer);
+
+            }
+        })
 
 
         $scope.getRandomEventClass = function(code) {
@@ -228,7 +237,9 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
     .controller('AppCtrl', function($scope, $state, $http, $ionicLoading, $timeout) {
-
+        $scope.goToTiles = function() {
+            $state.go('main.app.tiles')
+        }
     })
 
     .controller('tilesCtrl', function($scope, $state, $http, $ionicLoading, $timeout) {
@@ -272,6 +283,11 @@ angular.module('starter.controllers', ['ngCordova'])
 
         $scope.goToFeed = function() {
             $state.go('tab.timeline');
+        }
+
+        $scope.getTheme = function(){
+            var d = new Date();
+            return 'theme'+d.getDay();
         }
     })
 
@@ -322,6 +338,13 @@ angular.module('starter.controllers', ['ngCordova'])
 
         $scope.goToTiles = function() {
             $state.go('main.app.tiles')
+        }
+
+
+        $scope.getColor = function(code) {
+            var token = code % 7;
+            token++;
+            return 'gradient' + token;
         }
 
 
@@ -907,35 +930,129 @@ $scope.renderFailed = 0;
 
 
 
-    .controller('AcadsCtrl', ['$interval', '$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($interval, $scope, $http, $ionicPopup, $state, $ionicLoading) {
+    .controller('AcadsCtrl', ['$cordovaFileTransfer', '$rootScope', '$timeout', '$interval', '$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($cordovaFileTransfer, $rootScope, $timeout, $interval, $scope, $http, $ionicPopup, $state, $ionicLoading) {
+
+
+        $scope.goToTiles = function() {
+            $state.go('main.app.tiles')
+        }
 
 
 
 
+        //FIRST LOAD
 
-$scope.listData = [{
-        "code": "BTS001",
-        "type": "EXAM",
-        "title": "Bhatia Test Series 1",
-        "duration": 300,
-        "expiry": "08:00 pm, 31.02.2018",
-        "date": "08:00 pm, 31.01.2018",
-        "numberOfQuestions": 3
-    },
-    {
-        "type": "REFERENCE",
-        "title": "Reading Materials",
-        "url": "http://abhijithcs.in/downloads/resume.pdf"
-    },
-    {
-        "type": "REFERENCE",
-        "title": "Reading Materials - Final",
-        "url": "http://abhijithcs.in/downloads/resume.pdf"
-    }
-]
+        $scope.renderFailed = false;
+        $scope.isRenderLoaded = false;
+
+        $ionicLoading.show({
+            template: '<ion-spinner></ion-spinner>'
+        });
+
+        $http.get("http://cmcair.in/apis/acads.php?value=0&user="+localStorage.getItem("token"), {
+                timeout: 10000
+            })
+            .success(function(response) {
+                $scope.feedsList = response;
+                $scope.left = 1;
+                $ionicLoading.hide();
+                $scope.renderFailed = false;
+                $scope.isRenderLoaded = true;
+
+                console.log($scope.feedsList)
+            })
+            .error(function(data) {
+                $ionicLoading.hide();
+                $ionicLoading.show({
+                    template: "Not responding. Check your connection.",
+                    duration: 3000
+                });
+
+                $scope.renderFailed = true;
+                $scope.$broadcast('scroll.refreshComplete');
+
+            });
 
 
 
+        $scope.feedsList = [];
+        $scope.limiter = 5;
+
+
+        //Leader Board data
+        $scope.leadersData = [];
+        $scope.leadersDataLoaded = false;
+
+        $scope.loadLeaderBoard = function(){
+        
+            $http.get("http://cmcair.in/apis/testtoppers.php?value=0&user="+localStorage.getItem("token"), {
+                timeout: 10000
+            })
+            .success(function(response) {
+
+                if(response.status){
+                    $scope.leadersData = response;
+                    $scope.leadersDataLoaded = true;
+                }
+            })
+            .error(function(data) {
+
+            });
+        }
+
+        $scope.loadLeaderBoard();
+
+
+        //REFRESHER
+
+        $scope.doRefresh = function() {
+
+            $http.get("http://cmcair.in/apis/acads.php?value=0&user="+localStorage.getItem("token"), {
+                    timeout: 10000
+                })
+                .success(function(response) {
+                    $scope.feedsList = response;
+                    $scope.left = 1;
+                    $scope.limiter = 5;
+                    $scope.$broadcast('scroll.refreshComplete');
+                })
+                .error(function(data) {
+                    $ionicLoading.show({
+                        template: "Not responding. Check your connection.",
+                        duration: 3000
+                    });
+
+                    $scope.$broadcast('scroll.refreshComplete');
+
+                });
+
+            $scope.loadLeaderBoard();
+        };
+
+
+
+        $scope.loadMore = function() {
+            $http.get('http://cmcair.in/apis/acads.php?value=' + $scope.limiter+"&user="+localStorage.getItem("token"), {
+                    timeout: 10000
+                })
+                .success(function(items) {
+                    if (items.length == 0) {
+                        $scope.left = 0;
+                    }
+                    $scope.feedsList = $scope.feedsList.concat(items)
+                    $scope.limiter = $scope.limiter + 5;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                })
+                .error(function(data) {
+                    $ionicLoading.show({
+                        template: "Not responding. Check your connection.",
+                        duration: 3000
+                    });
+
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+
+                });
+        };
 
 
 /* Celebrations Confeti */
@@ -1054,47 +1171,6 @@ $scope.listData = [{
  step();;
 
 
-
-
-
-        $scope.renderFailed = false;
-        $scope.isRenderLoaded = 1;
-
-
-
-$scope.testData = {
-    "testCode": "BTS001",
-    "title": "Bhatia Test Series 1",
-    "brief": "Complete the test in 10 mins time",
-    "duration": 300,
-    "numberOfQuestions": 3,
-    "datePosted": "08:00 pm, 31.01.2018",
-    "dateLastSubmission": "08:00 pm, 10.02.2018",
-    "questions": [{
-            "id": 1,
-            "question": "Who is the prime minister of India? And when was she or he elected? Which election?",
-            "image": "http://localhost:8100/img/blog_test.jpeg",
-            "options": ["Narendra Modi", "Manmohan Singh", "Sonia Gandhi", "None of These"]
-        },
-        {
-            "id": 2,
-            "question": "What color is Black Box?",
-            "image": "",
-            "options": ["Dark Black", "Matt Black", "Gray", "None of These"]
-        },
-        {
-            "id": 3,
-            "question": "Who put first steps to Moon?",
-            "image": "",
-            "options": ["Neil Amstrong", "Yurie Gagarin", "Ajay Hambabe", "Kalpana Chavla"]
-        }
-    ]
-};
-
-
-    $scope.isTestCompleted = false;
-    $scope.timeLeftCounter = $scope.testData.duration;
-
     $scope.secondsToHms = function(d) {
         d = Number(d);
 
@@ -1112,21 +1188,218 @@ $scope.testData = {
         
     }
 
-    $interval(function () {
-        $scope.timeLeftCounterDisplay = $scope.secondsToHms($scope.timeLeftCounter);
-        $scope.timeLeftCounter--;
-    }, 1000);    
+    $rootScope.examTimer;
 
+    $scope.isTakingTest = false;
+    $scope.isTestCompleted = false;
+
+    $scope.startTest = function(exam){
+
+
+        $ionicLoading.show({
+            template: '<ion-spinner></ion-spinner>'
+        });
+
+        $http.get("http://cmcair.in/apis/getexam.php?code="+exam.code, {
+                timeout: 10000
+            })
+            .success(function(response) {
+
+                $ionicLoading.hide();
+
+                if(response.status){
+                    $scope.testData = response;
+                   
+
+                    //Make request to sever
+                    var testMeta = {};
+                    testMeta.testCode = $scope.testData.testCode;
+                    testMeta.user = localStorage.getItem("token");
+
+                    $ionicLoading.show({
+                        template: "<ion-spinner></ion-spinner>"
+                    });  
+
+
+                    $http({
+                        method: 'POST',
+                        url: 'http://cmcair.in/apis/initializetest.php',
+                        data: testMeta, //forms user object
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        timeout: 10000
+                    })
+                    .success(function(data) {
+                        $ionicLoading.hide();
+
+                        if(data.status){
+
+                            if(data.isAttempted){
+                                $ionicLoading.show({
+                                    template: "<ion-spinner></ion-spinner><br><tag style='font-size: 21px; font-weight: bold'>Re-Attempting Test</tag><br>Your already recored Score won't change!",
+                                    duration: 3000
+                                });
+                            }
+                            else{
+                                $ionicLoading.show({
+                                    template: "<ion-spinner></ion-spinner><br><tag style='font-size: 21px; font-weight: bold'>Brace Yourself!</tag><br>The Test is about to Start!",
+                                    duration: 3000
+                                });    
+                            }
+
+                             
+
+                            $timeout( function(){
+                                $scope.initializeTest();
+                            }, 3000 );
+                        }
+                        else{
+                            $ionicLoading.show({
+                                template: data.error,
+                                duration: 3000
+                            });  
+                        }
+
+                    })
+                    .error(function(data) {
+                        $ionicLoading.hide();
+                        $ionicLoading.show({
+                            template: "Unable to load the test. Try again.",
+                            duration: 3000
+                        });  
+                    });
+
+
+
+
+                }
+                else{
+                   $ionicLoading.show({
+                        template: response.error, 
+                        duration: 3000
+                    });    
+                }    
+            })
+            .error(function(data) {
+                $ionicLoading.hide();
+                $ionicLoading.show({
+                    template: "Not responding. Check your connection.",
+                    duration: 3000
+                });
+
+                $scope.$broadcast('scroll.refreshComplete');
+
+            });
+    }
+
+
+    $scope.initializeTest = function(){
+
+        $scope.isTakingTest = true; 
+        $scope.isTestCompleted = false;
+        $scope.markingAccepted = true;
+        $scope.timeLeftCounterDisplay = 'Starting Test';
+
+        $scope.timeLeftCounter = $scope.testData.duration;
+        $scope.responseList = []; // <-- Initialize with 0's equivalent to number of questions
+
+        var n = 0;
+        while(n < $scope.testData.numberOfQuestions){
+            $scope.responseList.push(0);
+            n++;
+        }
+
+
+
+        $rootScope.examTimer = $interval(function () {
+                $scope.timeLeftCounterDisplay = 'Complete Test in '+ $scope.secondsToHms($scope.timeLeftCounter);
+                $scope.timeLeftCounter--;
+                if($scope.timeLeftCounter == -1){
+                    $interval.cancel($rootScope.examTimer);
+
+                    $scope.markingAccepted = false;
+                    $scope.timeLeftCounterDisplay = 'Time Over! Submit Responses.';
+
+                    //$scope.preSubmit();
+                }
+            }, 1000);   
+    }
+
+
+    $scope.preSubmit = function(){
+
+                $ionicLoading.show({
+                    template: "<ion-spinner></ion-spinner><br><tag style='font-size: 21px; font-weight: bold'>Time Over!</tag><br>Submitting your Responses...",
+                    duration: 3000
+                });  
+
+                $timeout( function(){
+                    if($scope.respondedQuestions == 0)
+                    {
+
+                    }
+                    else{
+                        $scope.submitAnswers();
+                    }
+                }, 3000 );
+
+    }
 
     $scope.submitAnswers = function(){
 
+        $interval.cancel($rootScope.examTimer);
+
         document.getElementById("confeti").style.display = 'none';
 
-        $scope.answerData = [
-            {'id': 1, 'answer': 1},
-            {'id': 2, 'answer': 4},
-            {'id': 3, 'answer': 1}
-        ]
+
+
+                    //Evaluate Answers
+                    var testMeta = {};
+                    testMeta.testCode = $scope.testData.testCode;
+                    testMeta.user = localStorage.getItem("token");
+                    testMeta.responses = $scope.responseList.toString();
+
+                    $ionicLoading.show({
+                        template: "<ion-spinner></ion-spinner>"
+                    });  
+
+
+                    $http({
+                        method: 'POST',
+                        url: 'http://cmcair.in/apis/evaluatetest.php',
+                        data: testMeta, //forms user object
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        timeout: 10000
+                    })
+                    .success(function(data) {
+                        $ionicLoading.hide();
+
+                        if(data.status){
+                            $scope.processAnswers(data.answers);
+                        }
+                        else{
+                            $ionicLoading.show({
+                                template: data.error,
+                                duration: 3000
+                            });  
+                        }
+
+                    })
+                    .error(function(data) {
+                        $ionicLoading.hide();
+                        $ionicLoading.show({
+                            template: "Failed to save your responses. Try again.",
+                            duration: 3000
+                        });  
+                    });
+    }
+
+    $scope.processAnswers = function(answerObj){
+
+        $scope.answerData = answerObj;
 
         $scope.totalQuestions = $scope.answerData.length;
         $scope.respondedQuestions = 0;
@@ -1160,11 +1433,19 @@ $scope.testData = {
         }
 
         //Show Results
-        if($scope.totalQuestions == $scope.correctlyAnswered){
+        if($scope.respondedQuestions == 0){
+            //No questions answered
+            $scope.resultSmiley = '../img/smileys/smiley_sad.png';
+            $scope.resultMessage = 'Oops! No questions answered.';
+            $scope.resultColor = 'acadResultNegative';
+            $scope.resultRound = 'resultRed';
+        }
+        else if($scope.totalQuestions == $scope.correctlyAnswered){
             //ALL ANSWERED CORRECTLY
             $scope.resultSmiley = '../img/smileys/smiley_awesome.png';
             $scope.resultMessage = 'Excellent!';
             $scope.resultColor = 'acadResultPositive';
+            $scope.resultRound = 'resultGreen';
 
             document.getElementById("confeti").style.display = 'block';
         }
@@ -1173,11 +1454,13 @@ $scope.testData = {
                 $scope.resultSmiley = '../img/smileys/smiley_smile.png';
                 $scope.resultMessage = 'Good Accuracy. Attempt more questions.';
                 $scope.resultColor = 'acadResultPositive';
+                $scope.resultRound = 'resultGreen';
             }
             else{
                 $scope.resultSmiley = '../img/smileys/smiley_love.png';
                 $scope.resultMessage = 'Great Going!';
                 $scope.resultColor = 'acadResultPositive';
+                $scope.resultRound = 'resultGreen';
             }
         }
         else if($scope.respondedQuestions != $scope.correctlyAnswered){ //SOME ARE NOT CORRECT
@@ -1186,11 +1469,13 @@ $scope.testData = {
                 $scope.resultSmiley = '../img/smileys/smiley_love.png';
                 $scope.resultMessage = 'Great Going!';
                 $scope.resultColor = 'acadResultPositive';
+                $scope.resultRound = 'resultGreen';
             }
             else if(accuracy >= 0.5){ //VERY FEW INCORRECT
                 $scope.resultSmiley = '../img/smileys/smiley_smile.png';
                 $scope.resultMessage = 'Good Job';
                 $scope.resultColor = 'acadResultPositive';
+                $scope.resultRound = 'resultGreen';
             }
             else if(accuracy > 0.2){ //VERY FEW INCORRECT
                 $scope.resultSmiley = '../img/smileys/smiley_sad.png';
@@ -1209,15 +1494,24 @@ $scope.testData = {
         $scope.isTestCompleted = true;
 
 
-        document.getElementById("resultPopup").style.display = 'block';
+        document.getElementById("resultPopup").style.display = 'block';        
     }
+
+
+
 
     $scope.goProceed = function(){
         document.getElementById("resultPopup").style.display = 'none';
     }
 
 
-        $scope.responseList = [0, 0, 0]; // <-- Initialize with 0's equivalent to number of questions
+    $scope.testDone = function(){
+        $scope.isTakingTest = false;
+        $scope.isTestCompleted = false;       
+    }
+
+
+        
 
         $scope.getBubbleClass = function(id, choice){
             var n = 0;
@@ -1237,7 +1531,10 @@ $scope.testData = {
         }
 
         $scope.markChoice = function(questionId, choice){
-            console.log(questionId, choice)
+
+            if(!$scope.markingAccepted){
+                return '';
+            }
 
             //remove selection if already exists
             if($scope.responseList[questionId-1] != 0){
@@ -1258,7 +1555,37 @@ $scope.testData = {
             } 
             
             document.getElementById("ques_"+questionId+"_opt_"+choice).classList.add("acadTestBubbled");   
+        
+
         }
+
+
+        //Download References
+          $scope.downloadReference = function (url) {
+              ionic.Platform.ready(function(){
+                     var filename = url.split("/").pop();
+                     var targetPath = cordova.file.externalRootDirectory + 'CMCAIR/' + filename;
+         
+                      $ionicLoading.show({ template: '<ion-spinner></ion-spinner>' });
+
+                      $cordovaFileTransfer.download(url, targetPath, {}, true).then(function (result) {
+                            $ionicLoading.hide();
+                            $ionicLoading.show({
+                                template: "File saved to "+targetPath,
+                                duration: 3000
+                            });
+                      }, function (error) {
+                            $ionicLoading.hide();
+                            $ionicLoading.show({
+                                template: "Error while downloading the file",
+                                duration: 3000
+                            });
+                      }, function (progress) {
+                            $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+                      });
+              });
+          }
+
 
 
     }])
@@ -1271,8 +1598,7 @@ $scope.testData = {
             $state.go('main.app.tiles')
         }
 
-
-
+        
         if (localStorage.getItem("postAdminFlag") == 1) {
             $scope.adminFlag = true;
         } else {
@@ -1280,26 +1606,50 @@ $scope.testData = {
         }
 
 
+
+        $scope.getRandomTitleColor = function(code) {
+            var token = code % 7;
+            token++;
+            return 'gradient' + token;
+        }
+
+
+
         $scope.isViewing = false;
         $scope.viewBlog = function(content){
-            content = {
-                'title': 'Spirit of Travel in Europe',
-                'author': 'Abhijith C S',
-                'date': '08:00 pm, 31st December, 2017',
-                'content': '<p style="font-size: 18px; color: #000; font-weight: 400; line-height: 1.5em;">I travelled to England and Netherlands. Took a bike on rent.<br><br> I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. I travelled to England and Netherlands. Took a bike on rent. </p>',
-                'photo': 'http://localhost:8100/img/blog_test.jpeg',
-                'category': 'TRAVEL',
-                'views': 1203 
 
-            };
+            $scope.firstTimeLoad = false;
+
             $scope.isViewing = true;
             $scope.viewContent = content;
-            $scope.sample = 'http://localhost:8100/img/blog_test.jpeg';
-            console.log(content)
+
+                var myData = {};
+                myData.id = content.blogID;
+
+                $ionicLoading.show({ template: '<ion-spinner></ion-spinner>' });
+
+                    $http({
+                        method: 'POST',
+                        url: 'http://cmcair.in/apis/updateblogviews.php',
+                        data: myData, //forms user object
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        timeout: 10000
+                    })
+                    .success(function(data) {
+                        $ionicLoading.hide();
+                    })
+                    .error(function(data) {
+                        $ionicLoading.hide();
+                    });
+
         }
 
         $scope.cancelViewBlog = function(){
             $scope.isViewing = false;
+            $scope.doRefresh();
+            $scope.firstTimeLoad = false;
         }
 
 
@@ -1321,12 +1671,14 @@ $scope.testData = {
         $scope.renderFailed = false;
         $scope.isRenderLoaded = false;
 
+        $scope.firstTimeLoad = true;  //<<<< To display contact editor banner on top.   
+
         $ionicLoading.show({
             template: '<ion-spinner></ion-spinner>'
         });
 
         $http.get("http://cmcair.in/apis/blogs.php?value=0", {
-                timeout: 1
+                timeout: 10000
             })
             .success(function(response) {
                 $scope.feedsList = response;
@@ -1339,7 +1691,7 @@ $scope.testData = {
                 $ionicLoading.hide();
                 $ionicLoading.show({
                     template: "Not responding. Check your connection.",
-                    duration: 1
+                    duration: 10000
                 });
 
                 $scope.renderFailed = true;
@@ -1358,6 +1710,8 @@ $scope.testData = {
         //REFRESHER
 
         $scope.doRefresh = function() {
+
+            $scope.firstTimeLoad = false;
 
             $http.get("http://cmcair.in/apis/blogs.php?value=0", {
                     timeout: 10000
@@ -1382,6 +1736,9 @@ $scope.testData = {
 
 
         $scope.loadMore = function() {
+
+            $scope.firstTimeLoad = false;
+
             $http.get('http://cmcair.in/apis/blogs.php?value=' + $scope.limiter, {
                     timeout: 10000
                 })
@@ -1420,6 +1777,23 @@ $scope.testData = {
             $scope.adminFlag = false;
         }
 
+        $scope.checkStatus = function(){
+            if(!$scope.flag){
+                $http.get("http://cmcair.in/apis/checkflag.php?user=" + localStorage.getItem("token")).then(function(response) {
+                    if(response.data.status){
+                        localStorage.setItem("postFlag", 1);
+                        $scope.flag = true;
+                    }
+
+                    $scope.$broadcast('scroll.refreshComplete');
+                });            
+            }   
+            else{
+                $scope.$broadcast('scroll.refreshComplete');
+            }
+        }
+
+        $scope.checkStatus();
 
         $scope.user_mob = localStorage.getItem("token");
 
@@ -1812,89 +2186,200 @@ $scope.testData = {
                 //By default, do not show any error message.
                 $scope.errorFlag = 0;
 
+                $ionicLoading.show({
+                    template: '<ion-spinner></ion-spinner>'
+                });
 
 
                 if (/^\d{10}$/.test(mobile)) {
                     //Valid Mobile Number. Send OTP and verify it.
 
                     $scope.otp_original = {};
-                    $http.get('http://cmcair.in/apis/useractivate.php?mobile=' + mobile).then(function(response) {
-                        $scope.otp_original = response.data.code;
-                        $scope.validity = response.data.valid;
-                        if (response.data.postFlag) {
-                            $scope.userPostAccess = 1;
-                        } else {
-                            $scope.userPostAccess = 0;
-                        }
-                        if (response.data.isAdmin) {
-                            $scope.adminPostAccess = 1;
-                        } else {
-                            $scope.adminPostAccess = 0;
-                        }
 
 
-                        if ($scope.validity) { //Valid, Registered User.
+                    $ionicLoading.show({
+                        template: '<ion-spinner></ion-spinner>'
+                    });
 
-                            //OTP Validation happens here.
-                            $scope.userdata = {};
-                            $ionicPopup.show({
-                                template: '<input type="tel" ng-model="userdata.otp">',
-                                title: "One Time Password",
-                                subTitle: "Please enter the OTP received on your registered mobile number " + mobile,
-                                scope: $scope,
-                                buttons: [{
-                                        text: 'Cancel'
-                                    },
-                                    {
-                                        text: '<b>Submit</b>',
-                                        type: 'button-positive',
-                                        onTap: function(e) {
-                                            if (!$scope.userdata.otp) {
-                                                //don't allow the user to close unless he enters wifi password
-                                                e.preventDefault();
-                                            } else {
-                                                if ($scope.userdata.otp == $scope.otp_original) { //OTP Match
-                                                    $scope.token = mobile;
-                                                    localStorage.setItem("token", $scope.token);
-                                                    localStorage.setItem("postFlag", $scope.userPostAccess);
-                                                    localStorage.setItem("postAdminFlag", $scope.adminPostAccess);
-                                                    localStorage.setItem("notification", 1);
+                    $http.get('http://cmcair.in/apis/useractivate.php?mobile=' + mobile, {
+                            timeout: 10000
+                        })
+                        .success(function(response) {
+                            $ionicLoading.hide();
 
-                                                    $http.get('http://cmcair.in/apis/usersignin.php?mobile=' + mobile);
-                                                    $state.go('tab.timeline');
+                            $scope.validity = response.valid;
+
+
+                            if ($scope.validity) { //Valid, Registered User.
+
+
+                                $scope.otp_original = response.code;
+                                if (response.postFlag) {
+                                    $scope.userPostAccess = 1;
+                                } else {
+                                    $scope.userPostAccess = 0;
+                                }
+                                if (response.isAdmin) {
+                                    $scope.adminPostAccess = 1;
+                                } else {
+                                    $scope.adminPostAccess = 0;
+                                }
+
+
+                                if(response.hasError){
+                                    $ionicLoading.show({
+                                        template: response.error,
+                                        duration: 3000
+                                    });
+                                }
+
+
+                                //OTP Validation happens here.
+                                $scope.userdata = {};
+                                $ionicPopup.show({
+                                    template: '<input maxlength="4" type="tel" ng-model="userdata.otp" style="text-align: center; font-size: 21px; height: 50px; letter-spacing: 5px; font-weight: bold;">',
+                                    title: "One Time Password",
+                                    subTitle: "Hello "+response.name+"! Please enter the OTP received on your registered mobile number " + mobile,
+                                    scope: $scope,
+                                    buttons: [{
+                                            text: 'Cancel'
+                                        },
+                                        {
+                                            text: '<b>Submit</b>',
+                                            type: 'button-positive',
+                                            onTap: function(e) {
+                                                if (!$scope.userdata.otp) {
+                                                    //don't allow the user to close unless he enters wifi password
+                                                    e.preventDefault();
                                                 } else {
-                                                    $scope.errorFlag = 1;
-                                                    $scope.errorMessage = "Sorry! You have entered a wrong OTP.";
-                                                }
+                                                    if ($scope.userdata.otp == $scope.otp_original) { //OTP Match
+                                                        $scope.token = mobile;
+                                                        localStorage.setItem("token", $scope.token);
+                                                        localStorage.setItem("postFlag", $scope.userPostAccess);
+                                                        localStorage.setItem("postAdminFlag", $scope.adminPostAccess);
+                                                        localStorage.setItem("notification", 1);
 
+                                                        $http.get('http://cmcair.in/apis/usersignin.php?mobile=' + mobile);
+                                                        $state.go('tab.timeline');
+                                                    } else {
+                                                        $scope.errorFlag = 1;
+                                                        $scope.errorMessage = "Sorry! You have entered a wrong OTP.";
+                                                    }
+
+                                                }
                                             }
                                         }
+                                    ]
+                                });
+                            } else {
+                                //Not registered --> ask for one time registration
+
+                                if(response.hasError){
+                                    $ionicLoading.show({
+                                        template: response.error,
+                                        duration: 3000
+                                    });
+
+                                    if(!response.code || response.code == ''){
+                                        return '';
                                     }
-                                ]
+                                }
+
+                                $scope.otp_original = response.code;
+
+                                $scope.newuser = {};
+                                $scope.newuser.name = '';
+                                $scope.newuser.otp = '';
+                                $scope.newuser.batch = '';
+                                $scope.newuser.mobile = mobile;
+
+                                document.getElementById('registrationPopup').style.display = 'block';
+
+                            }
+
+                        })
+                        .error(function(data) {
+                            $ionicLoading.hide();
+                            $ionicLoading.show({
+                                template: "Not responding. Check your connection.",
+                                duration: 3000
                             });
-                        } else {
-                            $scope.errorFlag = 1;
-                            $scope.errorMessage = "Not registered.";
-                        }
-                    });
+                        });
+
+
                 } else {
 
                     $scope.errorFlag = 0;
                     $ionicPopup.alert({
                         title: "Invalid Mobile Number",
-                        content: "Please enter a valid 10 digit mobile number, which is registered with CMC Air."
+                        content: "Please enter a valid 10 digit mobile number"
                     });
                 }
             };
 
         } //End of else.
 
+        $scope.setUserBatch = function(batch){
+            $scope.newuser.batch = batch;
+        }
+
+        $scope.registerUser = function(new_name, new_batch, new_mobile, new_otp){
+
+            if(new_name == '' || new_batch == '' || new_mobile == '' || new_otp == ''){
+                $ionicLoading.show({
+                    template: "Please fill all the fields.",
+                    duration: 3000
+                });     
+                return '';           
+            }
+
+            var myData = {};
+            myData.name = new_name;
+            myData.batch = new_batch;
+            myData.mobile = new_mobile;
+            myData.otp = new_otp;
+
+                $ionicLoading.show({
+                    template: '<ion-spinner></ion-spinner>'
+                });
+
+                $http({
+                    method: 'POST',
+                    url: 'http://cmcair.in/apis/registernewuser.php',
+                    data: myData, //forms user object
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    timeout: 10000
+                })
+                .success(function(data) {
+                    $ionicLoading.hide();
+
+                    if(data.status){
+                        localStorage.setItem("token", data.mobile);
+                        localStorage.setItem("postFlag", data.postFlag ? 1 : 0);
+                        localStorage.setItem("postAdminFlag", data.isAdmin ? 1 : 0);
+                        localStorage.setItem("notification", 1);
+
+                        $state.go('tab.timeline');
+                    }
+                    else{
+                        $ionicLoading.show({
+                            template: data.error,
+                            duration: 3000
+                        });
+                    }
+
+                })
+                .error(function(data) {
+                    $ionicLoading.hide();
+                    $ionicLoading.show({
+                        template: "Not responding. Check your connection.",
+                        duration: 3000
+                    });
+                });                
+
+        }
+
 
     }]);
-
-
-
-//Trial Codes
-function MorePosts($scope, $http) {
-
-};

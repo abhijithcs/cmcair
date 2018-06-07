@@ -7,27 +7,30 @@
              Study Corner
             </button>  
 
-            <button class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="goToTiles()">
-              <i class="icon ion-arrow-return-left"></i> 
-            </button>  
+            <button class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-if="!isTakingTest" ng-click="goToTiles()">
+              <i class="icon ion-navicon"></i> 
+            </button>
 
+            <button class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-if="isTakingTest && isTestCompleted" ng-click="goToTiles()">
+              <i class="icon ion-navicon"></i> 
+            </button>  
 
          </div>
 
       </ion-header-bar>
 
 
-<div class="scoreCardBackdrop" id="resultPopup" style="display: none">
-  <div class="acadScoreCard">
+<div class="scoreCardBackdrop" id="resultPopup" style="display: none;">
+  <div class="acadScoreCard" style="overflow: scroll">
     <center><div class="acadScoreCardNumber" ng-class="resultRound">{{correctlyAnswered}}</div></center>
     <div class="acadScoreCardText">Scored out of {{totalQuestions}}</div>
     <p style="margin-top: 10px; font-size: 12px; font-weight: 400;">
-      <tag style="color: #4ea96a; border: 1px solid rgba(82, 174, 113, 0.4); padding: 2px 8px; margin: 0 2px; border-radius: 3px;"><b>{{correctlyAnswered}}</b> Correct</tag>
-      <tag style="color: #c73929; border: 1px solid rgba(201, 60, 46, .35); padding: 2px 8px; margin: 0 2px; border-radius: 3px;"><b>{{respondedQuestions - correctlyAnswered}}</b> Wrong</tag>
-      <tag style="color: gray; border: 1px solid rgba(128, 128, 128, 0.4); padding: 2px 8px; margin: 0 2px; border-radius: 3px;"><b>{{totalQuestions - respondedQuestions}}</b> Not Attempted</tag>
+      <tag style="color: #4ea96a; border: 1px solid rgba(82, 174, 113, 0.4); padding: 2px 8px; margin: 2px; border-radius: 3px; display: inline-block;"><b>{{correctlyAnswered}}</b> Correct</tag>
+      <tag style="color: #c73929; border: 1px solid rgba(201, 60, 46, .35); padding: 2px 8px; margin: 2px; border-radius: 3px; display: inline-block;"><b>{{respondedQuestions - correctlyAnswered}}</b> Wrong</tag>
+      <tag style="color: gray; border: 1px solid rgba(128, 128, 128, 0.4); padding: 2px 8px; margin: 2px; border-radius: 3px; display: inline-block;"><b>{{totalQuestions - respondedQuestions}}</b> Not Attempted</tag>
     </p>
-    <img src="{{resultSmiley}}" style="margin-top: 60px">
-    <h1 ng-class="resultColor">{{resultMessage}}</h1>
+    <img src="{{resultSmiley}}" style="margin-top: 45px">
+    <h1 ng-class="resultColor" style="font-size: 24px">{{resultMessage}}</h1>
     <canvas id="confeti" width="300" height="300" class="active" style="position: absolute; top: -30px; left: -10px; display: none"></canvas>
   </div>
   
@@ -40,6 +43,13 @@
 
 
   <ion-content class="padding">
+
+
+  <ion-refresher
+    on-refresh="doRefresh()">
+  </ion-refresher>
+
+
 
 <!-- Loader Dummy Tiles -->
 <div ng-if="!isRenderLoaded && !renderFailed">
@@ -62,19 +72,46 @@
 </div>
 
 
+
+
+        <div ng-if="!isTakingTest">
+
+          <div class="row" style="padding: 0; margin-bottom: 15px" ng-if="isRenderLoaded && leadersDataLoaded && leadersData.toppers.length != 0">
+            <div class="infoTile" style="width: 100%; padding: 12px; background: #FF512F; /* fallback for old browsers */ background: -webkit-linear-gradient(to top, #F09819, #FF512F); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to top, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */">
+                <div class="infoTileHead" style="margin-bottom: 10px; border-bottom: 1px solid rgba(255, 171, 107, 0.6); padding-bottom: 28px;"><span style="color: #FFF; font-weight: 400; text-transform: none; font-size: 16px"><i class="ion-trophy" style="color: #ffc900; font-size: 120%; padding-right: 4px;"></i> <tag style="font-size: 120%">L</tag><tag style="font-weight: 500">eader</tag> <tag style="font-size: 120%">B</tag><tag style="font-weight: 500">oard</tag></span></div>
+                <table style="width: 100%">
+                  <tr ng-repeat="top in leadersData.toppers" style="height: 30px">
+                    <td><rank style="font-size: 28px; color: #f9bf32; font-weight: 400; text-shadow: 2px 2px 2px #bb4934;">#{{$index + 1}}</rank></td>
+                    <td style="font-size: 16px; color: #FFF">{{top.name}}<tag style="font-size: 65%; color: #9a471c">{{top.batch ? ' '+top.batch + ' Batch' : ''}}</tag>
+                      <span style="display: block; font-size: 11px; color: #FFF;">Scored <b>{{top.score}}</b> {{top.accuracy ? 'with '+top.accuracy+'% accuracy' : ''}}</span></td>
+                  </tr>
+
+                  <tr ng-if="!leadersData.isUserIncluded && leadersData.user != ''" style="height: 30px; border-top: 1px solid rgba(45, 44, 43, 0.3);">
+                    <td><rank style="font-size: 16px; color: #f9bf32; font-weight: 400; text-shadow: 2px 2px 2px #bb4934;"><img src="../img/icons/tabs/more.png" width="30px"></rank></td>
+                    <td style="font-size: 16px; color: #FFF">{{leadersData.user.name}}<span style="display: block; font-size: 11px; color: #FFF;">Scored <b>{{leadersData.user.score}}</b>{{leadersData.user.accuracy ? ' with '+leadersData.user.accuracy+'% accuracy' : ''}} {{leadersData.user.count ? ' from '+leadersData.user.count+' Tests' : ''}}</span></td>
+                  </tr>
+
+                </table>
+            </div>
+          </div>
+
+            
+
+
               <!-- iterate through each sub cat. -->
-              <div class="list" ng-repeat="content in listData" style="margin-bottom: 10px">
+              <div class="list" ng-repeat="content in feedsList track by $index" style="margin-bottom: 10px">
                   <!-- Exam Card -->
-                  <a ng-if="content.type == 'EXAM'" class="item item-thumbnail-left" style="padding: 36px 16px 16px 16px; min-height: 100px;">
-                    <tag style="background: #ababab; color: #FFF; padding: 2px 6px; font-size: 12px; font-weight: bold; letter-spacing: 1px; position: absolute; left: 0; top: 8px;">TEST SERIES</tag>
+                  <a ng-if="content.type == 'EXAM'" class="item item-thumbnail-left" style="padding: 36px 16px 16px 16px; min-height: 100px;" ng-click="startTest(content)">
+                    <tag ng-if="content.isAttempted" style="background: #ababab; color: #FFF; padding: 2px 6px; font-size: 12px; font-weight: bold; position: absolute; left: 0; top: 8px;">Your Recored Score: {{content.recordedScore}}</tag>
+                    <tag ng-if="!content.isAttempted" style="background: #40a767; color: #FFF; padding: 2px 6px; font-size: 12px; font-weight: bold; letter-spacing: 1px; position: absolute; left: 0; top: 8px;">TEST SERIES</tag>
                     <h2 class="gradient2" style="font-size: 32px; white-space: initial">{{content.title}}</h2>
-                    <p style="color: #2f8858; font-size: 18px;">{{content.numberOfQuestions}} Questions, {{content.duration/60}} Minutes</p>
+                    <p style="color: #2f8858; font-size: 14px;">{{content.numberOfQuestions}} Questions, {{content.duration > 60 ? (content.duration/60).toFixed(0) + ' Minutes' : content.duration + ' Seconds' }}, {{content.numberOfQuestions*4}} Max. Score</p>
                     <p style="color: gray">{{content.date}}</p>
                   </a>
 
                   <!-- Reference Card -->
                   <div ng-if="content.type == 'REFERENCE'" class="card" style="margin: 0" >
-                      <a class="item item-icon-left assertive eventHead1" href="{{content.url}}" style="color: #FFF">
+                      <a class="item item-icon-left assertive eventHead1" ng-click="downloadReference(content.url)" style="color: #FFF">
                         <h2 style="color: #FFF; font-size: 21px;">{{content.title}}</h2>
                         <i class="icon ion-android-download"></i>
                         <i style="font-size: 12px; text-transform: uppercase">Download Now</i>
@@ -82,51 +119,57 @@
                   </div>
 
               </div> <!-- contacts in each sub cat. -->
+        </div>
 
 
 
 
 
 
+<div ng-if="isTakingTest" style="margin-bottom: 60px">
 
-
-
-<div class="list card neatBorder" ng-repeat="question in testData.questions track by $index">
-  <div class="item item-avatar item-text-wrap" style="background: #0d9cc5" ng-attr-id="{{ 'question_head_' + question.id}}">
-    <tag class="currentUserImage" style="color: #FFF">{{question.id}}</tag> 
-    <h2 style="color: #FFF; font-size: 21px;">{{question.question}}</h2>
-    
+  <div class="list card neatBorder" ng-repeat="question in testData.questions track by $index">
+    <div class="item item-avatar item-text-wrap" style="background: #0d9cc5" ng-attr-id="{{ 'question_head_' + question.id}}">
+      <tag class="currentUserImage" style="color: #FFF">{{question.id}}</tag> 
+      <h2 style="color: #FFF; font-size: 21px;">{{question.question}}</h2>
+      
+    </div>
+    <div class="item item-divider" ng-if="question.image && question.images != ''" style="padding: 0; background: #FFF;">
+      <img src="{{question.image}}" on-error-src="../img/img_not_available.jpg" style="width: 100%">
+    </div>
+    <div ng-attr-id="{{ 'question_' + question.id}}">
+        <div class="item item-divider item-text-wrap" style="min-height: 45px; background: #FFF;" ng-repeat="option in question.options track by $index" ng-click="markChoice(question.id, $index+1)">
+            <p style="font-size: 16px; color: #343738; font-weight: 400"><tag class="acadTestNotBubbled" ng-class="getBubbleClass(question.id, $index+1)" ng-attr-id="{{ 'ques_' + question.id + '_opt_' + ($index+1) }}">{{$index+1}}</tag> {{option}}
+            </p>
+        </div>
+    </div>
   </div>
-  <div class="item item-divider" ng-if="question.image && question.images != ''" style="padding: 0; background: #FFF;">
-    <img src="{{question.image}}" style="width: 100%">
-  </div>
-  <div ng-attr-id="{{ 'question_' + question.id}}">
-      <div class="item item-divider item-text-wrap" style="min-height: 45px; background: #FFF;" ng-repeat="option in question.options track by $index" ng-click="markChoice(question.id, $index+1)">
-          <p style="font-size: 16px; color: #343738; font-weight: 400"><tag class="acadTestNotBubbled" ng-class="getBubbleClass(question.id, $index+1)" ng-attr-id="{{ 'ques_' + question.id + '_opt_' + ($index+1) }}">{{$index+1}}</tag> {{option}}
-          </p>
-      </div>
-  </div>
+
 </div>
-
 
 
 
 <i ng-if="!left && isRenderLoaded" style="margin: 20px"><center><img src="img/end.png"></center></i>
   <ion-infinite-scroll
         immediate-check="false"
-        ng-if="left"
+        ng-if="left && !isTakingTest"
     on-infinite="loadMore()"
     distance="1%">
   </ion-infinite-scroll>
   </ion-content>
 
 
-  <button ng-if="!isTestCompleted" class="button" ng-click="submitAnswers()" style="background: #1bb51b; color: #FFF; width: 100%; border-radius: 0; position: absolute; bottom: 49px; left: 0;">Complete Test {{timeLeftCounterDisplay ? 'in '+timeLeftCounterDisplay : ''}} 
+<div ng-if="isTakingTest">
+
+  <button ng-if="!isTestCompleted" class="button" ng-click="submitAnswers()" style="background: #1bb51b; color: #FFF; width: 100%; border-radius: 0; position: absolute; bottom: 49px; left: 0;"> {{timeLeftCounterDisplay}} 
   </button>
 
 
-  <button ng-if="isTestCompleted" class="button" ng-click="submitAnswers()" style="background: #1bb51b; color: #FFF; width: 100%; border-radius: 0; position: absolute; bottom: 49px; left: 0;">View Results
+  <button ng-if="isTestCompleted" class="button" ng-click="submitAnswers()" style="background: #e6b500; color: rgb(136, 100, 0); width: 50%; border-radius: 0; position: absolute; bottom: 49px; left: 0;">View Results
+  </button>
+  <button ng-if="isTestCompleted" class="button" ng-click="testDone()" style="background: #1bb51b; color: #FFF; width: 50%; border-radius: 0; position: absolute; bottom: 49px; right: 0;">Done
   </button>
 
+</div>
 
 </ion-view>
