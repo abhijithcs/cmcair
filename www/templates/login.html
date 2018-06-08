@@ -3,7 +3,7 @@
 
 
 <!-- Sign Up Card -->
-<div class="scoreCardBackdrop" id="registrationPopup" style="display: none">
+<div class="scoreCardBackdrop" id="registrationPopup" style="display: none; padding: 20px 15px">
   <div class="acadScoreCard" style="background: rgba(142, 142, 142, 0.1); box-shadow: none;     overflow: scroll">
     <center><img src="./img/logo_big.png" width="50%"></center>
     <div class="acadScoreCardText" style="font-size: 14px; font-weight: 400; color: #1b4d61; border-bottom: 1px solid #378792; padding-bottom: 7px; text-transform: uppercase; letter-spacing: 2px;">One Time Registration</div>
@@ -13,15 +13,18 @@
       <input class="regInput" placeholder="Your Name" ng-model="newuser.name" type="text">
 
       <label class="regLabel">OTP Code</label>
-      <input class="regInput" style="letter-spacing: 10px" ng-model="newuser.otp" placeholder="Code Received on Phone" maxlength="4" type="text">
+      <input class="regInput" style="letter-spacing: 10px" ng-model="newuser.otp" placeholder="Code Received on Phone" type="tel" maxlength="4">
 
 
       
       <div style="display: block; margin-top: 25px; text-align: left">
         <tag class="regLabel" style="margin: 0 0 10px 0; display: block; width: 100%">Select your Batch</tag>
-        <button class="button regBatchButton" ng-class="{regActiveButton: newuser.batch == 55}" ng-click="setUserBatch('55')">55</button>
-        <button class="button regBatchButton" ng-class="{regActiveButton: newuser.batch == 56}" ng-click="setUserBatch('56')">56</button>
-        <button class="button regBatchButton" ng-class="{regActiveButton: newuser.batch == 57}" ng-click="setUserBatch('57')">57</button>
+        <button class="button regBatchButton" ng-repeat="selectbatch in batchList" ng-class="{regActiveButton: newuser.batch == selectbatch}" ng-click="setUserBatch(selectbatch)" style="margin: 0 2px 2px 0">{{selectbatch}}</button>
+
+        <!-- any other batch -->
+        <input type="tel" maxlength="2" class="button customBatchButton" ng-click="setUserBatch(selectbatch)" placeholder="Enter" ng-keyup="customBatch()" id="customInputBatch" style="height: 32px !important">
+
+
       </div>
       <!-- <input class="regInput" placeholder="Your Name" type="text"> -->    
 

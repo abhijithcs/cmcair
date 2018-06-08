@@ -89,6 +89,40 @@ background: linear-gradient(to left, #FFC371, #FF5F6D); /* W3C, IE 10+/ Edge, Fi
     line-height: 30px !important;
 }
 
+.customBatchButton{
+    min-width: 80px !important;
+    display: inline-block !important;
+    color: #1b6675 !important;
+    background: none !important;
+    border: 1px solid #1b6675 !important;
+    min-height: 30px !important;
+    line-height: 30px !important;
+  
+  width: 80px !important; margin: 0 0 0 -4px !important; 
+  padding: 0 !important; height: 0px; 
+  border: 1px dashed #ffc900 !important; 
+  color: #FFF !important; font-weight: bold;
+}
+
+.customBatchButton::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #bae4e4;
+    font-weight: 400;
+    opacity: 1; /* Firefox */
+    letter-spacing: initial;
+}
+
+.customBatchButton:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #bae4e4;
+    font-weight: 400;
+    letter-spacing: initial;
+}
+
+.customBatchButton::-ms-input-placeholder { /* Microsoft Edge */
+    color: #bae4e4;
+    font-weight: 400;
+    letter-spacing: initial;
+}
+
 .regActiveButton{
     background: #32bf46 !important;
     border: 1px solid #276674 !important;

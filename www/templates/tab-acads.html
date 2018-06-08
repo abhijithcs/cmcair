@@ -31,7 +31,7 @@
     </p>
     <img src="{{resultSmiley}}" style="margin-top: 45px">
     <h1 ng-class="resultColor" style="font-size: 24px">{{resultMessage}}</h1>
-    <canvas id="confeti" width="300" height="300" class="active" style="position: absolute; top: -30px; left: -10px; display: none"></canvas>
+    <canvas id="confeti" width="300" height="300" class="active" style="position: absolute; top: -30px; left: -10px; display: block"></canvas>
   </div>
   
   <div class="row">
@@ -45,7 +45,7 @@
   <ion-content class="padding">
 
 
-  <ion-refresher
+  <ion-refresher ng-if="!isTakingTest"
     on-refresh="doRefresh()">
   </ion-refresher>
 
@@ -78,7 +78,7 @@
 
           <div class="row" style="padding: 0; margin-bottom: 15px" ng-if="isRenderLoaded && leadersDataLoaded && leadersData.toppers.length != 0">
             <div class="infoTile" style="width: 100%; padding: 12px; background: #FF512F; /* fallback for old browsers */ background: -webkit-linear-gradient(to top, #F09819, #FF512F); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to top, #F09819, #FF512F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */">
-                <div class="infoTileHead" style="margin-bottom: 10px; border-bottom: 1px solid rgba(255, 171, 107, 0.6); padding-bottom: 28px;"><span style="color: #FFF; font-weight: 400; text-transform: none; font-size: 16px"><i class="ion-trophy" style="color: #ffc900; font-size: 120%; padding-right: 4px;"></i> <tag style="font-size: 120%">L</tag><tag style="font-weight: 500">eader</tag> <tag style="font-size: 120%">B</tag><tag style="font-weight: 500">oard</tag></span></div>
+                <div class="infoTileHead" style="margin-bottom: 10px; border-bottom: 1px solid rgba(255, 171, 107, 0.6); padding-bottom: 28px;"><span style="color: #FFF; font-weight: 400; text-transform: none; font-size: 16px"><i class="ion-trophy" style="color: #ffc900; font-size: 120%; padding-right: 4px;"></i> Leader Board</span></div>
                 <table style="width: 100%">
                   <tr ng-repeat="top in leadersData.toppers" style="height: 30px">
                     <td><rank style="font-size: 28px; color: #f9bf32; font-weight: 400; text-shadow: 2px 2px 2px #bb4934;">#{{$index + 1}}</rank></td>
@@ -87,7 +87,7 @@
                   </tr>
 
                   <tr ng-if="!leadersData.isUserIncluded && leadersData.user != ''" style="height: 30px; border-top: 1px solid rgba(45, 44, 43, 0.3);">
-                    <td><rank style="font-size: 16px; color: #f9bf32; font-weight: 400; text-shadow: 2px 2px 2px #bb4934;"><img src="../img/icons/tabs/more.png" width="30px"></rank></td>
+                    <td><rank style="font-size: 16px; color: #f9bf32; font-weight: 400; text-shadow: 2px 2px 2px #bb4934;"><img src="./img/icons/tabs/more.png" width="30px"></rank></td>
                     <td style="font-size: 16px; color: #FFF">{{leadersData.user.name}}<span style="display: block; font-size: 11px; color: #FFF;">Scored <b>{{leadersData.user.score}}</b>{{leadersData.user.accuracy ? ' with '+leadersData.user.accuracy+'% accuracy' : ''}} {{leadersData.user.count ? ' from '+leadersData.user.count+' Tests' : ''}}</span></td>
                   </tr>
 
@@ -135,7 +135,7 @@
       
     </div>
     <div class="item item-divider" ng-if="question.image && question.images != ''" style="padding: 0; background: #FFF;">
-      <img src="{{question.image}}" on-error-src="../img/img_not_available.jpg" style="width: 100%">
+      <img src="{{question.image}}" on-error-src="./img/img_not_available.jpg" style="width: 100%">
     </div>
     <div ng-attr-id="{{ 'question_' + question.id}}">
         <div class="item item-divider item-text-wrap" style="min-height: 45px; background: #FFF;" ng-repeat="option in question.options track by $index" ng-click="markChoice(question.id, $index+1)">
@@ -149,7 +149,8 @@
 
 
 
-<i ng-if="!left && isRenderLoaded" style="margin: 20px"><center><img src="img/end.png"></center></i>
+<i ng-if="!left && isRenderLoaded && !isTakingTest" style="margin: 20px"><center><img src="img/end.png"></center></i>
+  
   <ion-infinite-scroll
         immediate-check="false"
         ng-if="left && !isTakingTest"

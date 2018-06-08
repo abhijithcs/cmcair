@@ -44,8 +44,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
         //NOT logged in case.
         if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
-            $state.go('tab.login');
-            ionic.Platform.exitApp();
+            $state.go('login');
         }
 
 
@@ -93,6 +92,7 @@ angular.module('starter.controllers', ['ngCordova'])
                     $scope.left = 1;
                     $scope.limiter = 1;
                     $scope.$broadcast('scroll.refreshComplete');
+                    $scope.renderFailed = false;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -227,14 +227,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
     }])
 
-    // .controller('postDetailCtrl', function($scope) {
-    //  // $scope.chat = Chats.get($stateParams.chatId);
-    //  $scope.chat="Title";
-    //  $scope.content="Content";
-    //  console.log("Hit");
-    // })
-
-
 
     .controller('AppCtrl', function($scope, $state, $http, $ionicLoading, $timeout) {
         $scope.goToTiles = function() {
@@ -242,7 +234,23 @@ angular.module('starter.controllers', ['ngCordova'])
         }
     })
 
-    .controller('tilesCtrl', function($scope, $state, $http, $ionicLoading, $timeout) {
+    .controller('tilesCtrl', function($scope, $state, $http, $ionicLoading, $timeout, $rootScope, $interval) {
+
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
+
+
+        //Tweak --> To stop timer incase state changed while taking test
+        $rootScope.$on('$stateChangeStart', 
+        function(event, toState, toParams, fromState, fromParams){ 
+            if(fromState.name == 'main.mycmc-acads.acads'){
+                $interval.cancel($rootScope.examTimer);
+
+            }
+        })
+
 
         $scope.openPage = function(id) {
 
@@ -294,47 +302,13 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 
-    .controller('postDetailCtrl', ['$scope', '$http', '$stateParams', function($scope, $http, $stateParams) {
-        $http.get("http://cmcair.in/apis/viewpost.php?id=" + $stateParams.postID + "&user=" + localStorage.getItem("token")).then(function(response) {
-            $scope.post = response.data;
-            $scope.liked = response.data.likeFlag;
-        });
-
-        $scope.likedata = {};
-        $scope.liker = function(postID) {
-            $scope.likedata.userID = localStorage.getItem("token");
-            $scope.likedata.postID = postID;
-
-            $http({
-                    method: 'POST',
-                    url: 'http://cmcair.in/apis/likepost.php',
-                    data: $scope.likedata, //forms user object
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                })
-                .success(function(data) {
-                    $scope.liked = !$scope.liked;
-                    $scope.refresher();
-                });
-        };
-
-        $scope.refresher = function() {
-            $http.get("http://cmcair.in/apis/viewpost.php?id=" + $stateParams.postID + "&user=" + localStorage.getItem("token"))
-                .then(function(response) {
-                    $scope.feedsList = response.data;
-                })
-                .finally(function() {
-                    $scope.$broadcast('scroll.refreshComplete');
-                });
-        };
-
-
-    }])
-
-
     .controller('AnnouncementsCtrl', ['$scope', '$http', '$rootScope', '$ionicPopup', '$state', '$ionicLoading', function($scope, $http, $rootScope, $ionicPopup, $state, $ionicLoading) {
 
+
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
 
         $scope.goToTiles = function() {
             $state.go('main.app.tiles')
@@ -438,6 +412,7 @@ angular.module('starter.controllers', ['ngCordova'])
                     $scope.left = 1;
                     $scope.limiter = 1;
                     $scope.$broadcast('scroll.refreshComplete');
+                    $scope.renderFailed = false;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -488,6 +463,11 @@ angular.module('starter.controllers', ['ngCordova'])
 
     .controller('directoryCtrl', ['$scope', '$http', '$ionicLoading', '$state', function($scope, $http, $ionicLoading, $state) {
 
+
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
 
         $scope.goToTiles = function() {
             $state.go('main.app.tiles')
@@ -674,6 +654,11 @@ $scope.renderFailed = 0;
 
     .controller('unionCtrl', ['$scope', '$http', '$ionicLoading', '$state', function($scope, $http, $ionicLoading, $state) {
 
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
+
 
         $scope.goToTiles = function() {
             $state.go('main.app.tiles')
@@ -730,6 +715,7 @@ $scope.renderFailed = 0;
                 .success(function(response) {
                     $scope.userlist = response;
                     $scope.$broadcast('scroll.refreshComplete');
+                    $scope.renderFailed = false;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -764,6 +750,7 @@ $scope.renderFailed = 0;
 
 
     .controller('InfinitySectretaryCtrl', ['$scope', '$http', function($scope, $http) {
+
 
         $http.get("http://cmcair.in/apis/secretaries.php").then(function(response) {
             $scope.userlist = response.data;
@@ -804,7 +791,12 @@ $scope.renderFailed = 0;
 
 
 
-    .controller('EventsCtrl', ['$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($scope, $http, $ionicPopup, $state, $ionicLoading) {
+    .controller('EventsCtrl', ['$ionicScrollDelegate', '$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($ionicScrollDelegate, $scope, $http, $ionicPopup, $state, $ionicLoading) {
+
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
 
 
         $scope.goToTiles = function() {
@@ -869,6 +861,7 @@ $scope.renderFailed = 0;
                     $scope.left = 1;
                     $scope.limiter = 1;
                     $scope.$broadcast('scroll.refreshComplete');
+                    $scope.renderFailed = false;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -937,7 +930,10 @@ $scope.renderFailed = 0;
             $state.go('main.app.tiles')
         }
 
-
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
 
 
         //FIRST LOAD
@@ -949,6 +945,8 @@ $scope.renderFailed = 0;
             template: '<ion-spinner></ion-spinner>'
         });
 
+
+
         $http.get("http://cmcair.in/apis/acads.php?value=0&user="+localStorage.getItem("token"), {
                 timeout: 10000
             })
@@ -959,7 +957,6 @@ $scope.renderFailed = 0;
                 $scope.renderFailed = false;
                 $scope.isRenderLoaded = true;
 
-                console.log($scope.feedsList)
             })
             .error(function(data) {
                 $ionicLoading.hide();
@@ -1015,6 +1012,7 @@ $scope.renderFailed = 0;
                     $scope.left = 1;
                     $scope.limiter = 5;
                     $scope.$broadcast('scroll.refreshComplete');
+                    $scope.renderFailed = false;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -1435,14 +1433,14 @@ $scope.renderFailed = 0;
         //Show Results
         if($scope.respondedQuestions == 0){
             //No questions answered
-            $scope.resultSmiley = '../img/smileys/smiley_sad.png';
+            $scope.resultSmiley = './img/smileys/smiley_sad.png';
             $scope.resultMessage = 'Oops! No questions answered.';
             $scope.resultColor = 'acadResultNegative';
             $scope.resultRound = 'resultRed';
         }
         else if($scope.totalQuestions == $scope.correctlyAnswered){
             //ALL ANSWERED CORRECTLY
-            $scope.resultSmiley = '../img/smileys/smiley_awesome.png';
+            $scope.resultSmiley = './img/smileys/smiley_awesome.png';
             $scope.resultMessage = 'Excellent!';
             $scope.resultColor = 'acadResultPositive';
             $scope.resultRound = 'resultGreen';
@@ -1451,13 +1449,13 @@ $scope.renderFailed = 0;
         }
         else if($scope.respondedQuestions == $scope.correctlyAnswered){ //ALL ANSWERED ARE CORRECT
             if($scope.respondedQuestions/$scope.totalQuestions < 0.6){ //VERY FEW ANSWERED
-                $scope.resultSmiley = '../img/smileys/smiley_smile.png';
+                $scope.resultSmiley = './img/smileys/smiley_smile.png';
                 $scope.resultMessage = 'Good Accuracy. Attempt more questions.';
                 $scope.resultColor = 'acadResultPositive';
                 $scope.resultRound = 'resultGreen';
             }
             else{
-                $scope.resultSmiley = '../img/smileys/smiley_love.png';
+                $scope.resultSmiley = './img/smileys/smiley_love.png';
                 $scope.resultMessage = 'Great Going!';
                 $scope.resultColor = 'acadResultPositive';
                 $scope.resultRound = 'resultGreen';
@@ -1466,25 +1464,25 @@ $scope.renderFailed = 0;
         else if($scope.respondedQuestions != $scope.correctlyAnswered){ //SOME ARE NOT CORRECT
             var accuracy = $scope.correctlyAnswered/$scope.respondedQuestions;
             if(accuracy >= 0.9 ){ //VERY FEW INCORRECT
-                $scope.resultSmiley = '../img/smileys/smiley_love.png';
+                $scope.resultSmiley = './img/smileys/smiley_love.png';
                 $scope.resultMessage = 'Great Going!';
                 $scope.resultColor = 'acadResultPositive';
                 $scope.resultRound = 'resultGreen';
             }
             else if(accuracy >= 0.5){ //VERY FEW INCORRECT
-                $scope.resultSmiley = '../img/smileys/smiley_smile.png';
+                $scope.resultSmiley = './img/smileys/smiley_smile.png';
                 $scope.resultMessage = 'Good Job';
                 $scope.resultColor = 'acadResultPositive';
                 $scope.resultRound = 'resultGreen';
             }
             else if(accuracy > 0.2){ //VERY FEW INCORRECT
-                $scope.resultSmiley = '../img/smileys/smiley_sad.png';
+                $scope.resultSmiley = './img/smileys/smiley_sad.png';
                 $scope.resultMessage = 'Less Accuracy';
                 $scope.resultColor = 'acadResultNegative';
                 $scope.resultRound = 'resultRed';
             }
             else if(accuracy <= 0.2){ //ALMOST ALL INCORRECT
-                $scope.resultSmiley = '../img/smileys/smiley_cry.png';
+                $scope.resultSmiley = './img/smileys/smiley_cry.png';
                 $scope.resultMessage = 'That\'s Sad!';
                 $scope.resultColor = 'acadResultSad';
                 $scope.resultRound = 'resultRed';
@@ -1507,7 +1505,8 @@ $scope.renderFailed = 0;
 
     $scope.testDone = function(){
         $scope.isTakingTest = false;
-        $scope.isTestCompleted = false;       
+        $scope.isTestCompleted = false; 
+        $ionicScrollDelegate.scrollTop();      
     }
 
 
@@ -1577,7 +1576,7 @@ $scope.renderFailed = 0;
                       }, function (error) {
                             $ionicLoading.hide();
                             $ionicLoading.show({
-                                template: "Error while downloading the file",
+                                template: "Error while downloading the file - "+ error,
                                 duration: 3000
                             });
                       }, function (progress) {
@@ -1591,8 +1590,13 @@ $scope.renderFailed = 0;
     }])
 
 
-    .controller('BlogsCtrl', ['$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($scope, $http, $ionicPopup, $state, $ionicLoading) {
+    .controller('BlogsCtrl', ['$ionicScrollDelegate', '$scope', '$http', '$ionicPopup', '$state', '$ionicLoading', function($ionicScrollDelegate, $scope, $http, $ionicPopup, $state, $ionicLoading) {
 
+
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
 
         $scope.goToTiles = function() {
             $state.go('main.app.tiles')
@@ -1622,6 +1626,8 @@ $scope.renderFailed = 0;
 
             $scope.isViewing = true;
             $scope.viewContent = content;
+
+            $ionicScrollDelegate.scrollTop();
 
                 var myData = {};
                 myData.id = content.blogID;
@@ -1721,6 +1727,7 @@ $scope.renderFailed = 0;
                     $scope.left = 1;
                     $scope.limiter = 1;
                     $scope.$broadcast('scroll.refreshComplete');
+                    $scope.renderFailed = false;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -1765,7 +1772,25 @@ $scope.renderFailed = 0;
     }])
 
 
-    .controller('SettingsCtrl', ['$scope', '$http', function($scope, $http) {
+    .controller('SettingsCtrl', ['$scope', '$http', '$rootScope', '$interval', '$state', function($scope, $http, $rootScope, $interval, $state) {
+
+
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
+
+
+        //Tweak --> To stop timer incase state changed while taking test
+        $rootScope.$on('$stateChangeStart', 
+        function(event, toState, toParams, fromState, fromParams){ 
+            if(fromState.name == 'main.mycmc-acads.acads'){
+                $interval.cancel($rootScope.examTimer);
+
+            }
+        })
+
+
         if (localStorage.getItem("postFlag") == 1) {
             $scope.flag = true;
         } else {
@@ -1807,7 +1832,8 @@ $scope.renderFailed = 0;
             localStorage.setItem("postFlag", "");
             localStorage.setItem("postAdminFlag", "");
             localStorage.setItem("notification", "");
-            ionic.Platform.exitApp();
+            
+            $state.go('login');
         };
 
         // NOTIFICATION CUSTOMISATION
@@ -1840,6 +1866,10 @@ $scope.renderFailed = 0;
 
     .controller('PostTimelineCtrl', ['$scope', '$http', '$state', '$cordovaImagePicker', '$cordovaFileTransfer', '$ionicLoading', function($scope, $http, $state, $cordovaImagePicker, $cordovaFileTransfer, $ionicLoading) {
 
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
 
         if (localStorage.getItem("postAdminFlag") == 1) {
             $scope.adminFlag = true;
@@ -1980,7 +2010,10 @@ $scope.renderFailed = 0;
             $state.go('tab.settings');
         }
 
-
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
 
         $scope.data = {};
 
@@ -2065,30 +2098,19 @@ $scope.renderFailed = 0;
 
     .controller('PostAnnouncementCtrl', ['$scope', '$http', '$state', '$ionicLoading', function($scope, $http, $state, $ionicLoading) {
         
+        //NOT logged in case.
+        if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
+            $state.go('login');
+        }
 
         $scope.goToAccount = function(){
             $state.go('tab.settings');
         }
 
-        $scope.batchList = [
-            {'batch': 55, 'strength': 150},
-            {'batch': 56, 'strength': 150},
-            {'batch': 57, 'strength': 150},
-            {'batch': 58, 'strength': 150},
-            {'batch': 59, 'strength': 150},
-            {'batch': 60, 'strength': 150},
-            {'batch': 61, 'strength': 150},
-            {'batch': 62, 'strength': 150},
-            {'batch': 63, 'strength': 150},
-            {'batch': 64, 'strength': 150},
-            {'batch': 65, 'strength': 150}
-        ]
-
-
         //Fetch meta data - all batches
-        $http.get("http://cmcair.in/apis/fetchbatchdata.php")
+        $http.get("http://cmcair.in/apis/getbatches.php")
             .then(function(response) {
-                $scope.batchList = response.data.response;
+                $scope.batchList = response.data;
             });
 
 
@@ -2186,10 +2208,6 @@ $scope.renderFailed = 0;
                 //By default, do not show any error message.
                 $scope.errorFlag = 0;
 
-                $ionicLoading.show({
-                    template: '<ion-spinner></ion-spinner>'
-                });
-
 
                 if (/^\d{10}$/.test(mobile)) {
                     //Valid Mobile Number. Send OTP and verify it.
@@ -2285,6 +2303,15 @@ $scope.renderFailed = 0;
                                     }
                                 }
 
+                                //Fetch meta data - all batches
+                                $http.get("http://cmcair.in/apis/getbatches.php")
+                                    .then(function(response) {
+                                        $scope.batchList = response.data;
+                                    });
+
+
+
+
                                 $scope.otp_original = response.code;
 
                                 $scope.newuser = {};
@@ -2308,7 +2335,7 @@ $scope.renderFailed = 0;
 
 
                 } else {
-
+                    
                     $scope.errorFlag = 0;
                     $ionicPopup.alert({
                         title: "Invalid Mobile Number",
@@ -2321,9 +2348,18 @@ $scope.renderFailed = 0;
 
         $scope.setUserBatch = function(batch){
             $scope.newuser.batch = batch;
+            document.getElementById("customInputBatch").value = '';
+        }
+
+        $scope.customBatch = function(){
+            $scope.newuser.batch = '';
         }
 
         $scope.registerUser = function(new_name, new_batch, new_mobile, new_otp){
+
+            if(!new_batch || new_batch == ''){
+                new_batch = document.getElementById("customInputBatch").value;
+            }
 
             if(new_name == '' || new_batch == '' || new_mobile == '' || new_otp == ''){
                 $ionicLoading.show({

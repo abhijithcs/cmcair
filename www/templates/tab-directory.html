@@ -23,7 +23,7 @@
   <ion-content class="padding">
 
 
-  <ion-refresher
+  <ion-refresher ng-if="!isViewingExpanded"
     on-refresh="doRefresh()">
   </ion-refresher>
 
@@ -78,7 +78,7 @@
 
                   <!-- Person Card -->
                   <a ng-if="contact.isPerson" class="item item-thumbnail-left eventHead2" href="tel:{{contact.contact}}" style="padding-left: 112px; min-height: 100px;">
-                    <img src="{{contact.photo}}" on-error-src="../img/default-person.png">
+                    <img src="{{contact.photo}}" on-error-src="./img/default-person.png">
                     <h2 style="color: #FFF"><strong>{{contact.name != '' ? contact.name : contact.title}}</strong></h2>
                     <p style="color: #366557">{{contact.title}}</p>
                     <p style="color: #366557">{{contact.contact}}</p>
@@ -113,7 +113,7 @@
 
         <!-- Person Card -->
         <a ng-if="contact.isPerson" class="item item-thumbnail-left eventHead2" href="tel:{{contact.contact}}" style="padding-left: 112px; min-height: 100px;">
-          <img src="{{contact.photo}}" on-error-src="../img/default-person.png">
+          <img src="{{contact.photo}}" on-error-src="./img/default-person.png">
           <h2 style="color: #FFF"><strong>{{contact.name != '' ? contact.name : contact.title}}</strong></h2>
           <p style="color: #366557">{{contact.title}}</p>
           <p style="color: #366557">{{contact.contact}}</p>
@@ -145,18 +145,6 @@
 </div> <!-- viewing contacts -->
 
 
-<!-- 
-	<h1 ng-if="headlist.length > 1" style="font-weight: 300; font-size: 32px; color: #95c93e; border-bottom: 1px solid rgb(93, 184, 122); margin-top: 10px">Batch Heads</h1>
-
-	<div class="list" ng-repeat="user in headlist" style="margin-bottom: 5px">
-	    <a class="item item-thumbnail-left eventHead2" href="tel:{{user.userID}}">
-	      <img src="http://cmcair.in/images/people/{{user.userID}}.jpg" on-error-src="../img/default-person.png">
-	      <h2 style="color: #FFF"><strong>{{user.userName}}</strong></h2>
-	      <p style="color: #366557">{{user.userBatch}}</p>
-	      <p style="color: #366557">{{user.userID}}</p>
-	    </a>
-	</div>
- -->
 
   </ion-content>
 </ion-view>

@@ -32,7 +32,7 @@
 		    </div>
 		    <select ng-model="data.for">
 		        <option value="0">All Users</option>
-		        <option value="{{batch.batch}}" ng-repeat="batch in batchList">{{batch.batch}} Batch ({{batch.strength}} Users)</option>
+		        <option value="{{batch}}" ng-repeat="batch in batchList">{{batch}} Batch</option>
 		    </select>
 		</label>	   
 	   <p style="color: #e74c3c; padding: 10px 5px" ng-if="errorFlag">{{errorMsg}}</p>
