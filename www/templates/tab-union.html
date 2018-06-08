@@ -8,7 +8,7 @@
             </button>  
 
             <button class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="goToTiles()">
-              <i class="icon ion-arrow-return-left"></i> 
+              <i class="icon ion-navicon"></i> 
             </button>  
 
 
@@ -50,7 +50,7 @@
 
 	<div class="list" ng-repeat="user in userlist" style="margin-bottom: 5px">
 	    <a class="item item-thumbnail-left eventHead1" href="tel:{{user.userID}}">
-	      <img src="http://cmcair.in/images/people/{{user.userID}}.jpg" on-error-src="../img/default-person.png">
+	      <img src="http://cmcair.in/images/people/{{user.userID}}.jpg" on-error-src="./img/default-person.png">
 	      <h2 style="color: #FFF"><strong>{{user.userName}}</strong></h2>
 	      <p style="color: #8a1d3f">{{user.userBatch}}</p>
 	      <p style="color: #8a1d3f">{{user.userID}}</p>
@@ -62,7 +62,7 @@
 
 	<div class="list" ng-repeat="user in headlist" style="margin-bottom: 5px">
 	    <a class="item item-thumbnail-left eventHead2" href="tel:{{user.userID}}">
-	      <img src="http://cmcair.in/images/people/{{user.userID}}.jpg" on-error-src="../img/default-person.png">
+	      <img src="http://cmcair.in/images/people/{{user.userID}}.jpg" on-error-src="./img/default-person.png">
 	      <h2 style="color: #FFF"><strong>{{user.userName}}</strong></h2>
 	      <p style="color: #366557">{{user.userBatch}}</p>
 	      <p style="color: #366557">{{user.userID}}</p>

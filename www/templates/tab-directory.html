@@ -1,0 +1,150 @@
+<ion-view view-title="CMC Directory" style="background: #ecf0f1;" hide-nav-bar="true">
+
+      <ion-header-bar class="bar-positive">
+         <div class="buttons" style="position: absolute; top: 5px; left: 5px; bottom: 5px; width: 100%">
+
+            <button class="button button-clear" style="text-align: left; margin-left: 10px; font-weight: 500; color: #FFF; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size: 18px;">
+             CMC Directory
+            </button>  
+
+            <button ng-show="!isViewingExpanded" class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="goToTiles()">
+              <i class="icon ion-navicon"></i> 
+            </button>  
+
+            <button ng-show="isViewingExpanded" class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="cancelExpandView()">
+              <i class="icon ion-ios-arrow-back"></i> 
+            </button>  
+
+
+
+         </div>
+
+      </ion-header-bar>
+  <ion-content class="padding">
+
+
+  <ion-refresher ng-if="!isViewingExpanded"
+    on-refresh="doRefresh()">
+  </ion-refresher>
+
+
+
+
+<!-- Loader Dummy Tiles -->
+<div ng-if="!isRenderLoaded && !renderFailed">
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+
+    <div class="row" style="padding: 10px 0 0 0"> <div class="infoTile" style="width: 100%;"> <div class="infoTileHead" style="width: 40%; height: 18px; display: inline-block;"> <div class="loaderDummyTile" style="height: 18px"></div> </div> <div class="infoTileHead" style="margin-top: 10px; width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> <div class="infoTileHead" style="width: 100%; height: 15px; display: inline-block;"> <div class="loaderDummyTile" style="height: 15px"></div> </div> </div> </div>
+</div>
+
+<div ng-if="renderFailed" style="padding: 40px 20px 20px 20px;">
+  <center>
+    <img src="img/error_icon.png">
+    <p style="color: #e88f8f; margin: 10px; font-size: 15px;">Unable to fetch data. Try again.</p>
+  </center>
+</div>
+
+
+<!-- FIRST LEVEL VIEW -->
+<div ng-if="!isViewingExpanded">
+	<div class="list" ng-repeat="main in directoryData" style="margin-bottom: 5px" ng-click="expandCategory(main.hasSubCategories, main.content)">
+	    <div class="item">
+        <tag style="float: left; margin-right: 10px"><i class="icon ion-chevron-right"></i></tag>
+	      <h2 style="font-size: 18px; font-weight: 400 !important; color: #444; letter-spacing: inherit;">{{main.mainName}}</h2>
+	    </div>
+	</div>
+</div>
+
+
+<!-- SECOND LEVEL EXPANDED VIEW -->
+<div ng-if="isViewingExpanded">
+
+  <!-- has sub categories -->
+  <div ng-if="expandHasSubCategories">
+
+    <div ng-repeat="subCategory in expandContent">
+
+              <h1 ng-if="subCategory.subName != ''" style="font-weight: 300; font-size: 32px; color: #95c93e; margin-top: 10px" class="gradient1">{{subCategory.subName}}</h1>
+
+
+              <!-- iterate through each sub cat. -->
+              <div class="list" ng-repeat="contact in subCategory.content" style="margin-bottom: 10px">
+
+                  <!-- Person Card -->
+                  <a ng-if="contact.isPerson" class="item item-thumbnail-left eventHead2" href="tel:{{contact.contact}}" style="padding-left: 112px; min-height: 100px;">
+                    <img src="{{contact.photo}}" on-error-src="./img/default-person.png">
+                    <h2 style="color: #FFF"><strong>{{contact.name != '' ? contact.name : contact.title}}</strong></h2>
+                    <p style="color: #366557">{{contact.title}}</p>
+                    <p style="color: #366557">{{contact.contact}}</p>
+                    <p style="color: #366557; white-space: initial">{{contact.address}}</p>
+                  </a>
+
+                  <!-- Shop Card -->
+                  <div class="card" style="margin: 0" ng-if="!contact.isPerson">
+                      <div class="item">
+                        <h2 style="color: #e74c3c; font-size: 21px;">{{contact.name != '' ? contact.name : contact.title}}</h2>
+                        <p>{{contact.title}}</p>
+                        <p style="color: #bdc3c7; white-space: initial">{{contact.address}}</p>
+                      </div>
+                      <div class="item item-image" ng-if="shop.flag">
+                        <img src="{{contact.photo}}">
+                      </div>
+                      <a class="item item-icon-left assertive" href="tel:{{contact.contact}}">
+                        <i class="icon ion-android-call"></i>
+                        {{contact.contact}}
+                      </a>          
+                  </div>
+
+              </div> <!-- contacts in each sub cat. -->
+    </div> <!-- sub cats -->
+  </div> <!-- has sub cats -->
+
+
+  <!-- no sub categories -->
+  <div ng-if="!expandHasSubCategories">
+    
+    <div class="list" ng-repeat="contact in expandContent" style="margin-bottom: 10px">
+
+        <!-- Person Card -->
+        <a ng-if="contact.isPerson" class="item item-thumbnail-left eventHead2" href="tel:{{contact.contact}}" style="padding-left: 112px; min-height: 100px;">
+          <img src="{{contact.photo}}" on-error-src="./img/default-person.png">
+          <h2 style="color: #FFF"><strong>{{contact.name != '' ? contact.name : contact.title}}</strong></h2>
+          <p style="color: #366557">{{contact.title}}</p>
+          <p style="color: #366557">{{contact.contact}}</p>
+          <p style="color: #366557; white-space: initial">{{contact.address}}</p>
+        </a>
+
+        <!-- Shop Card -->
+        <div class="card" style="margin: 0" ng-if="!contact.isPerson">
+            <div class="item">
+              <h2 style="color: #e74c3c; font-size: 21px;">{{contact.name != '' ? contact.name : contact.title}}</h2>
+              <p>{{contact.title}}</p>
+              <p style="color: #bdc3c7; white-space: initial">{{contact.address}}</p>
+            </div>
+            <div class="item item-image" ng-if="shop.flag">
+              <img src="{{contact.photo}}">
+            </div>
+            <a class="item item-icon-left assertive" href="tel:{{contact.contact}}">
+              <i class="icon ion-android-call"></i>
+              {{contact.contact}}
+            </a>          
+        </div>
+
+    </div> <!-- contacts in this category -->
+
+  </div><!--  no sub cat. -->
+ 
+
+
+</div> <!-- viewing contacts -->
+
+
+
+  </ion-content>
+</ion-view>

@@ -12,6 +12,13 @@
 
 
   <ion-content class="" >
+
+    <ion-refresher
+    on-refresh="checkStatus()">
+  </ion-refresher>
+
+
+
   <div class="list">
 
     <div ng-if="flag">
@@ -24,23 +31,23 @@
       </div>
 
       <a class="item item-icon-left eventHead1" style="color: #FFF; border-color: #e4265f;" href="#/tab/post-timeline">
-        <i class="icon ion-ios-bookmarks-outline" style="color: #bf384c"></i>
+        <i class="icon ion-compose" style="color: #bd3b59"></i>
         Post on Timeline
       </a>
 
       <a ng-if="adminFlag" class="item item-icon-left eventHead1" style="color: #FFF; border-color: #e4265f;" href="#/tab/post-event">
-        <i class="icon ion-ios-calendar-outline" style="color: #bf384c"></i>
+        <i class="icon ion-calendar" style="color: #bd3b59"></i>
         Create an Event
       </a>
 
       <a ng-if="adminFlag" class="item item-icon-left eventHead1" style="color: #FFF; border-color: #e4265f;" href="#/tab/post-announcement">
-        <i class="icon ion-android-microphone" style="color: #bf384c"></i>
+        <i class="icon ion-android-microphone" style="color: #bd3b59"></i>
         Make an Announcement
       </a>
 
     </div>
     <div ng-if="!flag" class="padding" style="background: #e74c3c">
-      <p style="color: #FFF; font-size: 12px; font-weight: 300;">You are blocked from making posts on CMC Air. Drop a mail to editor@cmcair.in if you feel it is by mistake.</p>
+      <p style="color: #FFF; font-size: 14px; font-weight: 400; margin: 0;"><tag style="color: #e74c3c; font-size: 80%; background: #FFF; padding: 3px 5px; font-weight: bold; border-radius: 2px;">ACCOUNT NOT VERIFIED</tag> You will get Access to post on the App only after the verification by the Editor. It usually takes 24 - 48 Hrs after completing the One Time Registration. In case it takes more time please contact <b>editor@cmcair.in</b></p>
     </div>
 
 
@@ -56,8 +63,7 @@
       <i class="icon" style="color: #c0392b;"><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner></i>
       {{user_mob}}
     </li>
-    <li class="item item-icon-left item-text-wrap" style="color: #9aa6ad; border-color: #fbfbfb; font-size: 85%">
-      <i class="icon ion-ios-loop"></i>
+    <li class="item item-icon-left item-text-wrap" style="color: #9aa6ad; border-color: #fbfbfb; font-size: 85%; padding: 2px 10px 6px 12px; border-top: none; font-style: italic;">
       Logged in since {{userdata.lastlogin}}
     </li>
     <div class="item item-divider" style="">

@@ -8,7 +8,7 @@
             </button>  
 
             <button class="button button-clear clearSearchFilterButton" style="position: absolute; top: 0px; right: 10px;" ng-click="goToTiles()">
-              <i class="icon ion-arrow-return-left"></i> 
+              <i class="icon ion-navicon"></i> 
             </button>  
 
 
@@ -20,7 +20,7 @@
 
   <ion-content class="padding">
 
-  <button ng-if="tableMetaData.flag" class="button button-block button-energized" style="background: #2c3e50;color: #f39c12">
+  <button ng-if="tableMetaData.flag" class="button button-block button-energized" style="background: #2c3e50;color: #f39c12; margin: 0; border: none; border-radius: 0;">
     {{tableMetaData.title}}
   </button>
 
@@ -70,8 +70,8 @@
 
 
         <div class="item item-body">
-          <p style="color: #16a085; font-size: 21px; line-height: 24px; font-weight: 300;">{{feed.content}}</p>
-          <p style="font-size: 12px;"><i class="icon ion-person"></i> {{feed.user}} ({{feed.role}})<br>
+          <p style="color: #16a085; font-size: 21px; line-height: 24px; font-weight: 400;" ng-class="getColor(feed.postID)">{{feed.content}}</p>
+          <p style="font-size: 12px;"><i class="icon ion-person"></i> {{feed.user}} {{feed.role != 'Student' ? '('+feed.role+')' : ''}}<br>
           <tag style="color:#B6B6B6"><i class="icon ion-ios-clock-outline"></i> {{feed.time}}</tag>
           <i ng-if="feed.selfFlag" on-hold="deleteAnnouncement(feed.postID, $index)" class="icon ion-trash-a pull-right" on-tap="deleteAnnouncement(feed.postID, $index)" id="{{feed.postID}}" style ="color:#e74c3c; float: right; font-size: 21px;"></i></p>
         </div>

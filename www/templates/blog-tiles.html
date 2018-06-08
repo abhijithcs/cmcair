@@ -1,8 +1,8 @@
-<ion-view class="login-view auth-view" cache-view="false" hide-nav-bar="true">
-  <ion-content has-bouncing="false" style="background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);">
+<ion-view class="login-view auth-view" cache-view="false" hide-nav-bar="true" style="background: none">
+  <ion-content has-bouncing="false" ng-class="getTheme()">
     <div class="row form-row" style="padding-top: 40px">
       <div class="col">
-        <form name="login_form" class="form-container" style="margin: 15px" novalidate>
+        <form name="login_form" class="form-container" style="margin: 15px">
           <center><img src="./img/logo_big.png" width="50%"></center>
 
           <div class="row">
@@ -43,7 +43,7 @@
           <div class="row">
             <div class="tileBox" ng-click="openPage('DIRECTORY')">
               <tag>
-                <span style="display: block; font-size: 42px"><i class="icon ion-medkit"></i></span>
+                <span style="display: block; font-size: 42px"><i class="icon ion-android-call"></i></span>
                 <span style="line-height: 26px; display: block">Directory</span>
               </tag>
             </div>
@@ -51,7 +51,7 @@
             <div class="tileBox" ng-click="openPage('ACADS')">
               <tag>
                 <span style="display: block; font-size: 42px"><i class="icon ion-university"></i></span>
-                <span style="line-height: 26px; display: block">Target PG
+                <span style="line-height: 26px; display: block">Study Corner
                   <tag style="margin-top: -10px; display: block; position: fixed; font-size: 10px; color: #2e5e71;">by Dr Bhatia</tag>
                 </span>
               </tag>
