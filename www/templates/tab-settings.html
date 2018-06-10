@@ -3,7 +3,7 @@
       <ion-header-bar class="bar-positive">
          <div class="buttons" style="position: absolute; top: 5px; left: 5px; bottom: 5px; width: 100%">
 
-            <button class="button button-clear" style="text-align: left; margin-left: 10px; font-weight: 500; color: #FFF; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size: 18px;">
+            <button class="button button-clear" style="text-align: center; margin-left: 10px; font-weight: 500; color: #FFF; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size: 18px;">
              My Account
             </button>  
          </div>
@@ -22,25 +22,25 @@
   <div class="list">
 
     <div ng-if="flag">
-      <div ng-if="adminFlag" class="item item-divider eventHead5" style="color: #FFF">
+      <div ng-if="adminFlag" class="item item-divider eventHead5" style="color: #FFF; border-top: 0">
             Admin Features
       </div>
-      <div ng-if="!adminFlag" class="item item-divider eventHead5" style="color: #FFF">
+      <div ng-if="!adminFlag" class="item item-divider eventHead5" style="color: #FFF; border-top: 0">
             Make a Post
             <p style="color: #bdc3c7"></p>
       </div>
 
-      <a class="item item-icon-left eventHead1" style="color: #FFF; border-color: #e4265f;" href="#/tab/post-timeline">
+      <a class="item item-icon-left" style="color: #bd3b58; border-color: #f5f5f5;" href="#/tab/post-timeline">
         <i class="icon ion-compose" style="color: #bd3b59"></i>
         Post on Timeline
       </a>
 
-      <a ng-if="adminFlag" class="item item-icon-left eventHead1" style="color: #FFF; border-color: #e4265f;" href="#/tab/post-event">
+      <a ng-if="adminFlag" class="item item-icon-left" style="color: #bd3b58; border-color: #f5f5f5;" href="#/tab/post-event">
         <i class="icon ion-calendar" style="color: #bd3b59"></i>
         Create an Event
       </a>
 
-      <a ng-if="adminFlag" class="item item-icon-left eventHead1" style="color: #FFF; border-color: #e4265f;" href="#/tab/post-announcement">
+      <a ng-if="adminFlag" class="item item-icon-left" style="color: #bd3b58; border-color: #f5f5f5;" href="#/tab/post-announcement">
         <i class="icon ion-android-microphone" style="color: #bd3b59"></i>
         Make an Announcement
       </a>
@@ -60,10 +60,10 @@
       {{userdata.name}}
     </li>
     <li class="item item-icon-left" style="color: #9aa6ad; border-color: #fbfbfb;">
-      <i class="icon" style="color: #c0392b;"><ion-spinner icon="ripple" class="spinner-assertive"></ion-spinner></i>
+      <i class="icon ion-ios-telephone"></i>
       {{user_mob}}
     </li>
-    <li class="item item-icon-left item-text-wrap" style="color: #9aa6ad; border-color: #fbfbfb; font-size: 85%; padding: 2px 10px 6px 12px; border-top: none; font-style: italic;">
+    <li class="item item-icon-left item-text-wrap" style="color: #9aa6ad; border-color: #fbfbfb; font-size: 80%; padding: 2px 10px 6px 12px; border-top: none;">
       Logged in since {{userdata.lastlogin}}
     </li>
     <div class="item item-divider" style="">

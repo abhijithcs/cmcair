@@ -1,15 +1,22 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.cmcair.android" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.accelerate.cmcair" version="2.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>CMC Air</name>
     <description>
         Students Union of Calicut Medical College 
     </description>
-    <author email="anasjafry@accelerate.net.in" href="http://www.accelerate.net.in/">
+    <author email="support@accelerate.net.in" href="http://www.accelerate.net.in/">
       Accelerate
     </author>
     <content src="index.html" />
     <access origin="*" />
     <access launch-external="yes" origin="tel:*" />
+    <allow-navigation href="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
