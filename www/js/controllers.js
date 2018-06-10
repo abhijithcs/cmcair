@@ -2056,9 +2056,6 @@ $scope.renderFailed = 0;
                 $scope.errorMsg = "Maximum Content length is 200 characters.";
             } else { //Success Case - accept input.
 
-                alert($scope.data.for)
-
-
                 $ionicLoading.show({ template: '<ion-spinner></ion-spinner>' });
                 $http({
                         method: 'POST',
@@ -2103,7 +2100,7 @@ $scope.renderFailed = 0;
 
     }])
 
-    .controller('LoginCtrl', ['$scope', '$state', '$http', '$ionicPopup', '$ionicLoading', function($scope, $state, $http, $ionicPopup, $ionicLoading) {
+    .controller('LoginCtrl', ['$ionicModal', '$scope', '$state', '$http', '$ionicPopup', '$ionicLoading', function($ionicModal, $scope, $state, $http, $ionicPopup, $ionicLoading) {
 
         $ionicLoading.show({
             template: '<ion-spinner></ion-spinner>'
@@ -2329,6 +2326,31 @@ $scope.renderFailed = 0;
                 });                
 
         }
+
+
+
+        $ionicModal.fromTemplateUrl('templates/legal/privacy-policy.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.privacy_policy_modal = modal;
+        });
+
+        $ionicModal.fromTemplateUrl('templates/legal/terms-of-service.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.terms_of_service_modal = modal;
+        });
+
+        $scope.showTerms = function() {
+            $scope.terms_of_service_modal.show();
+        };
+
+        $scope.showPrivacyPolicy = function() {
+            $scope.privacy_policy_modal.show();
+        };
+
 
 
     }]);

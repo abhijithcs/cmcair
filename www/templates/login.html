@@ -52,7 +52,7 @@
       </div>
       <p style="color: #FFC300; font-weight: bold; text-align: center" ng-if="errorFlag">{{errorMessage}}</p>
       <button class="button button-block button-balanced" ng-click="login(mobile)">Login</button>
-      <p style="color: #FFF; font-size: 10px; text-align: center"><a style="text-decoration: underline; color: #FFF" onclick="window.open('https://www.cmcair.in/privacy.html', '_system', 'location=yes'); return false;" href="#">Privacy Policy</a> | <a style="text-decoration: underline; color: #FFF" onclick="window.open('https://www.cmcair.in/terms.html', '_system', 'location=yes'); return false;" href="#">Terms</a></p>
+      <p style="color: #FFF; font-size: 10px; text-align: center"><a style="text-decoration: underline; color: #FFF" ng-click="showPrivacyPolicy()" href="#">Privacy Policy</a> | <a style="text-decoration: underline; color: #FFF" ng-click="showTerms()" href="#">Terms</a></p>
     </div>
   </ion-content>
 </ion-view>
