@@ -93,6 +93,7 @@ angular.module('starter.controllers', ['ngCordova'])
                     $scope.limiter = 1;
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.renderFailed = false;
+                    $scope.isRenderLoaded = true;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -413,6 +414,7 @@ angular.module('starter.controllers', ['ngCordova'])
                     $scope.limiter = 1;
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.renderFailed = false;
+                    $scope.isRenderLoaded = true;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -572,84 +574,6 @@ $scope.renderFailed = 0;
 
 
 
-        // //FIRST LOAD
-        // $scope.renderFailed = false;
-        // $scope.isRenderLoaded = false;
-
-        // $ionicLoading.show({
-        //     template: '<ion-spinner></ion-spinner>'
-        // });
-
-        // $http.get("http://cmcair.in/apis/secretaries.php", {
-        //         timeout: 10000
-        //     })
-        //     .success(function(response) {
-        //         $scope.userlist = response;
-
-        //         $ionicLoading.hide();
-        //         $scope.renderFailed = false;
-        //         $scope.isRenderLoaded = true;
-        //     })
-        //     .error(function(data) {
-        //         $ionicLoading.hide();
-        //         $ionicLoading.show({
-        //             template: "Not responding. Check your connection.",
-        //             duration: 3000
-        //         });
-
-        //         $scope.renderFailed = true;
-        //         $scope.$broadcast('scroll.refreshComplete');
-
-        //     });
-
-
-        // $http.get("http://cmcair.in/apis/heads.php", {
-        //         timeout: 10000
-        //     })
-        //     .success(function(response) {
-        //         $scope.headlist = response;
-        //     })
-        //     .error(function(data) {
-
-        //     });
-
-        // //REFRESHER
-        // $scope.doRefresh = function() {
-
-        //     $http.get("http://cmcair.in/apis/secretaries.php", {
-        //             timeout: 10000
-        //         })
-        //         .success(function(response) {
-        //             $scope.userlist = response;
-        //             $scope.$broadcast('scroll.refreshComplete');
-        //         })
-        //         .error(function(data) {
-        //             $ionicLoading.show({
-        //                 template: "Not responding. Check your connection.",
-        //                 duration: 3000
-        //             });
-
-        //             $scope.$broadcast('scroll.refreshComplete');
-
-        //         });
-        
-                
-        //         $http.get("http://cmcair.in/apis/heads.php", {
-        //                 timeout: 10000
-        //             })
-        //             .success(function(response) {
-        //                 $scope.headlist = response;
-        //                 $scope.$broadcast('scroll.refreshComplete');
-        //             })
-        //             .error(function(data) {
-        //                 $scope.$broadcast('scroll.refreshComplete');
-        //             });
-
-        // };
-
-
-
-
     }])
 
     .controller('unionCtrl', ['$scope', '$http', '$ionicLoading', '$state', function($scope, $http, $ionicLoading, $state) {
@@ -716,6 +640,7 @@ $scope.renderFailed = 0;
                     $scope.userlist = response;
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.renderFailed = false;
+                    $scope.isRenderLoaded = true;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -862,6 +787,7 @@ $scope.renderFailed = 0;
                     $scope.limiter = 1;
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.renderFailed = false;
+                    $scope.isRenderLoaded = true;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -1013,6 +939,7 @@ $scope.renderFailed = 0;
                     $scope.limiter = 5;
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.renderFailed = false;
+                    $scope.isRenderLoaded = true;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -1561,28 +1488,13 @@ $scope.renderFailed = 0;
 
         //Download References
           $scope.downloadReference = function (url) {
-              ionic.Platform.ready(function(){
-                     var filename = url.split("/").pop();
-                     var targetPath = cordova.file.externalRootDirectory + 'CMCAIR/' + filename;
-         
-                      $ionicLoading.show({ template: '<ion-spinner></ion-spinner>' });
 
-                      $cordovaFileTransfer.download(url, targetPath, {}, true).then(function (result) {
-                            $ionicLoading.hide();
-                            $ionicLoading.show({
-                                template: "File saved to "+targetPath,
-                                duration: 3000
-                            });
-                      }, function (error) {
-                            $ionicLoading.hide();
-                            $ionicLoading.show({
-                                template: "Error while downloading the file - "+ error,
-                                duration: 3000
-                            });
-                      }, function (progress) {
-                            $scope.downloadProgress = (progress.loaded / progress.total) * 100;
-                      });
-              });
+                ionic.Platform.ready(function(){
+                    var hostUrl = encodeURI(url);
+                    //var ref = cordova.InAppBrowser.open(hostUrl, '_system', 'location=yes');
+                    window.open(hostUrl, "_system", "toolbar=yes");
+                    return false;
+                });
           }
 
 
@@ -1728,6 +1640,7 @@ $scope.renderFailed = 0;
                     $scope.limiter = 1;
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.renderFailed = false;
+                    $scope.isRenderLoaded = true;
                 })
                 .error(function(data) {
                     $ionicLoading.show({
@@ -2335,7 +2248,7 @@ $scope.renderFailed = 0;
 
 
                 } else {
-                    
+
                     $scope.errorFlag = 0;
                     $ionicPopup.alert({
                         title: "Invalid Mobile Number",
