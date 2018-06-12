@@ -60,8 +60,8 @@
   </div>
 
   <div class="blog-author">
-    <div class="gradient2">
-      <h1>{{viewContent.title}}</h1>
+    <div>
+      <h1 ng-class="getRandomTitleColor(viewContent.blogID)">{{viewContent.title}}</h1>
     </div>
     <hr>
     <p>{{viewContent.author}}<tag style="float: right; font-size: 85%; color: gray; text-transform: none"><i class="icon ion-eye"></i> {{viewContent.views}} Views</tag></p>
