@@ -475,90 +475,72 @@ angular.module('starter.controllers', ['ngCordova'])
             $state.go('main.app.tiles')
         }
 
-$scope.isRenderLoaded = 1;
-$scope.renderFailed = 0;
-
-
         $scope.isViewingExpanded = false;
 
-        $scope.directoryData = [{
-        "mainName": "Emergency Contacts",
-        "isPublic": false,
-        "hasSubCategories": false,
-        "content": [{
-                "isPerson": true,
-                "title": "Anti Ragging Head",
-                "name": "Dr. Ajith Mohan",
-                "address": "Address Goes Here",
-                "photo": "",
-                "contact": "9842013102"
-            },
-            {
-                "isPerson": true,
-                "title": "Anti Ragging Lead",
-                "name": "Dr. Mohan Perera",
-                "address": "",
-                "photo": "",
-                "contact": "9842013102"
-            },
-            {
-                "isPerson": false,
-                "title": "Fire Force Station",
-                "name": "",
-                "address": "Near Kizhakkethala, Calicut",
-                "photo": "http://cmcair.in/images/people/9946724139.jpg",
-                "contact": "9842013102"
-            }
-        ]
-    },
-    {
-        "mainName": "Unit Heads",
-        "isPublic": true,
-        "hasSubCategories": true,
-        "content": [{
-                "subName": "General Medicine",
-                "content": [{
-                        "isPerson": true,
-                        "title": "Head of Dept",
-                        "name": "Dr. Anupam Siva",
-                        "address": "",
-                        "photo": "",
-                        "contact": "9024184922"
-                    },
-                    {
-                        "isPerson": true,
-                        "title": "Assist. Professor",
-                        "name": "Dr. Jameela Hanan",
-                        "address": "",
-                        "photo": "",
-                        "contact": "9842013102"
-                    }
-                ]
-            },
-            {
-                "subName": "Orthopedriatics",
-                "content": [{
-                        "isPerson": true,
-                        "title": "Lab Head",
-                        "name": "Dr. Krishan",
-                        "address": "Krishnan Purayil Veedulla Krishnan, Krishnan Purayil Veedulla Krishnan, Krishnan Purayil Veedulla Krishnan",
-                        "photo": "",
-                        "contact": "9024184922"
-                    },
-                    {
-                        "isPerson": true,
-                        "title": "Assist. Surgeon",
-                        "name": "Dr. Haridasan",
-                        "address": "",
-                        "photo": "",
-                        "contact": "8129024900"
-                    }
-                ]
-            }
-        ]
-    }
+        $scope.directoryData = [];
 
-]
+        //FIRST LOAD
+        $scope.renderFailed = false;
+        $scope.isRenderLoaded = false;
+
+        $ionicLoading.show({
+            template: '<ion-spinner></ion-spinner>'
+        });
+
+        $http.get("http://cmcair.in/apis/directory.php", {
+                timeout: 10000
+            })
+            .success(function(response) {
+                $scope.directoryData = response;
+
+                $ionicLoading.hide();
+                $scope.renderFailed = false;
+                $scope.isRenderLoaded = true;
+            })
+            .error(function(data) {
+                $ionicLoading.hide();
+                $ionicLoading.show({
+                    template: "Not responding. Check your connection.",
+                    duration: 3000
+                });
+
+                $scope.renderFailed = true;
+                $scope.$broadcast('scroll.refreshComplete');
+
+            });
+
+
+
+        //REFRESHER
+        $scope.doRefresh = function() {
+
+            $http.get("http://cmcair.in/apis/directory.php", {
+                    timeout: 10000
+                })
+                .success(function(response) {
+                    $scope.directoryData = response;
+                    $scope.$broadcast('scroll.refreshComplete');
+                    $scope.renderFailed = false;
+                    $scope.isRenderLoaded = true;
+                })
+                .error(function(data) {
+                    $ionicLoading.show({
+                        template: "Not responding. Check your connection.",
+                        duration: 3000
+                    });
+
+                    $scope.$broadcast('scroll.refreshComplete');
+
+                });
+
+
+        };
+
+
+
+
+
+
 
 
         $scope.expandCategory = function(hasSubCategories, content){
@@ -1865,6 +1847,8 @@ $scope.renderFailed = 0;
                     })
                     .success(function(data) {
                         $ionicLoading.hide();
+
+                        console.log(data)
 
 
                         if (data.status) {
