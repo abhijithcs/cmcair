@@ -33,8 +33,9 @@
       <i ng-if="connection" class="icon ion-heart"> Connection Error!</i>        
       <div class="card neatBorder hidden"  style="text-decoration: none; margin: 10px 0 0 0;" id="post_{{feed.postID}}"> <!-- href="#/tab/posts/{{feed.postID}}" -->
 
-        <div class="item item-avatar item-text-wrap" ng-class="getRandomEventClass(feed.postID)">             
-          <tag class="currentUserImage"/>{{getImageCode(feed.userName)}}</tag>           
+        <div class="item item-avatar item-text-wrap" ng-class="getRandomEventClass(feed.postID)">
+          <img ng-if="feed.userflag" src="http://cmcair.in/images/people/{{feed.userID}}.jpg" on-error-src="./img/default-person.png">
+          <tag ng-if="!feed.userflag" class="currentUserImage">{{getImageCode(feed.userName)}}</tag>
           <p class="titleEvent">{{feed.userName}}</p>
           <p style="font-size: 12px;" class="titleSubEvent"><i class="icon ion-ios-clock-outline"></i> {{feed.time}}</p>                    
         </div>

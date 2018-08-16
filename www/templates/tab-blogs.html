@@ -86,13 +86,19 @@
   </center>
 </div>
 
+<div ng-if="!renderFailed && feedsList.length == 0" style="padding: 40px 20px 20px 20px;">
+  <center>
+    <img src="img/all_done.png">
+    <p style="color: #b3b2b2; margin: 10px; font-size: 16px;">There are no blogs added.</p>
+  </center>
+</div>
 
   <div class="list card neatBorder blog-container" style="border: none; border-radius: 0 !important; box-shadow: none !important;" ng-repeat="blog in feedsList">
     <div class="item item-body" style="padding: 0" ng-click="viewBlog(blog)">
       <img class="full-image" ng-if="blog.photo && blog.photo != ''" src="{{blog.photo}}" on-error-src="./img/blog_default.jpg">
       <img class="full-image" ng-if="!blog.photo || blog.photo == ''" src="./img/blog_default.jpg">
       <div class="blog-text-top-right"><h1>{{blog.category}}</h1></div> 
-      <div class="blog-text-centered"><h1>{{blog.title}}</h1></div> 
+      <div class="blog-text-centered"><h1 style="padding: 0 15px;">{{blog.title}}</h1></div> 
       <div class="blog-text-bottom-left">
         <h3>{{blog.author}}</h3>
         <p><i class="icon ion-ios-clock-outline"></i> {{blog.date}}</p>

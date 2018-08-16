@@ -465,6 +465,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
     .controller('directoryCtrl', ['$scope', '$http', '$ionicLoading', '$state', function($scope, $http, $ionicLoading, $state) {
 
+        
 
         //NOT logged in case.
         if (localStorage.getItem("token") == null || localStorage.getItem("token") == "LOGOUT") {
@@ -478,6 +479,7 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.isViewingExpanded = false;
 
         $scope.directoryData = [];
+        $scope.searchData = [];
 
         //FIRST LOAD
         $scope.renderFailed = false;
@@ -492,6 +494,25 @@ angular.module('starter.controllers', ['ngCordova'])
             })
             .success(function(response) {
                 $scope.directoryData = response;
+
+                var n = 0;
+                var m = 0;
+
+                while($scope.directoryData[n]){ //Main Level
+                    if($scope.directoryData[n].hasSubCategories){ //Sub Level
+                        m = 0;
+                        while($scope.directoryData[n].content[m]){
+                            $scope.searchData = $scope.searchData.concat($scope.directoryData[n].content[m].content);
+                            m++;
+                        }
+                    }
+                    else{
+                        $scope.searchData = $scope.searchData.concat($scope.directoryData[n].content);
+                    }
+
+                    n++;   
+                }
+
 
                 $ionicLoading.hide();
                 $scope.renderFailed = false;
@@ -510,6 +531,7 @@ angular.module('starter.controllers', ['ngCordova'])
             });
 
 
+        
 
         //REFRESHER
         $scope.doRefresh = function() {
@@ -539,6 +561,18 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 
+        //SEARCH
+        $scope.isSearchEnabled = false;
+        $scope.searchID = '';
+
+        $scope.searchDirectory = function(search_key){
+            if(search_key != ''){
+                $scope.isSearchEnabled = true;
+            }
+            else{
+                $scope.isSearchEnabled = false;
+            }
+        }
 
 
 
@@ -548,6 +582,8 @@ angular.module('starter.controllers', ['ngCordova'])
             $scope.isViewingExpanded = true;
             $scope.expandHasSubCategories = hasSubCategories;
             $scope.expandContent = content;
+
+            $scope.isSearchEnabled = false; //To be safe.
         }
 
         $scope.cancelExpandView = function(){

@@ -14,6 +14,46 @@ angular.module('starter.services', [])
 
 
 
+.directive('preImg', function() {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: {
+      ratio:'@',
+      helperClass: '@'
+    },
+    controller: function($scope) {
+      $scope.loaded = false;
+
+      this.hideSpinner = function(){
+        // Think i have to use apply because this function is not called from this controller ($scope)
+        $scope.$apply(function () {
+          $scope.loaded = true;
+        });
+      };
+    },
+    templateUrl: 'templates/fixed/pre-img.html'
+  };
+})
+
+.directive('spinnerOnLoad', function() {
+  return {
+    restrict: 'A',
+    require: '^preImg',
+    scope: {
+      ngSrc: '@'
+    },
+    link: function(scope, element, attr, preImgController) {
+      element.on('load', function() {
+        preImgController.hideSpinner();
+      });
+    }
+  };
+})
+
+
+
+
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 

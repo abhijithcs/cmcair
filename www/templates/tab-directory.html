@@ -51,19 +51,73 @@
 </div>
 
 
-<!-- FIRST LEVEL VIEW -->
-<div ng-if="!isViewingExpanded">
-	<div class="list" ng-repeat="main in directoryData" style="margin-bottom: 5px" ng-click="expandCategory(main.hasSubCategories, main.content)">
-	    <div class="item">
-        <tag style="float: left; margin-right: 10px"><i class="icon ion-chevron-right"></i></tag>
-	      <h2 style="font-size: 18px; font-weight: 400 !important; color: #444; letter-spacing: inherit;">{{main.mainName}}</h2>
-	    </div>
-	</div>
+
+    <!-- Search Bar -->
+    <div ng-show="!isViewingExpanded" class="input-group" style="width: 100%; border: none; margin-bottom: 10px">
+      <input type="text" ng-model="searchID" ng-change="searchDirectory(searchID)" class="form-control" style="text-align: left; width: 100% !important; padding: 5px 10px; border-radius: 3px;  outline: none;" placeholder="Search">
+    </div>
+
+
+
+<div ng-if="isSearchEnabled">
+
+              <!-- iterate through each sub cat. -->
+              <div class="list" ng-repeat="contact in searchData | filter: searchID track by $index" style="margin-bottom: 10px">
+
+                  <!-- Person Card -->
+                  <a ng-if="contact.isPerson" class="item item-thumbnail-left eventHead2" href="tel:{{contact.contact}}" style="padding-left: 112px; min-height: 100px;">
+                    <img src="{{contact.photo}}" on-error-src="./img/default-person.png">
+                    <h2 style="color: #FFF"><strong>{{contact.name != '' ? contact.name : contact.title}}</strong></h2>
+                    <p style="color: #366557">{{contact.title}}</p>
+                    <p style="color: #366557">{{contact.contact}}</p>
+                    <p style="color: #366557; white-space: initial">{{contact.address}}</p>
+                  </a>
+
+                  <!-- Shop Card -->
+                  <div class="card" style="margin: 0" ng-if="!contact.isPerson">
+                      <div class="item">
+                        <h2 style="color: #e74c3c; font-size: 21px;">{{contact.name != '' ? contact.name : contact.title}}</h2>
+                        <p>{{contact.title}}</p>
+                        <p style="color: #bdc3c7; white-space: initial">{{contact.address}}</p>
+                      </div>
+                      <div class="item item-image" ng-if="shop.flag">
+                        <img src="{{contact.photo}}">
+                      </div>
+                      <a class="item item-icon-left assertive" href="tel:{{contact.contact}}">
+                        <i class="icon ion-android-call"></i>
+                        {{contact.contact}}
+                      </a>          
+                  </div>
+              </div> <!-- contacts in each sub cat. -->
+
+              <div ng-if="(searchData | filter: searchID).length == 0" style="padding: 10px 20px;">
+                <center>
+                  <img src="img/not_found.png" style="width: 64px">
+                  <p style="color: #e88f8f; margin: 10px; font-size: 15px;">No matching results.</p>
+                </center>
+              </div>
 </div>
 
 
+
+
+
+<!-- FIRST LEVEL VIEW -->
+<div ng-if="!isSearchEnabled && !isViewingExpanded">
+
+  <div class="list" ng-repeat="main in directoryData" style="margin-bottom: 5px" ng-click="expandCategory(main.hasSubCategories, main.content)">
+      <div class="item">
+        <tag style="float: left; margin-right: 10px"><i class="icon ion-chevron-right"></i></tag>
+        <h2 style="font-size: 18px; font-weight: 400 !important; color: #444; letter-spacing: inherit;">{{main.mainName}}</h2>
+      </div>
+  </div>
+</div>
+
+
+
+
 <!-- SECOND LEVEL EXPANDED VIEW -->
-<div ng-if="isViewingExpanded">
+<div ng-if="!isSearchEnabled && isViewingExpanded">
 
   <!-- has sub categories -->
   <div ng-if="expandHasSubCategories">
@@ -110,7 +164,6 @@
   <div ng-if="!expandHasSubCategories">
     
     <div class="list" ng-repeat="contact in expandContent" style="margin-bottom: 10px">
-
         <!-- Person Card -->
         <a ng-if="contact.isPerson" class="item item-thumbnail-left eventHead2" href="tel:{{contact.contact}}" style="padding-left: 112px; min-height: 100px;">
           <img src="{{contact.photo}}" on-error-src="./img/default-person.png">

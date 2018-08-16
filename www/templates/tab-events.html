@@ -48,8 +48,12 @@
 </div>
 
 
-
-
+<div ng-if="!renderFailed && feedsList.length == 0" style="padding: 40px 20px 20px 20px;">
+  <center>
+    <img src="img/all_done.png">
+    <p style="color: #b3b2b2; margin: 10px; font-size: 16px;">Yay! There are no upcoming events.</p>
+  </center>
+</div>
 
 
 <div class="list card neatBorder" ng-repeat="feed in feedsList track by $index">
