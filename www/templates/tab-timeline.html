@@ -48,7 +48,7 @@
           <i ng-if="!feed.likeFlag" on-hold="viewLikes(feed.postID)" class="icon ion-android-favorite-outline" on-tap="liker(feed.postID)" id="{{feed.postID}}" style ="color:#95a5a6;"> {{feed.likes}}</i>        
           <i ng-if="feed.likeFlag" on-hold="viewLikes(feed.postID)" class="icon ion-android-favorite" on-tap="liker(feed.postID)" id={{feed.postID}} style ="color:#E90C44;"> {{feed.likes}}</i>
 
-          <i ng-if="feed.selfFlag" on-hold="deletePost(feed.postID, $index)" class="icon ion-trash-b pull-right" on-tap="deletePost(feed.postID, $index)" id="{{feed.postID}}" style ="color:#95a5a6; float: right; font-size: 21px;"></i> 
+          <i ng-if="feed.selfFlag || adminDeleteFlag" on-hold="deletePost(feed.postID, $index)" class="icon ion-trash-b pull-right" on-tap="deletePost(feed.postID, $index)" id="{{feed.postID}}" style ="color:#95a5a6; float: right; font-size: 21px;"></i> 
         </div>
         </div>
 

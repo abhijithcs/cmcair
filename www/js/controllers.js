@@ -14,6 +14,13 @@ angular.module('starter.controllers', ['ngCordova'])
         })
 
 
+        if (localStorage.getItem("postAdminFlag") == 1) {
+            $scope.adminDeleteFlag = true;
+        } else {
+            $scope.adminDeleteFlag = false;
+        }
+
+
         $scope.getRandomEventClass = function(code) {
             var token = code % 7;
             token++;
@@ -485,11 +492,42 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.renderFailed = false;
         $scope.isRenderLoaded = false;
 
-        $ionicLoading.show({
-            template: '<ion-spinner></ion-spinner>'
-        });
+        if (localStorage.getItem("directorySavedData") != null && localStorage.getItem("directorySavedData") != "") {
+                
+                $scope.directoryData = localStorage.getItem("directorySavedData") ? JSON.parse(localStorage.getItem("directorySavedData")) : [];
 
-        $http.get("http://cmcair.in/apis/directory.php", {
+                var n = 0;
+                var m = 0;
+
+                while($scope.directoryData[n]){ //Main Level
+                    if($scope.directoryData[n].hasSubCategories){ //Sub Level
+                        m = 0;
+                        while($scope.directoryData[n].content[m]){
+                            $scope.searchData = $scope.searchData.concat($scope.directoryData[n].content[m].content);
+                            m++;
+                        }
+                    }
+                    else{
+                        $scope.searchData = $scope.searchData.concat($scope.directoryData[n].content);
+                    }
+
+                    n++;   
+                }
+
+                $ionicLoading.hide();
+                $scope.renderFailed = false;
+                $scope.isRenderLoaded = true;            
+        }
+        else{
+            loadDirectoryInit();
+        }
+
+        function loadDirectoryInit(){
+            $ionicLoading.show({
+                template: '<ion-spinner></ion-spinner>'
+            });
+
+            $http.get("http://cmcair.in/apis/directory.php", {
                 timeout: 10000
             })
             .success(function(response) {
@@ -514,6 +552,8 @@ angular.module('starter.controllers', ['ngCordova'])
                 }
 
 
+                localStorage.setItem("directorySavedData", JSON.stringify($scope.directoryData));
+
                 $ionicLoading.hide();
                 $scope.renderFailed = false;
                 $scope.isRenderLoaded = true;
@@ -529,8 +569,7 @@ angular.module('starter.controllers', ['ngCordova'])
                 $scope.$broadcast('scroll.refreshComplete');
 
             });
-
-
+        }
         
 
         //REFRESHER
@@ -544,6 +583,8 @@ angular.module('starter.controllers', ['ngCordova'])
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.renderFailed = false;
                     $scope.isRenderLoaded = true;
+
+                    localStorage.setItem("directorySavedData", JSON.stringify($scope.directoryData));
                 })
                 .error(function(data) {
                     $ionicLoading.show({
